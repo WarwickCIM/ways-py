@@ -1,0 +1,5 @@
+.DS_Store
+.gitconfig
+
+# ignore iPython checkpoints
+*.ipynb_checkpoints

@@ -1,0 +1,4 @@
+geopandas
+altair
+shapely
+cartopy
