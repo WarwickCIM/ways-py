@@ -1,4 +1,4 @@
-# ways-py - python package as part of the WAYS project phase 2 (WP2)
+# ways-py - python package as part of the WAYS (What Aren't You Seeing) project phase 2 (WP2)
 
 [Turing Research Engineering Group Hut23 issue](https://github.com/alan-turing-institute/Hut23/issues/407)
 
