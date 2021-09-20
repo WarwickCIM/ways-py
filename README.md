@@ -22,6 +22,10 @@ WP3 – The final WP will develop auto-generated Precursor Visualisations for a 
 
 </details>
 
+# Installation
+
+`pip install ways-py`
+
 # Emojis on commit messages
 
 We use the following `git` aliases (add to `[alias]` section of your `.gitconfig` to have these):
