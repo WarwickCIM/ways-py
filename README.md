@@ -1,4 +1,4 @@
-# ways-py - python package as part of the WAYS (What Aren't You Seeing) project phase 2 (WP2)
+# ways-py - Python package for _WAYS: What Aren't You Seeing_ project
 
 [Turing Research Engineering Group Hut23 issue](https://github.com/alan-turing-institute/Hut23/issues/407)
 
@@ -17,5 +17,5 @@ WP1 – Each advance in the efficiency, speed and scale of data analytics has di
 WP2 – Technical fieldwork and ‘show and tell’ rapid ethnographies7 will be conducted to inform WAYS. Based on an R package prototype – GRAPHO – that archives code histories alongside the images outputted to the graphics device, we will carry out detailed, remote user research (including pilots in the Bristol Data Study group and the Jane Golding Institute Visualisation Competition) to study: 1) generative and evaluative activities in everyday visualisation workflows 2) the representation of theory within software use, and 3) the affordances and fates of scientists’ ‘creative hacks’ and preparatory visualisations.
 
 WP3 – The final WP will develop auto-generated Precursor Visualisations for a broad range of evaluative and generative tasks involving maps, networks and time series, and for issues including uncertainty, dimension reduction and missing data. By holding data constant across permutations of visual encodings and scales a Precursor can visualise the conditions that generate depiction ambiguities, visual artefacts or representational invariance, or that hide multiscale, composite patterns. Alternatively, data characteristics can be varied (e.g. subsampling, covariation, noise), whilst holding the design constant, to visualise which patterns, boundaries and features can be detected given the data and that design.
-  
+
 </details>
