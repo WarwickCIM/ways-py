@@ -1,4 +1,6 @@
-# ways-py - Python package for _WAYS: What Aren't You Seeing_ project
+# _WAYS: What Aren't You Seeing_
+
+This is the Python package for the [WAYS](https://www.turing.ac.uk/research/research-projects/ways-what-arent-you-seeing) project.
 
 [Turing Research Engineering Group Hut23 issue](https://github.com/alan-turing-institute/Hut23/issues/407)
 
