@@ -21,3 +21,15 @@ WP2 – Technical fieldwork and ‘show and tell’ rapid ethnographies7 will be
 WP3 – The final WP will develop auto-generated Precursor Visualisations for a broad range of evaluative and generative tasks involving maps, networks and time series, and for issues including uncertainty, dimension reduction and missing data. By holding data constant across permutations of visual encodings and scales a Precursor can visualise the conditions that generate depiction ambiguities, visual artefacts or representational invariance, or that hide multiscale, composite patterns. Alternatively, data characteristics can be varied (e.g. subsampling, covariation, noise), whilst holding the design constant, to visualise which patterns, boundaries and features can be detected given the data and that design.
 
 </details>
+
+# Emojis on commit messages
+
+We use the following `git` aliases (add to `[alias]` section of your `.gitconfig` to have these):
+
+```
+doc      = "!f() { git commit -a -m \"📚 : $1\"; }; f"
+fix      = "!f() { git commit -a -m \"🐛 : $1\"; }; f"
+lint     = "!f() { git commit -a -m \"✨ : $1\"; }; f"
+modify   = "!f() { git commit -a -m \"❗ : $1\"; }; f"
+refactor = "!f() { git commit -a -m \"♻️ : $1\"; }; f"
+```

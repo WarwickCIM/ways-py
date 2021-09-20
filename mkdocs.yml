@@ -1,0 +1,35 @@
+---
+# Project Information
+site_name: ways-py
+site_author: Centre for Interdisciplinary Methodologies, University of Warwick
+site_description: WAYS package developed at the University of Warwick and supported by The Alan Turing Institute.
+site_url: http://warwickcim.github.io/backfillz-py/
+
+# Repository information
+repo_name: WarwickCIM/backfillz-py
+repo_url: https://github.com/WarwickCIM/backfillz-py
+edit_uri: ""
+
+# Copyright
+copyright: Copyright &copy; 2021 Centre for Interdisciplinary Methodologies, University of Warwick
+
+# Configuration
+theme:
+  name: material
+  icon:
+    repo: fontawesome/brands/github
+  features:
+    - navigation.instant
+    - navigation.tabs
+  language: en
+
+# Footer
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/WarwickCIM
+      name: WarwickCIM on GitHub
+
+# Page tree
+nav:
+  - Home: index.md
