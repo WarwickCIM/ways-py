@@ -19,9 +19,9 @@ jobs:
       - name: Install dependencies
         run: poetry update
       - name: Check style with flake8
-        run: poetry run flake8 ways/ tests/
+        run: poetry run flake8 ways_py/ tests/
       - name: Check type hinting with mypy
-        run: poetry run mypy --strict --config-file=mypy.ini ways/
+        run: poetry run mypy --strict --config-file=mypy.ini ways_py/
       - name: Unit & coverage test with pytest
         run: poetry run pytest --compare_images=False -rP
 

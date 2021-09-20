@@ -2,7 +2,7 @@
 
 import pytest
 
-from ways.ways import Ways
+from ways_py.ways import Ways
 
 
 @pytest.fixture()
