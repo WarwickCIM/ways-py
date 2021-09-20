@@ -7,3 +7,7 @@ import pytest
 def compare_images(pytestconfig) -> bool:
     """Whether to compare generated images with stored expected images."""
     return pytestconfig.getoption("compare_images") == "True"
+
+
+def test_nothing(compare_images: bool) -> None:
+    """Vacuously succeeds."""
