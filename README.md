@@ -1,3 +1,11 @@
+<!-- badges: start -->
+
+[![Release build](https://github.com/WarwickCIM/ways-py/actions/workflows/build-publish.yml/badge.svg?branch=release)](https://github.com/WarwickCIM/ways-py/actions/workflows/build-publish.yml)
+[![Develop build](https://github.com/WarwickCIM/ways-py/actions/workflows/build-publish.yml/badge.svg?branch=develop)](https://github.com/WarwickCIM/ways-py/actions/workflows/build-publish.yml)
+[![Project Status: Concept – Minimal or no implementation has been done yet, or the repository is only intended to be a limited example, demo, or proof-of-concept.](https://www.repostatus.org/badges/latest/concept.svg)](https://www.repostatus.org/#concept)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+<!-- badges: end -->
+
 # _WAYS: What Aren't You Seeing_
 
 This is the Python package for the [WAYS](https://www.turing.ac.uk/research/research-projects/ways-what-arent-you-seeing) project.
@@ -22,9 +30,9 @@ WP3 – The final WP will develop auto-generated Precursor Visualisations for a 
 
 </details>
 
-# Installation
+# Quick start
 
-`pip install ways-py`
+Install from [PyPI](https://pypi.org/project/ways-py/) using `pip install ways-py`.
 
 # Emojis on commit messages
 
