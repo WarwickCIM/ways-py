@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "ways-py"
+version = "0.0.0"
+description = "WAYS package for Python developed at University of Warwick and The Alan Turing Institute."
+authors = ["Ed Chalstrey <echalstrey@turing.ac.uk>, Roly Perera <rperera@turing.ac.uk>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+flake8 = "^3.9.2"
+mypy = "^0.910"
+importlib-metadata = "^4.8.1"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
