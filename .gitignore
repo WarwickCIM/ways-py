@@ -1,3 +1,4 @@
 .DS_Store
 .gitconfig
 *.ipynb_checkpoints
+__pycache__
