@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "ways-py"
+name = "ways"
 version = "0.0.0"
 description = "WAYS package for Python developed at University of Warwick and The Alan Turing Institute."
 authors = ["Ed Chalstrey <echalstrey@turing.ac.uk>, Roly Perera <rperera@turing.ac.uk>"]
