@@ -2,6 +2,8 @@
 
 import pytest
 
+from ways.ways import Ways
+
 
 @pytest.fixture()
 def compare_images(pytestconfig) -> bool:
@@ -9,5 +11,6 @@ def compare_images(pytestconfig) -> bool:
     return pytestconfig.getoption("compare_images") == "True"
 
 
-def test_nothing(compare_images: bool) -> None:
-    """Vacuously succeeds."""
+def test_WAYS(compare_images: bool) -> None:
+    Ways()
+    """WAYS object instantiates without error."""
