@@ -1,6 +1,6 @@
 """ways namespace."""
 
-from importlib_metadata import PackageNotFoundError, version
+from importlib.metadata import PackageNotFoundError, version
 
 # Used to automatically set version number from github actions
 # as well as not break when being tested locally
