@@ -22,6 +22,14 @@ The ‘What Aren’t You Seeing’ (WAYS) project addresses 1) what we aren’t 
 
 Install from [PyPI](https://pypi.org/project/ways-py/) using `pip install ways-py`.
 
+## Development
+
+To create the development environment, do the following:
+
+1. Install python poetry by following the [install instructions](https://python-poetry.org/docs/)
+2. From the top level dir: `poetry shell`
+ - Note: your machine will need python 3.9 available - [install from here](https://www.python.org/downloads/release/python-397/) if you don't have it
+
 # Emojis on commit messages
 
 We use the following `git` aliases (add to `[alias]` section of your `.gitconfig` to have these):
