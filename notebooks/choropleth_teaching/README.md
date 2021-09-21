@@ -1,4 +1,4 @@
-Before running the notebook:
+Installation notes
 
-1. `pip install -r requirements.txt`
-2. If you get the error `OSError: Could not find lib c or load any of its variants` then do: `pip install --upgrade --force-reinstall shapely`
+1. `OSError: Could not find lib c or load any of its variants` may require `pip install --upgrade --force-reinstall shapely`
+2. `UserWarning: Unable to determine GEOS version` or `Proj 8.0.0 must be installed` on the Mac may require `brew install geos` and/or `brew install proj`
