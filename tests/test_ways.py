@@ -33,14 +33,14 @@ def expect_fig(fig: alt.Chart, filename: str, check: bool) -> None:
             file_new = open(e.filename, "wb")
             file_new.write(found)
             print(f"{filename}: creating new reference image.")
-            fig.show(config=default_config())
+            alt.renderers.enable('mimetype')
+            fig.show()
             assert False
     else:
         print(f"{filename}: image not compared.")
 
 
 def test_dummy_chart(compare_images: bool) -> None:
+    """WAYS object instantiates without error."""
     fig: alt.Chart = Ways().dummy_chart()
     expect_fig(fig, "tests/expected_dummy_chart", compare_images)
-
-    """WAYS object instantiates without error."""
