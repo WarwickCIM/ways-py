@@ -1,5 +1,9 @@
 """Test module for backfillz."""
 
+import errno
+import os
+
+import altair as alt
 import pytest
 
 from ways_py.ways import Ways
@@ -11,6 +15,32 @@ def compare_images(pytestconfig) -> bool:
     return pytestconfig.getoption("compare_images") == "True"
 
 
-def test_WAYS(compare_images: bool) -> None:
-    Ways()
+# Plotly doesn't generate SVG deterministically; use PNG instead.
+def expect_fig(fig: alt.Chart, filename: str, check: bool) -> None:
+    """Check for JSON-equivalence to stored image."""
+    ext = 'json'
+    if check:
+        found = fig.to_json()
+        try:
+            file = open(filename + '.' + ext, 'r')
+            expected = file.read()
+            if expected != found:
+                print(f"{filename}: differs from reference image.")
+                raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), filename + '.new.' + ext)
+            print(f"{filename}: image identical.")
+#           fig.show()
+        except FileNotFoundError as e:
+            file_new = open(e.filename, 'w')
+            file_new.write(found)
+            print(f"{filename}: creating new reference image.")
+            alt.renderers.enable('mimetype')
+            fig.show()
+            assert False
+    else:
+        print(f"{filename}: image not compared.")
+
+
+def test_dummy_chart(compare_images: bool) -> None:
     """WAYS object instantiates without error."""
+    fig: alt.Chart = Ways().dummy_chart()
+    expect_fig(fig, "tests/expected_dummy_chart", compare_images)
