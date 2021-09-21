@@ -39,6 +39,8 @@ def expect_fig(fig: alt.Chart, filename: str, check: bool) -> None:
         print(f"{filename}: image not compared.")
 
 
-def test_WAYS(compare_images: bool) -> None:
-    Ways()
+def test_dummy_chart(compare_images: bool) -> None:
+    fig: alt.Chart = Ways().dummy_chart()
+    expect_fig(fig, "tests/expected_dummy_chart", compare_images)
+
     """WAYS object instantiates without error."""
