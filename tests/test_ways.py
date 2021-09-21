@@ -17,20 +17,20 @@ def compare_images(pytestconfig) -> bool:
 
 # Plotly doesn't generate SVG deterministically; use PNG instead.
 def expect_fig(fig: alt.Chart, filename: str, check: bool) -> None:
-    """Check for pixel-for-pixel equivalence to stored image."""
-    ext = "png"
+    """Check for JSON-equivalence to stored image."""
+    ext = 'json'
     if check:
-        found = fig.to_image(format=ext)
+        found = fig.to_json()
         try:
-            file = open(filename + "." + ext, "rb")
+            file = open(filename + '.' + ext, 'r')
             expected = file.read()
             if expected != found:
                 print(f"{filename}: differs from reference image.")
-                raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), filename + ".new." + ext)
+                raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), filename + '.new.' + ext)
             print(f"{filename}: image identical.")
 #           fig.show()
         except FileNotFoundError as e:
-            file_new = open(e.filename, "wb")
+            file_new = open(e.filename, 'w')
             file_new.write(found)
             print(f"{filename}: creating new reference image.")
             alt.renderers.enable('mimetype')
