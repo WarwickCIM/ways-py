@@ -19,7 +19,7 @@ jobs:
 
   build:
     needs: pre-build
-    if: ${{ needs.pre_job.outputs.should_skip != 'true' }}
+    if: ${{ needs.pre-build.outputs.should_skip != 'true' }}
     runs-on: macos-10.15
     steps:
       - uses: actions/checkout@v2
