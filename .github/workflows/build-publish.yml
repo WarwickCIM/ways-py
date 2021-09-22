@@ -6,8 +6,21 @@ on:
   pull_request:
 
 jobs:
+  pre-build:
+      # continue-on-error: true # Uncomment once integration is finished
+      runs-on: ubuntu-latest
+      outputs:
+        should_skip: ${{ steps.skip_check.outputs.should_skip }}
+      steps:
+        - id: skip_check
+          uses: fkirc/skip-duplicate-actions@master
+          with:
+            paths_ignore: '["**/README.md", "**/docs/**"]'
+
   build:
-    runs-on: macos-10.15  # ubuntu-20.04
+    needs: pre-build
+    if: ${{ needs.pre-build.outputs.should_skip != 'true' }}
+    runs-on: macos-10.15
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python
@@ -23,22 +36,22 @@ jobs:
       - name: Check type hinting with mypy
         run: poetry run mypy --strict --config-file=mypy.ini ways_py/
       - name: Unit & coverage test with pytest
-        run: poetry run pytest --compare_images=False -rP
+        run: poetry run pytest --compare_images=True -rP
 
   docs:
-#    if: ${{ false }}  # mkdocs no longer pushes successfully to gh-pages -- disable for now
-    runs-on: macos-10.15  # ubuntu-20.04
+    if: github.ref == 'refs/heads/release' || github.ref == 'refs/heads/develop'
+    runs-on: macos-10.15
     needs: build
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
         with:
-          python-version: 3.9.6
+          python-version: 3.9.7
       - run: pip install mkdocs-material
       - run: mkdocs gh-deploy --force
 
   publish:
-    runs-on: macos-10.15  # ubuntu-20.04
+    runs-on: macos-10.15
     needs: [build, docs]
     if: github.ref == 'refs/heads/release'
     steps:
