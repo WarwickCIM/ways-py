@@ -20,7 +20,7 @@ include = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "3.9.7"
 importlib-metadata = "^4.8.1"
 
 altair = "^4.1.0"
