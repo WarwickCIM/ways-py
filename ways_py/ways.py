@@ -10,7 +10,9 @@ class Ways:
         return alt.Chart(df, title="Dummy Chart").properties(width=600, height=500).mark_point()
 
     def altair_meta_hist(dataframe, column, bin, color):
-        """Plot a histogram metavisualisation for a plot with matching
+        """Altair metavisualisation histogram.
+
+        Plot a histogram metavisualisation for a plot with matching
         color binning via same altair objects.
 
         Args:
