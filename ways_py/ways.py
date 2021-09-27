@@ -9,7 +9,7 @@ class Ways:
         df: pd.DataFrame = pd.DataFrame(columns=["x", "y"])
         return alt.Chart(df, title="Dummy Chart").properties(width=600, height=500).mark_point()
 
-    def altair_meta_hist(dataframe, column, bin, color) -> alt.Chart:
+    def altair_meta_hist(dataframe: pd.DataFrame, column: str, bin: alt.Bin, color: alt.Color) -> alt.Chart:
         """Altair metavisualisation histogram.
 
         Plot a histogram metavisualisation for a plot with matching
