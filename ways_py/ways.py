@@ -23,11 +23,10 @@ class Ways:
             altair chart object: histogram
         """
         return alt.Chart(dataframe).mark_bar().encode(
-                alt.X(column, bin=bin),
-                y='count()',
-               ).encode(
-                color
-               ).properties(
-                width=300,
-                height=300
-               )
+            y='count()',
+        ).encode(
+            color
+        ).properties(
+            width=300,
+            height=300
+        )
