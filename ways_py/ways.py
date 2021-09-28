@@ -29,9 +29,12 @@ class Ways:
             .properties(width=300, height=300)
         return chart | src
 
+
 FuncT = TypeVar("FuncT", bound=Callable[..., Any])
 
+
 def meta_hist(make_chart: FuncT) -> FuncT:
+    """Post-compose altair_meta_hist with a function which makes a colour-encoded Altair chart."""
     def wrapper(*args: Any, **kwargs: Any) -> Any:
         return Ways.altair_meta_hist(make_chart(*args, **kwargs), 'pct_estimate')
     return cast(FuncT, wrapper)
