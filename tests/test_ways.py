@@ -71,7 +71,7 @@ def test_altair_meta_hist(compare_images: bool) -> None:
     candidate_geo_states = geo_states_trump[geo_states_trump.modeldate == '11/03/2020']
     scale = alt.Scale(type='band')
     column = 'pct_estimate'
-    bin = alt.Bin(extent=[0, 100])
+    bin = alt.Bin(extent=[0, 100], step=10)
     color = alt.Color(column, bin=True, scale=scale)
     fig1: alt.Chart = usa_choro(candidate_geo_states, color, "Example choropleth")
     fig2: alt.Chart = Ways.altair_meta_hist(candidate_geo_states, column, fig1.encoding.color.bin, fig1.encoding.color)
