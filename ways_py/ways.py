@@ -20,7 +20,7 @@ class Ways:
         """
         chart = alt.Chart(src.data) \
             .mark_bar() \
-            .encode(alt.Y(column, bin=src.encoding.color.bin), x='count()') \
+            .encode(alt.Y(src.encoding.color.shorthand, bin=src.encoding.color.bin), x='count()') \
             .encode(src.encoding.color) \
             .properties(width=300, height=300)
         return chart | src
