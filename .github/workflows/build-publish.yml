@@ -23,7 +23,7 @@ jobs:
       - name: Check type hinting with mypy
         run: poetry run mypy --strict --config-file=mypy.ini ways_py/ tests/
       - name: Test notebooks
-        run: poetry run pytest --collect-only --nbmake "./notebooks"
+        run: poetry run pytest --nbmake "./notebooks"
       - name: Unit & coverage test with pytest
         run: poetry run pytest --compare_images=True -rP
 
