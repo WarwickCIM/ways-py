@@ -1,3 +1,5 @@
+from typing import Any, Callable, cast, TypeVar
+
 import altair as alt  # type: ignore
 import pandas as pd  # type: ignore
 
@@ -27,8 +29,9 @@ class Ways:
             .properties(width=300, height=300)
         return chart | src
 
+FuncT = TypeVar("FuncT", bound=Callable[..., Any])
 
-def meta_hist(make_chart):
-    def wrapper(*args, **kwargs):
+def meta_hist(make_chart: FuncT) -> FuncT:
+    def wrapper(*args: Any, **kwargs: Any) -> Any:
         return Ways.altair_meta_hist(make_chart(*args, **kwargs), 'pct_estimate')
-    return wrapper
+    return cast(FuncT, wrapper)
