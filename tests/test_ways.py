@@ -51,8 +51,8 @@ def test_dummy_chart(compare_images: bool) -> None:
 
 def usa_choro(candidate_geo_states: pd.DataFrame, color: alt.Color, title: str) -> alt.Chart:
     """Choropleth of the US states with the candidate vote percentage mapped to color."""
-    chart = alt.Chart(candidate_geo_states, title=title).mark_geoshape()
-    chart = chart \
+    chart = alt.Chart(candidate_geo_states, title=title) \
+        .mark_geoshape() \
         .encode(color, tooltip=['NAME', 'pct_estimate']) \
         .properties(width=500, height=300) \
         .project(type='albersUsa')
@@ -71,8 +71,8 @@ def test_altair_meta_hist(compare_images: bool) -> None:
     candidate_geo_states = geo_states_trump[geo_states_trump.modeldate == '11/03/2020']
     scale = alt.Scale(type='band')
     column = 'pct_estimate'
-    color = alt.Color(column, bin=True, scale=scale)
     bin = alt.Bin(extent=[0, 100])
+    color = alt.Color(column, bin=True, scale=scale)
     fig1: alt.Chart = usa_choro(candidate_geo_states, color, "Example choropleth")
     fig2: alt.Chart = Ways.altair_meta_hist(candidate_geo_states, column, bin, fig1.encoding.color)
     expect_fig(fig2 | fig1, "tests/expected_altair_meta_hist", compare_images)
