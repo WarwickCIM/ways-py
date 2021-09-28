@@ -43,12 +43,6 @@ def expect_fig(fig: alt.Chart, filename: str, check: bool) -> None:
         print(f"{filename}: image not compared.")
 
 
-def test_dummy_chart(compare_images: bool) -> None:
-    """WAYS object instantiates without error."""
-    fig: alt.Chart = Ways().dummy_chart()
-    expect_fig(fig, "tests/expected_dummy_chart", compare_images)
-
-
 @meta_hist
 def usa_choro(candidate_geo_states: pd.DataFrame, color: alt.Color, title: str) -> alt.Chart:
     """Choropleth of the US states with the candidate vote percentage mapped to color."""

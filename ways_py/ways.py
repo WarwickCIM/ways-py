@@ -7,10 +7,6 @@ import pandas as pd  # type: ignore
 class Ways:
     """WAYS library."""
 
-    def dummy_chart(self) -> alt.Chart:
-        df: pd.DataFrame = pd.DataFrame(columns=["x", "y"])
-        return alt.Chart(df, title="Dummy Chart").properties(width=600, height=500).mark_point()
-
     @staticmethod
     def altair_meta_hist(src: alt.Chart, column: str) -> alt.Chart:
         """Altair metavisualisation; histogram visualising color bins of another Altair chart.
