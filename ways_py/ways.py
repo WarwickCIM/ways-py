@@ -11,10 +11,7 @@ class Ways:
 
     @staticmethod
     def altair_meta_hist(dataframe: pd.DataFrame, column: str, src: alt.Chart) -> alt.Chart:
-        """Altair metavisualisation histogram.
-
-        Plot a histogram metavisualisation for a plot with matching
-        color binning via same altair objects.
+        """Altair metavisualisation; histogram visualising color bins of another Altair chart.
 
         Args:
         dataframe: dataset to plot.
