@@ -53,17 +53,12 @@ def test_altair_meta_hist(compare_images: bool) -> None:
     """Altair meta-histogram generates without error."""
     geo_states = gpd.read_file('notebooks/choropleth_teaching/gz_2010_us_040_00_500k.json')
     df_polls = pd.read_csv('notebooks/choropleth_teaching/presidential_poll_averages_2020.csv')
-    trump_data = df_polls[
-        df_polls.candidate_name == 'Donald Trump'
-    ]
-
+    trump_data = df_polls[df_polls.candidate_name == 'Donald Trump']
     trump_data.columns = [
         'cycle', 'NAME', 'modeldate', 'candidate_name', 'pct_estimate', 'pct_trend_adjusted'
     ]
     geo_states_trump = geo_states.merge(trump_data, on='NAME')
-    candidate_geo_states = geo_states_trump[
-        (geo_states_trump.modeldate == '11/03/2020')
-    ]
+    candidate_geo_states = geo_states_trump[geo_states_trump.modeldate == '11/03/2020']
     scale = alt.Scale(type='band')
     column = 'pct_estimate'
     color = alt.Color(column, bin=True, scale=scale)
