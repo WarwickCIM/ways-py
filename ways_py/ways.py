@@ -30,5 +30,5 @@ class Ways:
 
 def meta_hist(make_chart):
     def wrapper(*args, **kwargs):
-        return altair_meta_hist(make_chart(*args, **kwargs), 'pct_estimate')
+        return Ways.altair_meta_hist(make_chart(*args, **kwargs), 'pct_estimate')
     return wrapper
