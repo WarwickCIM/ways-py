@@ -49,28 +49,30 @@ def test_dummy_chart(compare_images: bool) -> None:
     expect_fig(fig, "tests/expected_dummy_chart", compare_images)
 
 
+def usa_choro(candidate_geo_states: pd.DataFrame, color: alt.Color, title: str) -> alt.Chart:
+    """Choropleth of the US states with the candidate vote percentage mapped to color."""
+    chart = alt.Chart(candidate_geo_states, title=title).mark_geoshape()
+    chart = chart \
+        .encode(color, tooltip=['NAME', 'pct_estimate']) \
+        .properties(width=500, height=300) \
+        .project(type='albersUsa')
+    return chart
+
+
 def test_altair_meta_hist(compare_images: bool) -> None:
     """Altair meta-histogram generates without error."""
     geo_states = gpd.read_file('notebooks/choropleth_teaching/gz_2010_us_040_00_500k.json')
     df_polls = pd.read_csv('notebooks/choropleth_teaching/presidential_poll_averages_2020.csv')
-    df_polls = df_polls[
-        (df_polls.candidate_name == 'Donald Trump') |
-        (df_polls.candidate_name == 'Joseph R. Biden Jr.')
-    ]
-    trump_data = df_polls[
-        df_polls.candidate_name == 'Donald Trump'
-    ]
-
+    trump_data = df_polls[df_polls.candidate_name == 'Donald Trump']
     trump_data.columns = [
         'cycle', 'NAME', 'modeldate', 'candidate_name', 'pct_estimate', 'pct_trend_adjusted'
     ]
     geo_states_trump = geo_states.merge(trump_data, on='NAME')
-    candidate_geo_states = geo_states_trump[
-        (geo_states_trump.modeldate == '11/03/2020')
-    ]
+    candidate_geo_states = geo_states_trump[geo_states_trump.modeldate == '11/03/2020']
     scale = alt.Scale(type='band')
     column = 'pct_estimate'
     color = alt.Color(column, bin=True, scale=scale)
-    bin = alt.Bin(maxbins=100, extent=[0, 100])
-    fig: alt.Chart = Ways.altair_meta_hist(candidate_geo_states, column, bin, color)
-    expect_fig(fig, "tests/expected_altair_meta_hist", compare_images)
+    bin = alt.Bin(extent=[0, 100])
+    usa_choro(candidate_geo_states, color, "Example choropleth")
+    fig2: alt.Chart = Ways.altair_meta_hist(candidate_geo_states, column, bin, color)
+    expect_fig(fig2, "tests/expected_altair_meta_hist", compare_images)
