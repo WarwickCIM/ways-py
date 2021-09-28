@@ -1,0 +1,17 @@
+{
+   "version": "2.0.0",
+   "tasks": [
+      {
+         "label": "mypy",
+         "type": "shell",
+         "command": "poetry run mypy --strict --config-file=mypy.ini ways_py",
+         "problemMatcher": []
+      },
+      {
+         "label": "flake8",
+         "type": "shell",
+         "command": "poetry run flake8 ways_py/ tests/",
+         "problemMatcher": []
+      }
+   ]
+}
