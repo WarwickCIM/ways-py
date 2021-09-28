@@ -8,7 +8,7 @@ class Ways:
     """WAYS library."""
 
     @staticmethod
-    def altair_meta_hist(src: alt.Chart, column: str) -> alt.Chart:
+    def altair_meta_hist(src: alt.Chart) -> alt.Chart:
         """Altair metavisualisation; histogram visualising color bins of another Altair chart.
 
         Args:
@@ -33,5 +33,5 @@ def meta_hist(make_chart: FuncT) -> FuncT:
     """Post-compose altair_meta_hist with a function which makes a colour-encoded Altair chart."""
     @wraps(make_chart)
     def wrapper(*args: Any, **kwargs: Any) -> Any:
-        return Ways.altair_meta_hist(make_chart(*args, **kwargs), 'pct_estimate')
+        return Ways.altair_meta_hist(make_chart(*args, **kwargs))
     return cast(FuncT, wrapper)
