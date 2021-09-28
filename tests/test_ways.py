@@ -62,6 +62,6 @@ def test_altair_meta_hist(compare_images: bool) -> None:
     scale = alt.Scale(type='band')
     column = 'pct_estimate'
     color = alt.Color(column, bin=True, scale=scale)
-    bin = alt.Bin(maxbins=100, extent=[0, 100])
+    bin = alt.Bin(extent=[0, 100])
     fig: alt.Chart = Ways.altair_meta_hist(candidate_geo_states, column, bin, color)
     expect_fig(fig, "tests/expected_altair_meta_hist", compare_images)
