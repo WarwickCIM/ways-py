@@ -1,7 +1,7 @@
+from functools import wraps
 from typing import Any, Callable, cast, TypeVar
 
 import altair as alt  # type: ignore
-import pandas as pd  # type: ignore
 
 
 class Ways:
@@ -31,6 +31,7 @@ FuncT = TypeVar("FuncT", bound=Callable[..., Any])
 
 def meta_hist(make_chart: FuncT) -> FuncT:
     """Post-compose altair_meta_hist with a function which makes a colour-encoded Altair chart."""
+    @wraps(make_chart)
     def wrapper(*args: Any, **kwargs: Any) -> Any:
         return Ways.altair_meta_hist(make_chart(*args, **kwargs), 'pct_estimate')
     return cast(FuncT, wrapper)

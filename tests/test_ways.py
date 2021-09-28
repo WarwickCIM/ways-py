@@ -9,7 +9,7 @@ import geopandas as gpd  # type: ignore
 import pandas as pd  # type: ignore
 import pytest
 
-from ways_py.ways import meta_hist, Ways
+from ways_py.ways import meta_hist
 
 
 @pytest.fixture()
