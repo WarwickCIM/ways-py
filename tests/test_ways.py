@@ -49,6 +49,16 @@ def test_dummy_chart(compare_images: bool) -> None:
     expect_fig(fig, "tests/expected_dummy_chart", compare_images)
 
 
+def usa_choro(candidate_geo_states: pd.DataFrame, color: alt.Color, title: str) -> alt.Chart:
+    """Choropleth of the US states with the candidate vote percentage mapped to color."""
+    chart = alt.Chart(candidate_geo_states, title=title).mark_geoshape()
+    chart = chart \
+        .encode(color, tooltip=['NAME', 'pct_estimate']) \
+        .properties(width=500, height=300) \
+        .project(type='albersUsa')
+    return chart
+
+
 def test_altair_meta_hist(compare_images: bool) -> None:
     """Altair meta-histogram generates without error."""
     geo_states = gpd.read_file('notebooks/choropleth_teaching/gz_2010_us_040_00_500k.json')
@@ -63,5 +73,6 @@ def test_altair_meta_hist(compare_images: bool) -> None:
     column = 'pct_estimate'
     color = alt.Color(column, bin=True, scale=scale)
     bin = alt.Bin(extent=[0, 100])
-    fig: alt.Chart = Ways.altair_meta_hist(candidate_geo_states, column, bin, color)
-    expect_fig(fig, "tests/expected_altair_meta_hist", compare_images)
+    usa_choro(candidate_geo_states, color, "Example choropleth")
+    fig2: alt.Chart = Ways.altair_meta_hist(candidate_geo_states, column, bin, color)
+    expect_fig(fig2, "tests/expected_altair_meta_hist", compare_images)
