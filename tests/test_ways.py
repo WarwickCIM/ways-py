@@ -9,7 +9,7 @@ import geopandas as gpd  # type: ignore
 import pandas as pd  # type: ignore
 import pytest
 
-from ways_py.ways import Ways
+from ways_py.ways import meta_hist
 
 
 @pytest.fixture()
@@ -43,12 +43,7 @@ def expect_fig(fig: alt.Chart, filename: str, check: bool) -> None:
         print(f"{filename}: image not compared.")
 
 
-def test_dummy_chart(compare_images: bool) -> None:
-    """WAYS object instantiates without error."""
-    fig: alt.Chart = Ways().dummy_chart()
-    expect_fig(fig, "tests/expected_dummy_chart", compare_images)
-
-
+@meta_hist
 def usa_choro(candidate_geo_states: pd.DataFrame, color: alt.Color, title: str) -> alt.Chart:
     """Choropleth of the US states with the candidate vote percentage mapped to color."""
     chart = alt.Chart(candidate_geo_states, title=title) \
@@ -72,6 +67,5 @@ def test_altair_meta_hist(compare_images: bool) -> None:
     scale = alt.Scale(type='band')
     column = 'pct_estimate'
     color = alt.Color(column, bin=alt.Bin(extent=[0, 100], step=10), scale=scale)
-    src: alt.Chart = usa_choro(candidate_geo_states, color, "Example choropleth")
-    chart: alt.Chart = Ways.altair_meta_hist(src, column)
+    chart: alt.Chart = usa_choro(candidate_geo_states, color, "Example choropleth")
     expect_fig(chart, "tests/expected_altair_meta_hist", compare_images)
