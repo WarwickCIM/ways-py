@@ -15,7 +15,7 @@ class Ways:
 
         Args:
         dataframe: dataset to plot.
-        str: column of the df to visualise.
+        str: column of the df containing the colour-encoded data.
         src: colour-encoded Altair chart underlying the metavisualisation.
 
         Returns:
