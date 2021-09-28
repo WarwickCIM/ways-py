@@ -73,5 +73,5 @@ def test_altair_meta_hist(compare_images: bool) -> None:
     column = 'pct_estimate'
     color = alt.Color(column, bin=alt.Bin(extent=[0, 100], step=10), scale=scale)
     fig1: alt.Chart = usa_choro(candidate_geo_states, color, "Example choropleth")
-    fig2: alt.Chart = Ways.altair_meta_hist(candidate_geo_states, column, fig1.encoding.color.bin, fig1.encoding.color)
+    fig2: alt.Chart = Ways.altair_meta_hist(candidate_geo_states, column, fig1)
     expect_fig(fig2 | fig1, "tests/expected_altair_meta_hist", compare_images)
