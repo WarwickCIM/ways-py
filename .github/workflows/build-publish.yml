@@ -6,20 +6,7 @@ on:
   pull_request:
 
 jobs:
-  pre-build:
-      # continue-on-error: true # Uncomment once integration is finished
-      runs-on: ubuntu-latest
-      outputs:
-        should_skip: ${{ steps.skip_check.outputs.should_skip }}
-      steps:
-        - id: skip_check
-          uses: fkirc/skip-duplicate-actions@master
-          with:
-            paths_ignore: '["**/README.md", "**/docs/**"]'
-
   build:
-    needs: pre-build
-    if: ${{ needs.pre-build.outputs.should_skip != 'true' }}
     runs-on: macos-10.15
     steps:
       - uses: actions/checkout@v2
@@ -34,7 +21,9 @@ jobs:
       - name: Check style with flake8
         run: poetry run flake8 ways_py/ tests/
       - name: Check type hinting with mypy
-        run: poetry run mypy --strict --config-file=mypy.ini ways_py/
+        run: poetry run mypy --strict --config-file=mypy.ini ways_py/ tests/
+      - name: Test notebooks
+        run: poetry run pytest --nbmake "./notebooks"
       - name: Unit & coverage test with pytest
         run: poetry run pytest --compare_images=True -rP
 
