@@ -1,14 +1,13 @@
 # Meeting notes
 
-# 30 September 2021
+# 15 October 2021
 
 ## Progress on choropleth example
 
-- experiment using @interact decorator in Jupyter
-
-## Other progress
-
-## To do
+- package created, CI/CD infrastructure set up
+- test infrastructure for Altair which checks for JSON-equivalence to stored image
+- define our own @meta_hist decorator wraps in existing chart in additional (meta-)visualisations
+- experiment using @interact decorator in Jupyter to allow user to interact with settings
 
 # 16 September 2021
 
