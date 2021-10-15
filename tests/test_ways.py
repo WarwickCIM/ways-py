@@ -31,7 +31,7 @@ def expect_fig(fig: alt.Chart, filename: str, check: bool) -> None:
                 print(f"{filename}: differs from reference image.")
                 raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), filename + '.new.' + ext)
             print(f"{filename}: image identical.")
-#           fig.show()
+            fig.show()
         except FileNotFoundError as e:
             file_new = open(e.filename, 'w')
             file_new.write(found)
@@ -66,6 +66,6 @@ def test_altair_meta_hist(compare_images: bool) -> None:
     candidate_geo_states = geo_states_trump[geo_states_trump.modeldate == '11/03/2020']
     scale = alt.Scale(type='band')
     column = 'pct_estimate'
-    color = alt.Color(column, bin=alt.Bin(extent=[0, 100], step=10), scale=scale)
+    color = alt.Color(column, bin=alt.Bin(maxbins=20), scale=scale)
     chart: alt.Chart = usa_choro(candidate_geo_states, color, "Example choropleth")
     expect_fig(chart, "tests/expected_altair_meta_hist", compare_images)
