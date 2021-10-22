@@ -81,12 +81,14 @@ def altair_color_jupyter_widgets():
            'redblue', 'redgrey', 'redyellowblue', 'redyellowgreen', 'spectral', 'rainbow', 'sinebow']
     # The widgets here expose a variety of options for setting the color scheme:
     # colorscheme and the color range boxes are greyed out when not selected by colorschemetype
-    colorscheme = widgets.Dropdown(options=schemes, description = 'Scheme')
     colorschemetype = widgets.RadioButtons(value= 'Scheme', options=['Scheme', 'Range'], description='Color Method')
+    colorscheme = widgets.Dropdown(options=schemes, description = 'Scheme')
 
     color_1 = widgets.ColorPicker(concise=True, value='red', disabled=True, description='Range')
     color_2 = widgets.ColorPicker(concise=True, value='purple', disabled=True)
     color_3 = widgets.ColorPicker(concise=True, value='blue', disabled=True)
+    color_box = HBox([color_1, color_2, color_3], width=100)
+    color_grid = HBox([colorschemetype, colorscheme, color_box], width=300)
 
     def choose_coloring_method(change):
         if change.new == 'Scheme':
@@ -101,14 +103,14 @@ def altair_color_jupyter_widgets():
             color_3.disabled = False
 
     colorschemetype.observe(choose_coloring_method, names='value')
-    color_box = HBox([color_1, color_2, color_3], width=100)
+
     return {
         'colorschemetype': colorschemetype,
         'colorscheme': colorscheme,
         'color_1': color_1,
         'color_2': color_2,
         'color_3': color_3,
-        'color_box': color_box
+        'color_grid': color_grid
     }
 
 
