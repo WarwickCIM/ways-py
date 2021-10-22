@@ -1,5 +1,5 @@
 from functools import wraps
-from ipywidgets import HBox, widgets
+from ipywidgets import widgets, HBox
 from typing import Any, Callable, cast, TypeVar
 
 import altair as alt  # type: ignore
@@ -64,7 +64,7 @@ def altair_bin_jupyter_widgets():
     bin.observe(bin_options, names='value')
 
     # Create a horizontal box that contains these widgets
-    bin_grid = HBox([bin, maxbins, extent], width=300)
+    bin_grid = widgets.GridBox([bin, maxbins, extent], layout=widgets.Layout(grid_template_columns="repeat(3, 300px)"))
 
     return {'bin': bin,
             'maxbins': maxbins,
@@ -99,7 +99,7 @@ def altair_scale_jupyter_widgets():
     color_2 = widgets.ColorPicker(concise=True, value='purple', disabled=True)
     color_3 = widgets.ColorPicker(concise=True, value='blue', disabled=True)
     color_box = HBox([color_1, color_2, color_3], width=100)
-    color_grid = HBox([colorschemetype, colorscheme, color_box], width=300)
+    scale_grid = widgets.GridBox([colorschemetype, colorscheme, color_box, scale_dropdown], layout=widgets.Layout(grid_template_columns="repeat(3, 300px)"))
 
     def choose_coloring_method(change):
         if change.new == 'Scheme':
@@ -122,7 +122,7 @@ def altair_scale_jupyter_widgets():
         'color_1': color_1,
         'color_2': color_2,
         'color_3': color_3,
-        'color_grid': color_grid
+        'scale_grid': scale_grid
     }
 
 
