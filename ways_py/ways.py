@@ -65,12 +65,13 @@ def altair_bin_jupyter_widgets():
 
 
 def altair_scale_jupyter_widget():
-    # Select which kind of scaling to use
+    # list from https://altair-viz.github.io/user_guide/generated/core/altair.ScaleType.html#altair.ScaleType
     scales = ['linear', 'log', 'pow', 'sqrt', 'symlog', 'identity', 'sequential', 'time', 'utc', 'quantile', 'quantize', 'threshold', 'bin-ordinal', 'ordinal', 'point', 'band']
     return widgets.Dropdown(value='linear', options=scales, description = 'Scales')
 
 
 def altair_color_jupyter_widgets():
+    # list from https://vega.github.io/vega/docs/schemes/#reference
     schemes = ['blues', 'tealblues', 'teals', 'greens', 'browns', 'oranges', 'reds', 'purples', 'warmgreys', 'greys',
            'viridis', 'magma', 'inferno', 'plasma', 'cividis', 'turbo', 'bluegreen', 'bluepurple', 'goldgreen',
            'goldorange', 'goldred', 'greenblue', 'orangered', 'purplebluegreen', 'purpleblue', 'purplered',
