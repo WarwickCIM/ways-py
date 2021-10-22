@@ -117,15 +117,14 @@ def altair_color_jupyter_widgets():
     }
 
 
-def get_altair_color_obj(bin, maxbins, scale, extent, colorschemetype, colorscheme,
-                  color_1, color_2, color_3, column):
+def get_altair_color_obj(bin, maxbins, scale, extent, colorschemetype, colorscheme, colorrange, column):
     """Build color object for altair plot from widget selections"""
     if bin: # if bin is False, leave as bool
         bin = alt.Bin(maxbins=maxbins, extent=extent)
     if colorschemetype == 'Scheme':
         scale = alt.Scale(type=scale, scheme=colorscheme)
     elif colorschemetype == 'Range':
-        scale = alt.Scale(type=scale, range=[color_1, color_2, color_3])
+        scale = alt.Scale(type=scale, range=colorrange)
     color = alt.Color(column,
                       legend=None,
                       bin=bin,
