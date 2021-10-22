@@ -73,18 +73,15 @@ def altair_bin_jupyter_widgets():
            }
 
 
-def altair_scale_jupyter_widget():
-    """Create jupyter widget with values that can be used as input to alt.Scale objects in a jupyter notebook.
+def altair_scale_jupyter_widgets():
+    """Create jupyter widgets with values that can be used as input to alt.Scale objects in a jupyter notebook.
 
     Returns:
-        Jupyter widgets dropdown with scale options for color binning.
+        Dictionary of jupyter widgets and grid with these widgets arranged for display.
     """
     # list of scales from https://altair-viz.github.io/user_guide/generated/core/altair.ScaleType.html#altair.ScaleType
     scales = ['linear', 'log', 'pow', 'sqrt', 'symlog', 'identity', 'sequential', 'time', 'utc', 'quantile', 'quantize', 'threshold', 'bin-ordinal', 'ordinal', 'point', 'band']
-    return widgets.Dropdown(value='linear', options=scales, description = 'Scales')
-
-
-def altair_color_jupyter_widgets():
+    scale_dropdown =  widgets.Dropdown(value='linear', options=scales, description = 'Scales')
     # list from https://vega.github.io/vega/docs/schemes/#reference
     schemes = ['blues', 'tealblues', 'teals', 'greens', 'browns', 'oranges', 'reds', 'purples', 'warmgreys', 'greys',
            'viridis', 'magma', 'inferno', 'plasma', 'cividis', 'turbo', 'bluegreen', 'bluepurple', 'goldgreen',
@@ -119,6 +116,7 @@ def altair_color_jupyter_widgets():
     colorschemetype.observe(choose_coloring_method, names='value')
 
     return {
+        'scale': scale_dropdown,
         'colorschemetype': colorschemetype,
         'colorscheme': colorscheme,
         'color_1': color_1,
