@@ -74,7 +74,12 @@ def altair_bin_jupyter_widgets():
 
 
 def altair_scale_jupyter_widget():
-    # list from https://altair-viz.github.io/user_guide/generated/core/altair.ScaleType.html#altair.ScaleType
+    """Create jupyter widget with values that can be used as input to alt.Scale objects in a jupyter notebook.
+
+    Returns:
+        Jupyter widgets dropdown with scale options for color binning.
+    """
+    # list of scales from https://altair-viz.github.io/user_guide/generated/core/altair.ScaleType.html#altair.ScaleType
     scales = ['linear', 'log', 'pow', 'sqrt', 'symlog', 'identity', 'sequential', 'time', 'utc', 'quantile', 'quantize', 'threshold', 'bin-ordinal', 'ordinal', 'point', 'band']
     return widgets.Dropdown(value='linear', options=scales, description = 'Scales')
 
