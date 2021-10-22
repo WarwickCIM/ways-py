@@ -1,5 +1,5 @@
 from functools import wraps
-from ipywidgets import widgets
+from ipywidgets import HBox, widgets
 from typing import Any, Callable, cast, TypeVar
 
 import altair as alt  # type: ignore
@@ -100,10 +100,12 @@ def altair_color_jupyter_widgets():
             color_3.disabled = False
 
     colorschemetype.observe(choose_coloring_method, names='value')
+    color_box = HBox([color_1, color_2, color_3], width=100)
     return {
         'colorschemetype': colorschemetype,
         'colorscheme': colorscheme,
         'color_1': color_1,
         'color_2': color_2,
-        'color_3': color_3
+        'color_3': color_3,
+        'color_box': color_box
     }
