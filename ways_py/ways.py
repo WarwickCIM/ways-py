@@ -58,9 +58,12 @@ def altair_bin_jupyter_widgets():
             extent.disabled = True
     bin.observe(bin_options, names='value')
 
+    bin_grid = HBox([bin, maxbins, extent], width=300)
+
     return {'bin': bin,
             'maxbins': maxbins,
-            'extent': extent
+            'extent': extent,
+            'bin_grid': bin_grid
            }
 
 
