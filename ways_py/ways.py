@@ -39,16 +39,21 @@ def meta_hist(make_chart: FuncT) -> FuncT:
 
 
 def altair_bin_jupyter_widgets():
-    # Checkbox that determines whether we use color binning - if false, color scheme is continuous
+    """Create jupyter widgets with values that can be used as input to alt.Bin objects in a jupyter notebook.
+
+    Returns:
+        Dictionary of jupyter widgets and grid with these widgets arranged for display.
+    """
+    # Checkbox widget that determines whether binning is enabled
     bin = widgets.Checkbox(value=True, description='Bin')
 
-    # Select the maximum number of bins
+    # Slider to select the maximum number of bins
     maxbins = widgets.IntSlider(value=100, min=2, max=100, step=1, description='Max Bins', continuous_update=False)
 
-    # Double-slider: Choose the extent of the polling percentage data to plot
+    # Double-slider: Determines where the binning of data starts and ends
     extent = widgets.IntRangeSlider(value=[0,100], min=0, max=100, description='Extent', continuous_update=False)
 
-    # Grey out the widgets that work with the Bin object when bin not selected
+    # Grey out extent and maxbins widgets when binning is disabled
     def bin_options(change):
         if change.new:
             maxbins.disabled = False
@@ -58,6 +63,7 @@ def altair_bin_jupyter_widgets():
             extent.disabled = True
     bin.observe(bin_options, names='value')
 
+    # Create a horizontal box that contains these widgets
     bin_grid = HBox([bin, maxbins, extent], width=300)
 
     return {'bin': bin,
