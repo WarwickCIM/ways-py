@@ -154,3 +154,24 @@ def get_altair_color_obj(bin_widgets, scale_widgets, data_column) -> alt.Color:
                       bin=bin,
                       scale=scale
                      )
+
+
+def ways_display(interact_func, bin_widgets, scale_widgets, custom_widgets=False):
+    """Generate interactive plot from widgets and interactive plot function"""
+
+    # Create a GridBox to arrange custom widgets into rows of three
+    custom_widgets_grid = widgets.GridBox(list(custom_widgets.values()),
+                                        layout=widgets.Layout(grid_template_columns="repeat(3, 300px)"))
+
+    # Get a dictionary of the widgets to use as controls
+    controls = bin_widgets | scale_widgets
+    controls.pop('bin_grid') # Remove the grid widgets
+    controls.pop('scale_grid')
+    if custom_widgets:
+        controls = custom_widgets | controls
+
+    # Use Jupyter widgets interactive_output to apply the control widgets to the interactive plot
+    display(custom_widgets_grid,
+            bin_widgets['bin_grid'],
+            scale_widgets['scale_grid'],
+            widgets.interactive_output(interact_func, controls))
