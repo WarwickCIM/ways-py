@@ -38,140 +38,143 @@ def meta_hist(make_chart: FuncT) -> FuncT:
     return cast(FuncT, wrapper)
 
 
-def altair_bin_jupyter_widgets() -> dict:
-    """Create jupyter widgets with values that can be used as input to alt.Bin objects in a jupyter notebook.
+class WAlt:
+    """WAYS widgets class for Altair."""
 
-    Returns:
-        Dictionary of jupyter widgets and grid with these widgets arranged for display.
-    """
-    # Checkbox widget that determines whether binning is enabled
-    bin = widgets.Checkbox(value=True, description='Bin')
+    def altair_bin_jupyter_widgets(self) -> dict:
+        """Create jupyter widgets with values that can be used as input to alt.Bin objects in a jupyter notebook.
 
-    # Slider to select the maximum number of bins
-    maxbins = widgets.IntSlider(value=100, min=2, max=100, step=1, description='Max Bins', continuous_update=False)
+        Returns:
+            Dictionary of jupyter widgets and grid with these widgets arranged for display.
+        """
+        # Checkbox widget that determines whether binning is enabled
+        bin = widgets.Checkbox(value=True, description='Bin')
 
-    # Double-slider: Determines where the binning of data starts and ends
-    extent = widgets.IntRangeSlider(value=[0,100], min=0, max=100, description='Extent', continuous_update=False)
+        # Slider to select the maximum number of bins
+        maxbins = widgets.IntSlider(value=100, min=2, max=100, step=1, description='Max Bins', continuous_update=False)
 
-    # Grey out extent and maxbins widgets when binning is disabled
-    def bin_options(change):
-        if change.new:
-            maxbins.disabled = False
-            extent.disabled = False
+        # Double-slider: Determines where the binning of data starts and ends
+        extent = widgets.IntRangeSlider(value=[0,100], min=0, max=100, description='Extent', continuous_update=False)
+
+        # Grey out extent and maxbins widgets when binning is disabled
+        def bin_options(change):
+            if change.new:
+                maxbins.disabled = False
+                extent.disabled = False
+            else:
+                maxbins.disabled = True
+                extent.disabled = True
+        bin.observe(bin_options, names='value')
+
+        # Create a horizontal box that contains these widgets
+        bin_grid = widgets.GridBox([bin, maxbins, extent], layout=widgets.Layout(grid_template_columns="repeat(3, 300px)"))
+
+        return {'bin': bin,
+                'maxbins': maxbins,
+                'extent': extent,
+                'bin_grid': bin_grid
+               }
+
+
+    def altair_scale_jupyter_widgets(self) -> dict:
+        """Create jupyter widgets with values that can be used as input to alt.Scale objects in a jupyter notebook.
+
+        Returns:
+            Dictionary of jupyter widgets and grid with these widgets arranged for display.
+        """
+        # list of scales from https://altair-viz.github.io/user_guide/generated/core/altair.ScaleType.html#altair.ScaleType
+        scales = ['linear', 'log', 'pow', 'sqrt', 'symlog', 'identity', 'sequential', 'time', 'utc', 'quantile', 'quantize', 'threshold', 'bin-ordinal', 'ordinal', 'point', 'band']
+        scale_dropdown =  widgets.Dropdown(value='linear', options=scales, description = 'Scales')
+        # list from https://vega.github.io/vega/docs/schemes/#reference
+        schemes = ['blues', 'tealblues', 'teals', 'greens', 'browns', 'oranges', 'reds', 'purples', 'warmgreys', 'greys',
+               'viridis', 'magma', 'inferno', 'plasma', 'cividis', 'turbo', 'bluegreen', 'bluepurple', 'goldgreen',
+               'goldorange', 'goldred', 'greenblue', 'orangered', 'purplebluegreen', 'purpleblue', 'purplered',
+               'redpurple', 'yellowgreenblue', 'yellowgreen', 'yelloworangebrown', 'yelloworangered', 'darkblue',
+               'darkgold','darkgreen','darkmulti','darkred', 'lightgreyred', 'lightgreyteal', 'lightmulti', 'lightorange',
+               'lighttealblue', 'blueorange', 'brownbluegreen', 'purplegreen', 'pinkyellowgreen', 'purpleorange',
+               'redblue', 'redgrey', 'redyellowblue', 'redyellowgreen', 'spectral', 'rainbow', 'sinebow']
+        # The widgets here expose a variety of options for setting the color scheme:
+        # colorscheme and the color range boxes are greyed out when not selected by colorschemetype
+        colorschemetype = widgets.RadioButtons(value= 'Scheme', options=['Scheme', 'Range'], description='Color Method')
+        colorscheme = widgets.Dropdown(options=schemes, description = 'Scheme')
+
+        color_1 = widgets.ColorPicker(concise=True, value='red', disabled=True, description='Range')
+        color_2 = widgets.ColorPicker(concise=True, value='purple', disabled=True)
+        color_3 = widgets.ColorPicker(concise=True, value='blue', disabled=True)
+        color_box = HBox([color_1, color_2, color_3], width=100)
+        scale_grid = widgets.GridBox([colorschemetype, colorscheme, color_box, scale_dropdown], layout=widgets.Layout(grid_template_columns="repeat(3, 300px)"))
+
+        def choose_coloring_method(change):
+            if change.new == 'Scheme':
+                colorscheme.disabled = False
+                color_1.disabled = True
+                color_2.disabled = True
+                color_3.disabled = True
+            elif change.new == 'Range':
+                colorscheme.disabled = True
+                color_1.disabled = False
+                color_2.disabled = False
+                color_3.disabled = False
+
+        colorschemetype.observe(choose_coloring_method, names='value')
+
+        return {
+            'scale': scale_dropdown,
+            'colorschemetype': colorschemetype,
+            'colorscheme': colorscheme,
+            'color_1': color_1,
+            'color_2': color_2,
+            'color_3': color_3,
+            'scale_grid': scale_grid
+        }
+
+
+    def get_altair_color_obj(self, bin_widgets, scale_widgets, data_column) -> alt.Color:
+        """Build color object for altair plot from widget selections
+            Args passed in should contain returned dicts from altair_bin_jupyter_widgets()
+            and altair_scale_jupyter_widgets() minus the grid widgets.
+
+        Returns:
+            alt.Color object to be used by alt.Chart
+        """
+
+
+        if bin_widgets['bin'].value:
+            bin = alt.Bin(maxbins=bin_widgets['maxbins'].value, extent=bin_widgets['extent'].value)
         else:
-            maxbins.disabled = True
-            extent.disabled = True
-    bin.observe(bin_options, names='value')
-
-    # Create a horizontal box that contains these widgets
-    bin_grid = widgets.GridBox([bin, maxbins, extent], layout=widgets.Layout(grid_template_columns="repeat(3, 300px)"))
-
-    return {'bin': bin,
-            'maxbins': maxbins,
-            'extent': extent,
-            'bin_grid': bin_grid
-           }
-
-
-def altair_scale_jupyter_widgets() -> dict:
-    """Create jupyter widgets with values that can be used as input to alt.Scale objects in a jupyter notebook.
-
-    Returns:
-        Dictionary of jupyter widgets and grid with these widgets arranged for display.
-    """
-    # list of scales from https://altair-viz.github.io/user_guide/generated/core/altair.ScaleType.html#altair.ScaleType
-    scales = ['linear', 'log', 'pow', 'sqrt', 'symlog', 'identity', 'sequential', 'time', 'utc', 'quantile', 'quantize', 'threshold', 'bin-ordinal', 'ordinal', 'point', 'band']
-    scale_dropdown =  widgets.Dropdown(value='linear', options=scales, description = 'Scales')
-    # list from https://vega.github.io/vega/docs/schemes/#reference
-    schemes = ['blues', 'tealblues', 'teals', 'greens', 'browns', 'oranges', 'reds', 'purples', 'warmgreys', 'greys',
-           'viridis', 'magma', 'inferno', 'plasma', 'cividis', 'turbo', 'bluegreen', 'bluepurple', 'goldgreen',
-           'goldorange', 'goldred', 'greenblue', 'orangered', 'purplebluegreen', 'purpleblue', 'purplered',
-           'redpurple', 'yellowgreenblue', 'yellowgreen', 'yelloworangebrown', 'yelloworangered', 'darkblue',
-           'darkgold','darkgreen','darkmulti','darkred', 'lightgreyred', 'lightgreyteal', 'lightmulti', 'lightorange',
-           'lighttealblue', 'blueorange', 'brownbluegreen', 'purplegreen', 'pinkyellowgreen', 'purpleorange',
-           'redblue', 'redgrey', 'redyellowblue', 'redyellowgreen', 'spectral', 'rainbow', 'sinebow']
-    # The widgets here expose a variety of options for setting the color scheme:
-    # colorscheme and the color range boxes are greyed out when not selected by colorschemetype
-    colorschemetype = widgets.RadioButtons(value= 'Scheme', options=['Scheme', 'Range'], description='Color Method')
-    colorscheme = widgets.Dropdown(options=schemes, description = 'Scheme')
-
-    color_1 = widgets.ColorPicker(concise=True, value='red', disabled=True, description='Range')
-    color_2 = widgets.ColorPicker(concise=True, value='purple', disabled=True)
-    color_3 = widgets.ColorPicker(concise=True, value='blue', disabled=True)
-    color_box = HBox([color_1, color_2, color_3], width=100)
-    scale_grid = widgets.GridBox([colorschemetype, colorscheme, color_box, scale_dropdown], layout=widgets.Layout(grid_template_columns="repeat(3, 300px)"))
-
-    def choose_coloring_method(change):
-        if change.new == 'Scheme':
-            colorscheme.disabled = False
-            color_1.disabled = True
-            color_2.disabled = True
-            color_3.disabled = True
-        elif change.new == 'Range':
-            colorscheme.disabled = True
-            color_1.disabled = False
-            color_2.disabled = False
-            color_3.disabled = False
-
-    colorschemetype.observe(choose_coloring_method, names='value')
-
-    return {
-        'scale': scale_dropdown,
-        'colorschemetype': colorschemetype,
-        'colorscheme': colorscheme,
-        'color_1': color_1,
-        'color_2': color_2,
-        'color_3': color_3,
-        'scale_grid': scale_grid
-    }
+            bin = False
+        if scale_widgets['colorschemetype'].value == 'Scheme':
+            scale = alt.Scale(type=scale_widgets['scale'].value, scheme=scale_widgets['colorscheme'].value)
+        elif scale_widgets['colorschemetype'].value == 'Range':
+            colorrange = [
+                        scale_widgets['color_1'].value,
+                        scale_widgets['color_2'].value,
+                        scale_widgets['color_3'].value
+                    ]
+            scale = alt.Scale(type=scale_widgets['scale'].value, range=colorrange)
+        return alt.Color(data_column,
+                          legend=None,
+                          bin=bin,
+                          scale=scale
+                         )
 
 
-def get_altair_color_obj(bin_widgets, scale_widgets, data_column) -> alt.Color:
-    """Build color object for altair plot from widget selections
-        Args passed in should contain returned dicts from altair_bin_jupyter_widgets()
-        and altair_scale_jupyter_widgets() minus the grid widgets.
+    def ways_display(self, interact_func, bin_widgets, scale_widgets, custom_widgets=False):
+        """Generate interactive plot from widgets and interactive plot function"""
 
-    Returns:
-        alt.Color object to be used by alt.Chart
-    """
+        # Create a GridBox to arrange custom widgets into rows of three
+        custom_widgets_grid = widgets.GridBox(list(custom_widgets.values()),
+                                            layout=widgets.Layout(grid_template_columns="repeat(3, 300px)"))
 
+        # Get a dictionary of the widgets to use as controls
+        controls = bin_widgets | scale_widgets
+        controls.pop('bin_grid') # Remove the grid widgets
+        controls.pop('scale_grid')
+        if custom_widgets:
+            controls = custom_widgets | controls
 
-    if bin_widgets['bin'].value:
-        bin = alt.Bin(maxbins=bin_widgets['maxbins'].value, extent=bin_widgets['extent'].value)
-    else:
-        bin = False
-    if scale_widgets['colorschemetype'].value == 'Scheme':
-        scale = alt.Scale(type=scale_widgets['scale'].value, scheme=scale_widgets['colorscheme'].value)
-    elif scale_widgets['colorschemetype'].value == 'Range':
-        colorrange = [
-                    scale_widgets['color_1'].value,
-                    scale_widgets['color_2'].value,
-                    scale_widgets['color_3'].value
-                ]
-        scale = alt.Scale(type=scale_widgets['scale'].value, range=colorrange)
-    return alt.Color(data_column,
-                      legend=None,
-                      bin=bin,
-                      scale=scale
-                     )
-
-
-def ways_display(interact_func, bin_widgets, scale_widgets, custom_widgets=False):
-    """Generate interactive plot from widgets and interactive plot function"""
-
-    # Create a GridBox to arrange custom widgets into rows of three
-    custom_widgets_grid = widgets.GridBox(list(custom_widgets.values()),
-                                        layout=widgets.Layout(grid_template_columns="repeat(3, 300px)"))
-
-    # Get a dictionary of the widgets to use as controls
-    controls = bin_widgets | scale_widgets
-    controls.pop('bin_grid') # Remove the grid widgets
-    controls.pop('scale_grid')
-    if custom_widgets:
-        controls = custom_widgets | controls
-
-    # Use Jupyter widgets interactive_output to apply the control widgets to the interactive plot
-    display(custom_widgets_grid,
-            bin_widgets['bin_grid'],
-            scale_widgets['scale_grid'],
-            widgets.interactive_output(interact_func, controls))
+        # Use Jupyter widgets interactive_output to apply the control widgets to the interactive plot
+        display(custom_widgets_grid,
+                bin_widgets['bin_grid'],
+                scale_widgets['scale_grid'],
+                widgets.interactive_output(interact_func, controls))
