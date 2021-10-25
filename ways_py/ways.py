@@ -126,19 +126,30 @@ def altair_scale_jupyter_widgets() -> dict:
     }
 
 
-def get_altair_color_obj(bin, maxbins, scale, extent, colorschemetype, colorscheme, colorrange, column) -> alt.Color:
+def get_altair_color_obj(bin_widgets, scale_widgets, data_column) -> alt.Color:
     """Build color object for altair plot from widget selections
+        Args passed in should contain returned dicts from altair_bin_jupyter_widgets()
+        and altair_scale_jupyter_widgets() minus the grid widgets.
 
     Returns:
         alt.Color object to be used by alt.Chart
     """
-    if bin: # if bin is False, leave as bool
-        bin = alt.Bin(maxbins=maxbins, extent=extent)
-    if colorschemetype == 'Scheme':
-        scale = alt.Scale(type=scale, scheme=colorscheme)
-    elif colorschemetype == 'Range':
-        scale = alt.Scale(type=scale, range=colorrange)
-    return alt.Color(column,
+
+
+    if bin_widgets['bin'].value:
+        bin = alt.Bin(maxbins=bin_widgets['maxbins'].value, extent=bin_widgets['extent'].value)
+    else:
+        bin = False
+    if scale_widgets['colorschemetype'].value == 'Scheme':
+        scale = alt.Scale(type=scale_widgets['scale'].value, scheme=scale_widgets['colorscheme'].value)
+    elif scale_widgets['colorschemetype'].value == 'Range':
+        colorrange = [
+                    scale_widgets['color_1'].value,
+                    scale_widgets['color_2'].value,
+                    scale_widgets['color_3'].value
+                ]
+        scale = alt.Scale(type=scale_widgets['scale'].value, range=colorrange)
+    return alt.Color(data_column,
                       legend=None,
                       bin=bin,
                       scale=scale
