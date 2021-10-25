@@ -38,7 +38,7 @@ def meta_hist(make_chart: FuncT) -> FuncT:
     return cast(FuncT, wrapper)
 
 
-def altair_bin_jupyter_widgets():
+def altair_bin_jupyter_widgets() -> dict:
     """Create jupyter widgets with values that can be used as input to alt.Bin objects in a jupyter notebook.
 
     Returns:
@@ -73,7 +73,7 @@ def altair_bin_jupyter_widgets():
            }
 
 
-def altair_scale_jupyter_widgets():
+def altair_scale_jupyter_widgets() -> dict:
     """Create jupyter widgets with values that can be used as input to alt.Scale objects in a jupyter notebook.
 
     Returns:
@@ -126,7 +126,7 @@ def altair_scale_jupyter_widgets():
     }
 
 
-def get_altair_color_obj(bin, maxbins, scale, extent, colorschemetype, colorscheme, colorrange, column):
+def get_altair_color_obj(bin, maxbins, scale, extent, colorschemetype, colorscheme, colorrange, column) -> alt.Color:
     """Build color object for altair plot from widget selections
 
     Returns:
