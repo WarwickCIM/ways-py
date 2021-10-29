@@ -3,3 +3,5 @@ altair
 shapely
 cartopy
 ipywidgets
+vega-datasets
+certifi
