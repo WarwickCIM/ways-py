@@ -25,7 +25,7 @@ jobs:
       - name: Test notebooks
         run: poetry run pytest --nbmake "./notebooks"
       - name: Unit & coverage test with pytest
-        run: poetry run pytest --compare_images=True -rP
+        run: poetry run pytest --headless=True -rP
 
   docs:
     if: github.ref == 'refs/heads/release' || github.ref == 'refs/heads/develop'

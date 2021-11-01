@@ -13,34 +13,33 @@ from ways_py.ways import meta_hist
 
 
 @pytest.fixture()
-def compare_images(pytestconfig: Config) -> bool:
-    """Whether to compare generated images with stored expected images."""
-    return str(pytestconfig.getoption("compare_images")) == "True"
+def headless(pytestconfig: Config) -> bool:
+    """Whether tests are running in headless mode."""
+    return str(pytestconfig.getoption("headless")) == "True"
 
 
 # Plotly doesn't generate SVG deterministically; use PNG instead.
-def expect_fig(fig: alt.Chart, filename: str, check: bool) -> None:
+def expect_fig(fig: alt.Chart, filename: str, headless: bool) -> None:
     """Check for JSON-equivalence to stored image."""
     ext = 'json'
-    if check:
-        found = fig.to_json()
-        try:
-            file = open(filename + '.' + ext, 'r')
-            expected = file.read()
-            if expected != found:
-                print(f"{filename}: differs from reference image.")
-                raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), filename + '.new.' + ext)
-            print(f"{filename}: image identical.")
+    found = fig.to_json()
+    try:
+        file = open(filename + '.' + ext, 'r')
+        expected = file.read()
+        if expected != found:
+            print(f"{filename}: differs from reference image.")
+            raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), filename + '.new.' + ext)
+        print(f"{filename}: image identical.")
+        if not headless:
             fig.show()
-        except FileNotFoundError as e:
-            file_new = open(e.filename, 'w')
-            file_new.write(found)
-            print(f"{filename}: creating new reference image.")
-            alt.renderers.enable('mimetype')
+    except FileNotFoundError as e:
+        file_new = open(e.filename, 'w')
+        file_new.write(found)
+        print(f"{filename}: creating new reference image.")
+        alt.renderers.enable('mimetype')  # not sure what this is for
+        if not headless:
             fig.show()
-            assert False
-    else:
-        print(f"{filename}: image not compared.")
+        assert False
 
 
 @meta_hist
@@ -54,7 +53,7 @@ def usa_choro(candidate_geo_states: pd.DataFrame, color: alt.Color, title: str) 
     return chart
 
 
-def test_altair_meta_hist(compare_images: bool) -> None:
+def test_altair_meta_hist(headless: bool) -> None:
     """Altair meta-histogram generates without error."""
     geo_states = gpd.read_file('notebooks/choropleth_teaching/gz_2010_us_040_00_500k.json')
     df_polls = pd.read_csv('notebooks/choropleth_teaching/presidential_poll_averages_2020.csv')
@@ -68,4 +67,4 @@ def test_altair_meta_hist(compare_images: bool) -> None:
     column = 'pct_estimate'
     color = alt.Color(column, bin=alt.Bin(maxbins=20), scale=scale)
     chart: alt.Chart = usa_choro(candidate_geo_states, color, "Example choropleth")
-    expect_fig(chart, "tests/expected_altair_meta_hist", compare_images)
+    expect_fig(chart, "tests/expected_altair_meta_hist", headless)
