@@ -1,5 +1,5 @@
 from functools import wraps
-from ipywidgets import widgets, HBox
+from ipywidgets import widgets, HBox, VBox
 from typing import Any, Callable, cast, TypeVar
 
 import altair as alt  # type: ignore
@@ -56,19 +56,26 @@ class WAlt:
         self.bin = widgets.Checkbox(value=True, description='Bin')
 
         # Slider to select the maximum number of bins
-        self.maxbins = widgets.IntSlider(value=100, min=2, max=100, step=1, description='Max Bins', continuous_update=False)
+        # self.maxbins = widgets.IntSlider(value=100, min=2, max=100, step=1, description='Max Bins', continuous_update=False)
+        self.maxbins = widgets.IntText(value=7, description='Max Bins:', continuous_update=False)
 
         # Double-slider: Determines where the binning of data starts and ends
-        self.extent = widgets.IntRangeSlider(value=[0,100], min=0, max=100, description='Extent', continuous_update=False)
+        # self.extent = widgets.IntRangeSlider(value=[0,100], min=0, max=100, description='Extent', continuous_update=False)
+        self.extentmin = widgets.IntText(value=0, continuous_update=True, description='Extent Min')
+        self.extentmax = widgets.IntText(value=100, continuous_update=True, description='Extent Max')
+        self.extent = VBox([self.extentmin, self.extentmax])
+
 
         # Grey out extent and maxbins widgets when binning is disabled
         def bin_options(change):
             if change.new:
                 self.maxbins.disabled = False
-                self.extent.disabled = False
+                self.extentmin.disabled = False
+                self.extentmax.disabled = False
             else:
                 self.maxbins.disabled = True
-                self.extent.disabled = True
+                self.extentmin.disabled = True
+                self.extentmax.disabled = True
         self.bin.observe(bin_options, names='value')
 
         # Create a horizontal box that contains these widgets
@@ -138,7 +145,7 @@ class WAlt:
 
 
         if self.bin.value:
-            bin = alt.Bin(maxbins=self.maxbins.value, extent=self.extent.value)
+            bin = alt.Bin(maxbins=self.maxbins.value, extent=[self.extentmin.value, self.extentmax.value])
         else:
             bin = False
         if self.colorschemetype.value == 'Scheme':
@@ -164,7 +171,8 @@ class WAlt:
         controls = {
                     'bin': self.bin,
                     'maxbins': self.maxbins,
-                    'extent': self.extent,
+                    'extentmin': self.extentmin,
+                    'extentmax': self.extentmax,
                     'scale': self.scale,
                     'colorschemetype': self.colorschemetype,
                     'colorscheme': self.colorscheme,
