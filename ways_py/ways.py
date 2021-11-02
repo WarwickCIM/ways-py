@@ -166,8 +166,16 @@ class WAlt:
         return alt.Color(column, legend=None, bin=bin, scale=scale)
 
 
-    def display(self, interact_func, custom_widgets=False):
+    def display(self, data, column, title, func, custom_widgets=False):
         """Generate interactive plot from widgets and interactive plot function"""
+
+        def interact_func(**kwargs):
+
+            # Use the WAYS widgets to generate the altair color object
+            color = self.get_altair_color_obj(data, column)
+
+            # Pass the data, color object and title into the choropleth
+            display(func(data, color, title))
 
         # Get a dictionary of the widgets to be passed to the interactive function
         controls = {
@@ -206,29 +214,9 @@ class WAlt:
         self.bin.value = False
         self.bin.value = True
 
-# def altair_widgets(make_widgets: FuncT) -> FuncT:
-#     """."""
-#     @wraps(make_widgets)
-#     def wrapper(*args: Any, **kwargs: Any) -> Any:
-#         walt = WAlt()
-#         def interactive_func(**kwargs):
-#
-#             # Use the WAYS widgets to generate the altair color object
-#             color = walt.get_altair_color_obj(data, column)
-#
-#             # Pass the data, color object and title into the chart
-#             display(func(data, color, title))
-#         return walt.display(interactive_func)
-#         return Ways.altair_meta_hist(make_chart(*args, **kwargs))
-#     return cast(FuncT, wrapper)
 
-def altair_widgets(data, column, title, func):
-    walt = WAlt()
-    def interactive_func(**kwargs):
-
-        # Use the WAYS widgets to generate the altair color object
-        color = walt.get_altair_color_obj(data, column)
-
-        # Pass the data, color object and title into the choropleth
-        display(func(data, color, title))
-    walt.display(interactive_func)
+def altair_widgets(func):
+    def wrapper(data, column, title):
+        walt = WAlt()
+        walt.display(data, column, title, func)
+    return wrapper
