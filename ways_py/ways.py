@@ -55,12 +55,10 @@ class WAlt:
         # Checkbox widget that determines whether binning is enabled
         self.bin = widgets.Checkbox(value=True, description='Bin')
 
-        # Slider to select the maximum number of bins
-        # self.maxbins = widgets.IntSlider(value=100, min=2, max=100, step=1, description='Max Bins', continuous_update=False)
+        # Textbox accepting integer to select the maximum number of bins
         self.maxbins = widgets.IntText(value=7, description='Max Bins:', continuous_update=False)
 
-        # Double-slider: Determines where the binning of data starts and ends
-        # self.extent = widgets.IntRangeSlider(value=[0,100], min=0, max=100, description='Extent', continuous_update=False)
+        # Two widgets determining where the binning of data starts and ends
         self.extentmin = widgets.IntText(value=0, continuous_update=True, description='Extent Min')
         self.extentmax = widgets.IntText(value=0, continuous_update=True, description='Extent Max')
         self.extent = VBox([self.extentmin, self.extentmax])
