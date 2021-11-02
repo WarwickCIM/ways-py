@@ -144,14 +144,18 @@ class WAlt:
             alt.Color object to be used by alt.Chart
         """
 
-
+        # If the bin checkbox selected
         if self.bin.value:
+            # If not already set, set the default values of the extent widget to data min and max
             if self.extentmax.value == 0:
                 self.extentmin.value = data[column].min()
                 self.extentmax.value = data[column].max()
+            # create the altair bin object from widget values
             bin = alt.Bin(maxbins=self.maxbins.value, extent=[self.extentmin.value, self.extentmax.value])
         else:
+            # set the bin var as False bool which alt.Color accepts
             bin = False
+        # Depending on whether scheme or range selected, use different widgets to create the alt.Scale obj
         if self.colorschemetype.value == 'Scheme':
             scale = alt.Scale(type=self.scale.value, scheme=self.colorscheme.value)
         elif self.colorschemetype.value == 'Range':
