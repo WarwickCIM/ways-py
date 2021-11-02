@@ -200,3 +200,8 @@ class WAlt:
             display(self.bin_grid,
                     self.scale_grid,
                     widgets.interactive_output(interact_func, controls))
+        # Change the value of a widget so the plot auto-generates
+        # Note: for some reason doing this once instead of twice results in duplicate plots...
+        # TODO: may have to change this if there are scenarios where bin isn't used
+        self.bin.value = False
+        self.bin.value = True
