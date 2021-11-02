@@ -62,7 +62,7 @@ class WAlt:
         # Double-slider: Determines where the binning of data starts and ends
         # self.extent = widgets.IntRangeSlider(value=[0,100], min=0, max=100, description='Extent', continuous_update=False)
         self.extentmin = widgets.IntText(value=0, continuous_update=True, description='Extent Min')
-        self.extentmax = widgets.IntText(value=100, continuous_update=True, description='Extent Max')
+        self.extentmax = widgets.IntText(value=0, continuous_update=True, description='Extent Max')
         self.extent = VBox([self.extentmin, self.extentmax])
 
 
@@ -146,8 +146,9 @@ class WAlt:
 
 
         if self.bin.value:
-            self.extentmin.value = data[column].min()
-            self.extentmax.value = data[column].max()
+            if self.extentmax.value == 0:
+                self.extentmin.value = data[column].min()
+                self.extentmax.value = data[column].max()
             bin = alt.Bin(maxbins=self.maxbins.value, extent=[self.extentmin.value, self.extentmax.value])
         else:
             bin = False
