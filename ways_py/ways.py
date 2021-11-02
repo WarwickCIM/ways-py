@@ -205,3 +205,30 @@ class WAlt:
         # TODO: may have to change this if there are scenarios where bin isn't used
         self.bin.value = False
         self.bin.value = True
+
+# def altair_widgets(make_widgets: FuncT) -> FuncT:
+#     """."""
+#     @wraps(make_widgets)
+#     def wrapper(*args: Any, **kwargs: Any) -> Any:
+#         walt = WAlt()
+#         def interactive_func(**kwargs):
+#
+#             # Use the WAYS widgets to generate the altair color object
+#             color = walt.get_altair_color_obj(data, column)
+#
+#             # Pass the data, color object and title into the chart
+#             display(func(data, color, title))
+#         return walt.display(interactive_func)
+#         return Ways.altair_meta_hist(make_chart(*args, **kwargs))
+#     return cast(FuncT, wrapper)
+
+def altair_widgets(data, column, title, func):
+    walt = WAlt()
+    def interactive_func(**kwargs):
+
+        # Use the WAYS widgets to generate the altair color object
+        color = walt.get_altair_color_obj(data, column)
+
+        # Pass the data, color object and title into the choropleth
+        display(func(data, color, title))
+    walt.display(interactive_func)
