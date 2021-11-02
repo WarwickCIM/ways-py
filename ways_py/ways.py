@@ -56,7 +56,7 @@ class WAlt:
         self.bin = widgets.Checkbox(value=True, description='Bin')
 
         # Textbox accepting integer to select the maximum number of bins
-        self.maxbins = widgets.IntText(value=7, description='Max Bins:', continuous_update=False)
+        self.maxbins = widgets.IntText(value=7, description='Max Bins:', continuous_update=True)
 
         # Two widgets determining where the binning of data starts and ends
         self.extentmin = widgets.IntText(value=0, continuous_update=True, description='Extent Min')
