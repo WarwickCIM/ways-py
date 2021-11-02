@@ -134,10 +134,11 @@ class WAlt:
         self.colorschemetype.observe(choose_coloring_method, names='value')
 
 
-    def get_altair_color_obj(self, data_column) -> alt.Color:
+    def get_altair_color_obj(self, data, column) -> alt.Color:
         """Build color object for altair plot from widget selections
-            Args passed in should contain returned dicts from altair_bin_jupyter_widgets()
-            and altair_scale_jupyter_widgets() minus the grid widgets.
+            Args:
+            data: pandas dataframe with the alatir chart data.
+            column: column of source chart's data which contains the colour-encoded data.
 
         Returns:
             alt.Color object to be used by alt.Chart
@@ -145,6 +146,8 @@ class WAlt:
 
 
         if self.bin.value:
+            self.extentmin.value = data[column].min()
+            self.extentmax.value = data[column].max()
             bin = alt.Bin(maxbins=self.maxbins.value, extent=[self.extentmin.value, self.extentmax.value])
         else:
             bin = False
@@ -157,11 +160,7 @@ class WAlt:
                         self.color_3.value
                     ]
             scale = alt.Scale(type=self.scale.value, range=colorrange)
-        return alt.Color(data_column,
-                          legend=None,
-                          bin=bin,
-                          scale=scale
-                         )
+        return alt.Color(column, legend=None, bin=bin, scale=scale)
 
 
     def display(self, interact_func, custom_widgets=False):
