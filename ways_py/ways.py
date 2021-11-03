@@ -215,8 +215,14 @@ class WAlt:
         self.bin.value = True
 
 
-def altair_widgets(func):
-    def wrapper(data, column, title):
-        walt = WAlt()
-        walt.display(data, column, title, func)
-    return wrapper
+def altair_widgets(custom_widgets=False):
+    def decorator(func):
+        def wrapper(data, column, title):
+            if custom_widgets:
+                # Add each custom widget to the WAlt class
+                for name, widget in custom_widgets.items():
+                    setattr(WAlt, name, widget)
+            walt = WAlt()
+            walt.display(data, column, title, func, custom_widgets=custom_widgets)
+        return wrapper
+    return decorator
