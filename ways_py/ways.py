@@ -22,7 +22,7 @@ class Ways:
             .mark_bar() \
             .encode(
                 alt.Y(src.encoding.color.shorthand, bin=src.encoding.color.bin),
-                alt.X('count()'),
+                alt.X('count()', sort='descending'),
             ) \
             .encode(src.encoding.color) \
             .properties(width=300, height=300)
