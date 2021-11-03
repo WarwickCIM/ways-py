@@ -8,6 +8,7 @@ for f in $files
 do
    if [[ $f == *.new.json ]]
    then
-      echo $f
+      tgt=${f%.*}
+      echo $tgt
    fi
 done

@@ -35,10 +35,10 @@ To create the development environment, do the following:
 We use the following `git` aliases (add to `[alias]` section of your `.gitconfig` to have these):
 
 ```
+addition = "!f() { git commit -m \"💚 : $1\"; }; f"
 doc      = "!f() { git commit -a -m \"📚 : $1\"; }; f"
 fix      = "!f() { git commit -a -m \"🐛 : $1\"; }; f"
 lint     = "!f() { git commit -a -m \"✨ : $1\"; }; f"
 modify   = "!f() { git commit -a -m \"❗ : $1\"; }; f"
 refactor = "!f() { git commit -a -m \"♻️ : $1\"; }; f"
-unused   = "!f() { git commit -a -m \"🐢 : $1\"; }; f"
 ```
