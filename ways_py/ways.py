@@ -18,9 +18,9 @@ class Ways:
         Returns:
             altair chart object: histogram
         """
-#            .transform_joinaggregate(total='count(*)') \
-#            .transform_calculate(proportion='1 / datum.total') \
         chart = alt.Chart(src.data) \
+            .transform_joinaggregate(total='count(*)') \
+            .transform_calculate(proportion='1 / datum.total') \
             .mark_bar() \
             .encode(
                 alt.Y(src.encoding.color.shorthand, bin=src.encoding.color.bin, axis=alt.Axis(orient='right')),
