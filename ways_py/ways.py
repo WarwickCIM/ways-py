@@ -166,7 +166,7 @@ class WAlt:
         return alt.Color(column, legend=None, bin=bin, scale=scale)
 
 
-    def display(self, data, column, title, func, custom_widgets=False):
+    def display(self, data, column, func, custom_widgets=False):
         """Generate interactive plot from widgets and interactive plot function"""
 
         def interact_func(**kwargs):
@@ -174,8 +174,8 @@ class WAlt:
             # Use the WAYS widgets to generate the altair color object
             color = self.get_altair_color_obj(data, column)
 
-            # Pass the data, color object and title into the choropleth
-            display(func(data, color, title))
+            # Pass the data and color object into the chart func
+            display(func(data, color))
 
         # Get a dictionary of the widgets to be passed to the interactive function
         controls = {
@@ -217,12 +217,12 @@ class WAlt:
 
 def altair_widgets(custom_widgets=False):
     def decorator(func):
-        def wrapper(data, column, title):
+        def wrapper(data, column):
             if custom_widgets:
                 # Add each custom widget to the WAlt class
                 for name, widget in custom_widgets.items():
                     setattr(WAlt, name, widget)
             walt = WAlt()
-            walt.display(data, column, title, func, custom_widgets=custom_widgets)
+            walt.display(data, column, func, custom_widgets=custom_widgets)
         return wrapper
     return decorator
