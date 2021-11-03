@@ -30,8 +30,8 @@ def expect_fig(fig: alt.Chart, filename: str, headless: bool) -> None:
             print(f"{filename}: differs from reference image.")
             raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), filename + '.new.' + ext)
         print(f"{filename}: image identical.")
-        if not headless:
-            fig.show()
+#        if not headless:
+#            fig.show()
     except FileNotFoundError as e:
         file_new = open(e.filename, 'w')
         file_new.write(found)
