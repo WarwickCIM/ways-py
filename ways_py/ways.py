@@ -1,4 +1,5 @@
 from functools import wraps
+from IPython.display import display
 from ipywidgets import widgets, Layout, Box
 from typing import Any, Callable, cast, TypeVar
 

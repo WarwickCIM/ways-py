@@ -2,6 +2,7 @@ geopandas
 altair
 shapely
 cartopy
+ipython
 ipywidgets
 vega-datasets
 certifi
