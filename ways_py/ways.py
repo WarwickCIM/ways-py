@@ -18,6 +18,8 @@ class Ways:
         Returns:
             altair chart object: histogram
         """
+#            .transform_joinaggregate(total='count(*)') \
+#            .transform_calculate(proportion='1 / datum.total') \
         chart = alt.Chart(src.data) \
             .mark_bar() \
             .encode(
