@@ -21,7 +21,7 @@ class Ways:
         chart = alt.Chart(src.data) \
             .mark_bar() \
             .encode(
-                alt.Y(src.encoding.color.shorthand, bin=src.encoding.color.bin),
+                alt.Y(src.encoding.color.shorthand, bin=src.encoding.color.bin, axis=alt.Axis(orient='right')),
                 alt.X('count()', sort='descending'),
             ) \
             .encode(src.encoding.color) \
