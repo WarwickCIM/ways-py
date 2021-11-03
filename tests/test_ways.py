@@ -24,11 +24,16 @@ def expect_fig(fig: alt.Chart, filename: str, headless: bool) -> None:
     ext = 'json'
     found = fig.to_json()
     try:
+        # Garbage collect any existing .new file
+        new_filename: str = filename + '.new.' + ext
+        if os.path.isfile(new_filename):
+            os.remove(new_filename)
+
         file = open(filename + '.' + ext, 'r')
         expected = file.read()
         if expected != found:
             print(f"{filename}: differs from reference image.")
-            raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), filename + '.new.' + ext)
+            raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), )
         print(f"{filename}: image identical.")
 #        if not headless:
 #            fig.show()
