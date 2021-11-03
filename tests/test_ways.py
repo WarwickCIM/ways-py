@@ -39,7 +39,7 @@ def expect_fig(fig: alt.Chart, filename: str, headless: bool) -> None:
         alt.renderers.enable('mimetype')  # not sure what this is for
         if not headless:
             fig.show()
-        assert False
+        assert False, f"{filename}: image changed."
 
 
 @meta_hist
