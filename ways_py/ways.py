@@ -1,5 +1,5 @@
 from functools import wraps
-from ipywidgets import widgets, HBox, VBox
+from ipywidgets import widgets, HBox, VBox, Layout, Box
 from typing import Any, Callable, cast, TypeVar
 
 import altair as alt  # type: ignore
@@ -61,7 +61,8 @@ class WAlt:
         # Two widgets determining where the binning of data starts and ends
         self.extentmin = widgets.IntText(value=0, continuous_update=True, description='Extent Min')
         self.extentmax = widgets.IntText(value=0, continuous_update=True, description='Extent Max')
-        self.extent = VBox([self.extentmin, self.extentmax])
+        wide_Vbox = Layout(display='flex', flex_flow='column', align_items='center', width='110%')
+        self.extent = Box(children=[self.extentmin, self.extentmax], layout=wide_Vbox)
 
 
         # Grey out extent and maxbins widgets when binning is disabled
@@ -81,7 +82,7 @@ class WAlt:
                                             self.bin,
                                             self.maxbins,
                                             self.extent
-                                        ], layout=widgets.Layout(grid_template_columns="repeat(3, 300px)"))
+                                        ], layout=Layout(grid_template_columns="repeat(3, 300px)"))
 
 
     def altair_scale_jupyter_widgets(self) -> dict:
@@ -109,13 +110,14 @@ class WAlt:
         self.color_1 = widgets.ColorPicker(concise=True, value='red', disabled=True, description='Range')
         self.color_2 = widgets.ColorPicker(concise=True, value='purple', disabled=True)
         self.color_3 = widgets.ColorPicker(concise=True, value='blue', disabled=True)
-        color_box = HBox([self.color_1, self.color_2, self.color_3], width=100)
+        wide_Hbox = Layout(display='flex', flex_flow='row', align_items='center', width='110%')
+        color_box = Box([self.color_1, self.color_2, self.color_3], layout=wide_Hbox)
         self.scale_grid = widgets.GridBox([
                                             self.colorschemetype,
                                             self.colorscheme,
                                             color_box,
                                             self.scale
-                                            ], layout=widgets.Layout(grid_template_columns="repeat(3, 300px)"))
+                                            ], layout=Layout(grid_template_columns="repeat(3, 300px)"))
 
         def choose_coloring_method(change):
             if change.new == 'Scheme':
@@ -197,7 +199,7 @@ class WAlt:
 
             # Create a GridBox to arrange custom widgets into rows of three
             custom_widgets_grid = widgets.GridBox(list(custom_widgets.values()),
-                                                layout=widgets.Layout(grid_template_columns="repeat(3, 300px)"))
+                                                layout=Layout(grid_template_columns="repeat(3, 300px)"))
 
             # Use Jupyter widgets interactive_output to apply the control widgets to the interactive plot
             display(custom_widgets_grid,
