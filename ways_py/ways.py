@@ -23,8 +23,12 @@ class Ways:
             .transform_calculate(proportion='1 / datum.total') \
             .mark_bar() \
             .encode(
-                alt.Y(src.encoding.color.shorthand, bin=src.encoding.color.bin, axis=alt.Axis(orient='right')),
-                alt.X('sum(proportion):Q', sort='descending'),
+                alt.Y(
+                    src.encoding.color.shorthand,
+                    bin=src.encoding.color.bin,
+                    axis=alt.Axis(orient='right'),
+                ),
+                alt.X('sum(proportion):Q', sort='descending', title="Sum of proportion"),
             ) \
             .encode(src.encoding.color) \
             .properties(width=300, height=300)
