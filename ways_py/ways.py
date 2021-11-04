@@ -39,7 +39,7 @@ class Ways:
             .transform_bin(as_=['y', 'y2'], field='pct_estimate') \
             .encode(
                 y=alt.Y('y:Q', scale={'zero': False}), y2='y2:Q',
-                x='count():Q',
+                x=alt.X('count():Q', sort='descending'),
             )
 
         return density_chart | colour_bars | src
