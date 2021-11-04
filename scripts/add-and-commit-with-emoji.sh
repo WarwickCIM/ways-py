@@ -1,5 +1,5 @@
 #!/bin/bash
-set -xe
+# set -xe
 
 # Ideally, our refactoring aliases would just pass all arguments through unchanged to git commit, and
 # then patch the commit message with the appropriate emoji. Unfortunately argument expansion and

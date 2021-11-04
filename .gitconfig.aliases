@@ -2,7 +2,7 @@
 # Spent several hours trying to get string-valued arguments to pass through without being broken up, but failed.
 # For that reason 'git approve' doesn't actually do any git actions yet, it just approves the new files.
 # Note: emojis cause the subsequent character to be overprinted.
-approve  = "!f() { scripts/add-unused.sh; }; f"
+approve  = "!f() { scripts/approve-new-outputs.sh; }; f"
 doc      = "!f() { git commit -a -m \"📚 : $1\"; }; f"
 fix      = "!f() { git commit -a -m \"🐛 : $1\"; }; f"
 lint     = "!f() { git commit -a -m \"✨ : $1\"; }; f"

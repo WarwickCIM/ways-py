@@ -1,5 +1,5 @@
 #!/bin/bash
-set -xe
+# set -xe
 
 cd $(git rev-parse --show-toplevel)
 files=$(git ls-files -o --exclude-standard)
