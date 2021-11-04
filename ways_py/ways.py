@@ -35,8 +35,6 @@ class Ways:
             .properties(width=300, height=300)
 
         colour_bars = alt.Chart(src.data) \
-            .transform_joinaggregate(total='count(*)') \
-            .transform_calculate(proportion='1 / datum.total') \
             .mark_bar() \
             .encode(
                 alt.Y(
@@ -45,7 +43,7 @@ class Ways:
                     axis=alt.Axis(orient='right'),
                     title="colours",
                 ),
-                alt.X('sum(proportion):Q', sort='descending', title=""),
+                alt.X('count():Q', sort='descending', title=""),
             ) \
             .encode(src.encoding.color) \
             .properties(width=300, height=300)
