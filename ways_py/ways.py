@@ -18,7 +18,7 @@ class Ways:
         Returns:
             altair chart object: histogram
         """
-        chart = alt.Chart(src.data) \
+        density_chart = alt.Chart(src.data) \
             .transform_joinaggregate(total='count(*)') \
             .transform_calculate(proportion='1 / datum.total') \
             .mark_bar() \
@@ -34,7 +34,23 @@ class Ways:
             .encode(src.encoding.color) \
             .properties(width=300, height=300)
 
-        return chart | chart | src
+        colour_bars = alt.Chart(src.data) \
+            .transform_joinaggregate(total='count(*)') \
+            .transform_calculate(proportion='1 / datum.total') \
+            .mark_bar() \
+            .encode(
+                alt.Y(
+                    src.encoding.color.shorthand,
+                    bin=src.encoding.color.bin,
+                    axis=alt.Axis(orient='right'),
+                    title="colours",
+                ),
+                alt.X('sum(proportion):Q', sort='descending', title="density"),
+            ) \
+            .encode(src.encoding.color) \
+            .properties(width=300, height=300)
+
+        return density_chart | colour_bars | src
 
 
 FuncT = TypeVar("FuncT", bound=Callable[..., Any])
