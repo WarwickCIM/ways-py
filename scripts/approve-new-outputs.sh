@@ -12,6 +12,6 @@ do
       f_name=${f%%.*}
       f_old="$f_name.json"
       mv $f $f_old
-      git add $f_old
+      # no git add; that's currently handled by the git aliases
    fi
 done
