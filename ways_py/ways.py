@@ -35,19 +35,9 @@ class Ways:
             .properties(width=300, height=300)
 
         colour_bars = alt.Chart(src.data) \
-            .mark_bar() \
-            .transform_bin(as_=['x', 'x2'], field='pct_estimate') \
-            .encode(
-                alt.Y(
-                    src.encoding.color.shorthand,
-                    bin=src.encoding.color.bin,
-                    axis=alt.Axis(orient='right'),
-                    title="colours",
-                ),
-                alt.X('count():Q', sort='descending', title=""),
-            ) \
-            .encode(src.encoding.color) \
-            .properties(width=300, height=300)
+            .mark_rect() \
+            .transform_bin(as_=['y', 'y2'], field='pct_estimate') \
+            .encode(y=alt.Y('y:Q', scale={'zero': False}), y2='y2:Q', x='count()')
 
         return density_chart | colour_bars | src
 
