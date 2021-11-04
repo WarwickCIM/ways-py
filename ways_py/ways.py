@@ -28,7 +28,7 @@ class Ways:
                     bin=src.encoding.color.bin,
                     axis=alt.Axis(orient='right'),
                 ),
-                alt.X('sum(proportion):Q', sort='descending', title="Sum of proportion"),
+                alt.X('sum(proportion):Q', sort='descending', title="density"),
             ) \
             .encode(src.encoding.color) \
             .properties(width=300, height=300)
