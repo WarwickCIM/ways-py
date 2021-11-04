@@ -27,7 +27,7 @@ class Ways:
                     src.encoding.color.shorthand,
                     bin=src.encoding.color.bin,
                     axis=alt.Axis(orient='right'),
-                    title="colours",
+                    title="",
                 ),
                 alt.X('sum(proportion):Q', sort='descending', title="density"),
             ) \
@@ -45,7 +45,7 @@ class Ways:
                     axis=alt.Axis(orient='right'),
                     title="colours",
                 ),
-                alt.X('sum(proportion):Q', sort='descending', title="density"),
+                alt.X('sum(proportion):Q', sort='descending', title=""),
             ) \
             .encode(src.encoding.color) \
             .properties(width=300, height=300)
