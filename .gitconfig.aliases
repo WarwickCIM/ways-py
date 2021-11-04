@@ -1,0 +1,11 @@
+[alias]
+# emojis cause following character to be overprinted
+approve  = "!f() { scripts/add-unused.sh; }; f"
+doc      = "!f() { git commit -m \"📚 : $1\"; }; f"
+fix      = "!f() { git commit -m \"🐛 : $1\"; }; f"
+lint     = "!f() { git commit -m \"✨ : $1\"; }; f"
+modify   = "!f() { git commit -m \"❗ : $1\"; }; f"
+new      = "!f() { git commit -m \"🧩 : $1\"; }; f"
+refactor = "!f() { git commit -m \"♻️ : $1\"; }; f"
+wip      = "!f() { scripts/commit-with-emoji.sh $1 "${@:2}"; }; f"
+wip-new  = "!set -xe; f() { quoted_args=\"$(printf \" %q\" \"${@}\")\"; echo $quoted_args; }; f"
