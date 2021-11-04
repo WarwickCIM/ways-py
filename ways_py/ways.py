@@ -34,7 +34,7 @@ class Ways:
             .encode(src.encoding.color) \
             .properties(width=300, height=300)
 
-        return chart | src
+        return chart | chart | src
 
 
 FuncT = TypeVar("FuncT", bound=Callable[..., Any])
