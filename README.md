@@ -35,7 +35,7 @@ To create the development environment, do the following:
 We use the following `git` aliases (add to `[alias]` section of your `.gitconfig` to have these):
 
 ```
-approve  = "!f() { scripts/add-unused.sh; }; f"
+approve  = "!f() { scripts/add-new-outputs.sh; }; f"
 doc      = "!f() { git commit -m \"📚 : $1\"; }; f"
 fix      = "!f() { git commit -m \"🐛 : $1\"; }; f"
 lint     = "!f() { git commit -m \"✨ : $1\"; }; f"
