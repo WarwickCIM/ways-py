@@ -27,11 +27,13 @@ class Ways:
                     src.encoding.color.shorthand,
                     bin=src.encoding.color.bin,
                     axis=alt.Axis(orient='right'),
+                    title="colours",
                 ),
                 alt.X('sum(proportion):Q', sort='descending', title="density"),
             ) \
             .encode(src.encoding.color) \
             .properties(width=300, height=300)
+
         return chart | src
 
 
