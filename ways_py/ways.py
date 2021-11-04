@@ -36,6 +36,7 @@ class Ways:
 
         colour_bars = alt.Chart(src.data) \
             .mark_bar() \
+            .transform_bin(as_=['x', 'x2'], field='pct_estimate') \
             .encode(
                 alt.Y(
                     src.encoding.color.shorthand,
