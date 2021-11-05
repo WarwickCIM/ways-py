@@ -35,14 +35,14 @@ class Ways:
             .properties(width=300, height=300)
 
         y_axis = alt.Axis(orient='right', labels=False, tickSize=0, grid=False)
-        x_axis = alt.Axis(grid=False)
+        x_axis = alt.Axis(labels=False, tickSize=0, grid=False)
         colour_bars = alt.Chart(src.data) \
             .mark_rect() \
             .transform_bin(as_=['y', 'y2'], bin=src.encoding.color.bin, field='pct_estimate') \
             .encode(
                 y=alt.Y('y:Q', scale={'zero': False}, axis=y_axis, title=""),
                 y2='y2:Q',
-                x=alt.X('count():Q', sort='descending', axis=x_axis),
+                x=alt.X('count():Q', sort='descending', axis=x_axis, title=""),
             ) \
             .encode(src.encoding.color)
 
