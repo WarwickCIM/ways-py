@@ -20,7 +20,7 @@ class Ways:
         """
         density_chart = alt.Chart(src.data) \
             .transform_joinaggregate(total='count(*)') \
-            .transform_calculate(proportion='1 / datum.total') \
+            .transform_calculate(proportion="1 / datum.total") \
             .mark_bar() \
             .encode(
                 alt.Y(
@@ -38,7 +38,7 @@ class Ways:
             .mark_rect() \
             .transform_bin(as_=['y', 'y2'], bin=src.encoding.color.bin, field='pct_estimate') \
             .encode(
-                y=alt.Y('y:Q', scale={'zero': False}, axis=alt.Axis(orient='right'), title=""),
+                y=alt.Y('y:Q', scale={'zero': False}, axis=alt.Axis(orient='right', labels=False), title=""),
                 y2='y2:Q',
                 x=alt.X('count():Q', sort='descending'),
             ) \
