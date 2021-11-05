@@ -28,7 +28,6 @@ class Ways:
             .encode(y_axis, x_axis) \
             .properties(width=100, height=300)
 
-
     @staticmethod
     def colour_bars(src: alt.Chart) -> alt.Chart:
         y_axis = alt.Axis(orient='right', grid=False)
@@ -40,11 +39,10 @@ class Ways:
             .encode(
                 y=alt.Y('y:Q', scale=alt.Scale(zero=False), axis=y_axis, title=""),
                 y2='y2:Q',
-                x=alt.X('x:Q', sort='descending', axis=x_axis, title=""),
+                x=alt.X('x:Q', sort='descending', axis=x_axis, title="")
             ) \
             .encode(src.encoding.color) \
-            .properties(width=20, height=300)
-
+            .properties(width=20, height=300)  # noqa: E123
 
     @staticmethod
     def altair_meta_hist(src: alt.Chart) -> alt.Chart:
@@ -56,7 +54,6 @@ class Ways:
         Returns:
             Altair chart object: modified chart
         """
-
         return (Ways.density_chart(src) | Ways.colour_bars(src) | src) \
             .configure_view(strokeWidth=0) \
             .configure_concat(spacing=5)
