@@ -38,7 +38,7 @@ class Ways:
             .mark_rect() \
             .transform_bin(as_=['y', 'y2'], bin=src.encoding.color.bin, field='pct_estimate') \
             .encode(
-                y=alt.Y('y:Q', scale={'zero': False}, axis=alt.Axis(orient='right', labels=False), title=""),
+                y=alt.Y('y:Q', scale={'zero': False}, axis=alt.Axis(orient='right', labels=False, tickSize=0), title=""),
                 y2='y2:Q',
                 x=alt.X('count():Q', sort='descending'),
             ) \
