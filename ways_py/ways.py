@@ -40,7 +40,8 @@ class Ways:
             .encode(
                 y=alt.Y('y:Q', scale={'zero': False}), y2='y2:Q',
                 x=alt.X('count():Q', sort='descending'),
-            )
+            ) \
+            .encode(src.encoding.color)
 
         return density_chart | colour_bars | src
 
