@@ -9,19 +9,23 @@ class Ways:
 
     @staticmethod
     def density_chart(src: alt.Chart) -> alt.Chart:
+        y_axis = alt.Y(
+            src.encoding.color.shorthand,
+            bin=alt.Bin(maxbins=100),
+            axis=alt.Axis(orient='left', grid=False),
+            title="",
+        )
+        x_axis = alt.X(
+            'sum(proportion):Q',
+            sort='descending',
+            axis=alt.Axis(grid=False),
+            title="density"
+        )
         return alt.Chart(src.data) \
             .transform_joinaggregate(total='count(*)') \
             .transform_calculate(proportion="1 / datum.total") \
             .mark_bar(color='gray') \
-            .encode(
-                alt.Y(
-                    src.encoding.color.shorthand,
-                    bin=alt.Bin(maxbins=50),
-                    axis=alt.Axis(orient='left'),
-                    title="",
-                ),
-                alt.X('sum(proportion):Q', sort='descending', title="density"),
-            ) \
+            .encode(y_axis, x_axis) \
             .properties(width=100, height=300)
 
 
