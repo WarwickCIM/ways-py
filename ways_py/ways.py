@@ -25,7 +25,7 @@ class Ways:
             .encode(
                 alt.Y(
                     src.encoding.color.shorthand,
-                    bin=src.encoding.color.bin,
+                    bin=alt.Bin(maxbins=50),
                     axis=alt.Axis(orient='right'),
                     title="",
                 ),
