@@ -31,7 +31,6 @@ class Ways:
                 ),
                 alt.X('sum(proportion):Q', sort='descending', title="density"),
             ) \
-            .encode(src.encoding.color) \
             .properties(width=300, height=300)
 
         y_axis = alt.Axis(orient='right', labels=False, tickSize=0, grid=False)
