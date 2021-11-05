@@ -21,7 +21,7 @@ class Ways:
         density_chart = alt.Chart(src.data) \
             .transform_joinaggregate(total='count(*)') \
             .transform_calculate(proportion="1 / datum.total") \
-            .mark_bar() \
+            .mark_bar(color='gray') \
             .encode(
                 alt.Y(
                     src.encoding.color.shorthand,
