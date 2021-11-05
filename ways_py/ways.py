@@ -32,11 +32,11 @@ class Ways:
         return alt.Chart(src.data) \
             .mark_rect() \
             .transform_bin(as_=['y', 'y2'], bin=src.encoding.color.bin, field='pct_estimate') \
-            .transform_calculate(const='5') \
+            .transform_calculate(x='5') \
             .encode(
                 y=alt.Y('y:Q', scale=alt.Scale(zero=False), axis=y_axis, title=""),
                 y2='y2:Q',
-                x=alt.X('const:Q', sort='descending', axis=x_axis, title=""),
+                x=alt.X('x:Q', sort='descending', axis=x_axis, title=""),
             ) \
             .encode(src.encoding.color) \
             .properties(width=20, height=300)
