@@ -57,8 +57,9 @@ class Ways:
             Altair chart object: modified chart
         """
 
-        # visibility of axis lines ("domains") isn't a compositional property :(
-        return (Ways.density_chart(src) | Ways.colour_bars(src) | src).configure_axis(domain=False)
+        return (Ways.density_chart(src) | Ways.colour_bars(src) | src) \
+            .configure_view(strokeWidth=0) \
+            .configure_concat(spacing=5)
 
 
 FuncT = TypeVar("FuncT", bound=Callable[..., Any])
