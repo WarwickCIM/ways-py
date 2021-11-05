@@ -22,24 +22,29 @@ def headless(pytestconfig: Config) -> bool:
 def expect_fig(fig: alt.Chart, filename: str, headless: bool) -> None:
     """Check for JSON-equivalence to stored image."""
     ext = 'json'
-    found = fig.to_json()
+    have = fig.to_json()
     try:
+        # Garbage collect any existing .new file
+        new_filename: str = filename + '.new.' + ext
+        if os.path.isfile(new_filename):
+            os.remove(new_filename)
+
         file = open(filename + '.' + ext, 'r')
         expected = file.read()
-        if expected != found:
+        if expected != have:
             print(f"{filename}: differs from reference image.")
-            raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), filename + '.new.' + ext)
+            raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), new_filename)
         print(f"{filename}: image identical.")
         if not headless:
             fig.show()
     except FileNotFoundError as e:
         file_new = open(e.filename, 'w')
-        file_new.write(found)
+        file_new.write(have)
         print(f"{filename}: creating new reference image.")
         alt.renderers.enable('mimetype')  # not sure what this is for
         if not headless:
             fig.show()
-        assert False
+        assert False, f"{filename}: image changed."
 
 
 @meta_hist
