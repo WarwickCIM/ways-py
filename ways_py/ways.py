@@ -17,7 +17,7 @@ class Ways:
                 alt.Y(
                     src.encoding.color.shorthand,
                     bin=alt.Bin(maxbins=50),
-                    axis=alt.Axis(orient='right'),
+                    axis=alt.Axis(orient='left'),
                     title="",
                 ),
                 alt.X('sum(proportion):Q', sort='descending', title="density"),
@@ -27,7 +27,7 @@ class Ways:
 
     @staticmethod
     def colour_bars(src: alt.Chart) -> alt.Chart:
-        y_axis = alt.Axis(orient='right', labels=False, tickSize=0, grid=False)
+        y_axis = alt.Axis(orient='right', grid=False)
         x_axis = alt.Axis(labels=False, tickSize=0, grid=False)
         return alt.Chart(src.data) \
             .mark_rect() \
