@@ -34,7 +34,7 @@ class Ways:
             .transform_bin(as_=['y', 'y2'], bin=src.encoding.color.bin, field='pct_estimate') \
             .transform_calculate(const='5') \
             .encode(
-                y=alt.Y('y:Q', scale={'zero': False}, axis=y_axis, title=""),
+                y=alt.Y('y:Q', scale=alt.Scale(zero=False), axis=y_axis, title=""),
                 y2='y2:Q',
                 x=alt.X('const:Q', sort='descending', axis=x_axis, title=""),
             ) \
@@ -44,14 +44,13 @@ class Ways:
 
     @staticmethod
     def altair_meta_hist(src: alt.Chart) -> alt.Chart:
-        """Altair metavisualisation; histogram visualising color bins of another Altair chart.
+        """Decorate an Altair chart with histogram metavisualisation showing color binning.
 
         Args:
-        src: colour-encoded Altair chart underlying the metavisualisation.
-        str: column of source chart's data which contains the colour-encoded data.
+        src: colour-encoded Altair chart to be decorated.
 
         Returns:
-            altair chart object: histogram
+            Altair chart object: modified chart
         """
 
         return Ways.density_chart(src) | Ways.colour_bars(src) | src
