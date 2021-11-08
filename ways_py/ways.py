@@ -207,10 +207,10 @@ class WAlt:
     def display(self, data, column, func, custom_widgets=False):
         """Generate interactive plot from widgets and interactive plot function.
 
-            Args:
-            data: pandas df.
-            column: column of data to be used for color binning.
-            func: chart plotting function.
+        Args:
+        data: pandas df.
+        column: column of data to be used for color binning.
+        func: chart plotting function.
         """
         def interact_func(**kwargs):
 
@@ -261,8 +261,8 @@ class WAlt:
 def altair_widgets(custom_widgets=False):
     """Widgets decorator for altair color binning with option to add custom widgets.
 
-        Args:
-        custom_widgets: dictionary of string name keys and widget values.
+    Args:
+    custom_widgets: dictionary of string name keys and widget values.
     """
     def decorator(func):
         def wrapper(data, column):
