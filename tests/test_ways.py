@@ -48,8 +48,10 @@ def expect_fig(fig: alt.Chart, filename: str, headless: bool) -> None:
 
 
 @meta_hist
-def usa_choro(candidate_geo_states: pd.DataFrame, color: alt.Color, title: str) -> alt.Chart:
+def example_choropleth(candidate_geo_states: pd.DataFrame, title: str) -> alt.Chart:
     """Choropleth of the US states with the candidate vote percentage mapped to color."""
+    scale = alt.Scale(type='band')
+    color = alt.Color(shorthand='pct_estimate', bin=alt.Bin(maxbins=20), scale=scale)
     chart = alt.Chart(candidate_geo_states, title=title) \
         .mark_geoshape() \
         .encode(color, tooltip=['NAME', 'pct_estimate']) \
@@ -68,7 +70,5 @@ def test_altair_meta_hist(headless: bool) -> None:
     ]
     geo_states_trump = geo_states.merge(trump_data, on='NAME')
     candidate_geo_states = geo_states_trump[geo_states_trump.modeldate == '11/03/2020']
-    scale = alt.Scale(type='band')
-    color = alt.Color(shorthand='pct_estimate', bin=alt.Bin(maxbins=20), scale=scale)
-    chart: alt.Chart = usa_choro(candidate_geo_states, color, "Example choropleth")
+    chart: alt.Chart = example_choropleth(candidate_geo_states, "Example choropleth")
     expect_fig(chart, "tests/expected_altair_meta_hist", headless)
