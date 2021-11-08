@@ -1,5 +1,0 @@
-geopandas
-altair
-shapely
-cartopy
-ipywidgets
