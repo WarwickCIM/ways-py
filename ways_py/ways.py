@@ -2,7 +2,6 @@ from functools import wraps
 from typing import Any, Callable, cast, TypeVar
 
 import altair as alt  # type: ignore
-
 from IPython.display import display
 from ipywidgets import Box, Layout, widgets
 
