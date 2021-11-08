@@ -1,10 +1,10 @@
 from functools import wraps
 from typing import Any, Callable, cast, TypeVar
 
-from IPython.display import display
-from ipywidgets import Layout, Box, widgets
-
 import altair as alt  # type: ignore
+
+from IPython.display import display
+from ipywidgets import Box, Layout, widgets
 
 
 class Ways:
@@ -175,6 +175,7 @@ class WAlt:
 
     def get_altair_color_obj(self, data, column) -> alt.Color:
         """Build color object for altair plot from widget selections.
+
             Args:
             data: pandas dataframe with the alatir chart data.
             column: column of source chart's data which contains the colour-encoded data.
@@ -206,6 +207,7 @@ class WAlt:
 
     def display(self, data, column, func, custom_widgets=False):
         """Generate interactive plot from widgets and interactive plot function.
+
             Args:
             data: pandas df.
             column: column of data to be used for color binning.
@@ -259,6 +261,7 @@ class WAlt:
 
 def altair_widgets(custom_widgets=False):
     """Widgets decorator for altair color binning with option to add custom widgets.
+
         Args:
         custom_widgets: dictionary of string name keys and widget values.
     """
