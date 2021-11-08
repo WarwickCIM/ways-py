@@ -32,9 +32,10 @@ class Ways:
     def colour_bars(src: alt.Chart) -> alt.Chart:
         y_axis = alt.Axis(orient='right', grid=False)
         x_axis = alt.Axis(labels=False, tickSize=0, grid=False, titleAngle=270, titleAlign='right')
+        # src.encoding.color.shorthand needs to be a field name for this to work
         return alt.Chart(src.data) \
             .mark_rect() \
-            .transform_bin(as_=['y', 'y2'], bin=src.encoding.color.bin, field='pct_estimate') \
+            .transform_bin(as_=['y', 'y2'], bin=src.encoding.color.bin, field=src.encoding.color.shorthand) \
             .transform_calculate(x='5') \
             .encode(
                 y=alt.Y('y:Q', scale=alt.Scale(zero=False), axis=y_axis, title=""),
