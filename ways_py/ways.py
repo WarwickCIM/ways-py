@@ -1,5 +1,3 @@
-import math
-
 from functools import wraps
 from typing import Any, Callable, cast, TypeVar
 
@@ -11,8 +9,8 @@ class Ways:
 
     # Centralise the assumption that this property stores just a field name.
     @staticmethod
-    def field (src: alt.Chart) -> str:
-        return src.encoding.color.shorthand
+    def field(src: alt.Chart) -> str:
+        return cast(str, src.encoding.color.shorthand)
 
     @staticmethod
     def density_chart(src: alt.Chart) -> alt.Chart:
