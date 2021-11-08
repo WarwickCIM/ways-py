@@ -2,8 +2,10 @@ from functools import wraps
 from typing import Any, Callable, cast, TypeVar
 
 import altair as alt  # type: ignore
-from IPython.display import display
-from ipywidgets import Box, Layout, widgets
+from IPython.display import display  # type: ignore
+from ipywidgets import Box, Layout, widgets  # type: ignore
+import pandas as pd  # type: ignore
+import traitlets  # type: ignore
 
 
 class Ways:
@@ -75,11 +77,11 @@ def meta_hist(make_chart: FuncT) -> FuncT:
 class WAlt:
     """WAYS widgets class for Altair."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.altair_bin_jupyter_widgets()
         self.altair_scale_jupyter_widgets()
 
-    def altair_bin_jupyter_widgets(self) -> dict:
+    def altair_bin_jupyter_widgets(self) -> None:
         """Create jupyter widgets with values that can be used as input to alt.Bin objects in a jupyter notebook.
 
         Returns:
@@ -98,7 +100,7 @@ class WAlt:
         self.extent = Box(children=[self.extentmin, self.extentmax], layout=wide_Vbox)
 
         # Grey out extent and maxbins widgets when binning is disabled
-        def bin_options(change):
+        def bin_options(change: traitlets.utils.bunch.Bunch) -> None:
             if change.new:
                 self.maxbins.disabled = False
                 self.extentmin.disabled = False
@@ -117,7 +119,7 @@ class WAlt:
                                             grid_template_columns="repeat(3, 300px)")
                                         )
 
-    def altair_scale_jupyter_widgets(self) -> dict:
+    def altair_scale_jupyter_widgets(self) -> None:
         """Create jupyter widgets with values that can be used as input to alt.Scale objects in a jupyter notebook.
 
         Returns:
@@ -158,7 +160,7 @@ class WAlt:
                                               grid_template_columns="repeat(3, 300px)")
                                           )
 
-        def choose_coloring_method(change):
+        def choose_coloring_method(change: traitlets.utils.bunch.Bunch) -> None:
             if change.new == 'Scheme':
                 self.colorscheme.disabled = False
                 self.color_1.disabled = True
@@ -172,7 +174,7 @@ class WAlt:
 
         self.colorschemetype.observe(choose_coloring_method, names='value')
 
-    def get_altair_color_obj(self, data, column) -> alt.Color:
+    def get_altair_color_obj(self, data: pd.DataFrame, column: str) -> alt.Color:
         """Build color object for altair plot from widget selections.
 
             Args:
@@ -204,16 +206,18 @@ class WAlt:
             scale = alt.Scale(type=self.scale.value, range=colorrange)
         return alt.Color(column, legend=None, bin=bin, scale=scale)
 
-    def display(self, data, column, func, custom_widgets=False):
+    def display(self, data: pd.DataFrame, column: str, func: FuncT,
+                custom_widgets: dict[str, Any] = {}) -> None:
         """Generate interactive plot from widgets and interactive plot function.
 
         Args:
         data: pandas df.
         column: column of data to be used for color binning.
         func: chart plotting function.
+        custom_widgets: dictionary of string name keys and widget values.
         """
-        def interact_func(**kwargs):
-
+        def interact_func(**kwargs: Any) -> None:
+            """Interactive function that gets passed to widgets.interactive_output."""
             # Use the WAYS widgets to generate the altair color object
             color = self.get_altair_color_obj(data, column)
 
@@ -258,14 +262,14 @@ class WAlt:
         self.bin.value = True
 
 
-def altair_widgets(custom_widgets=False):
+def altair_widgets(custom_widgets: dict[str, Any] = {}) -> Callable[[FuncT], Callable[[Any, str], None]]:
     """Widgets decorator for altair color binning with option to add custom widgets.
 
     Args:
     custom_widgets: dictionary of string name keys and widget values.
     """
-    def decorator(func):
-        def wrapper(data, column):
+    def decorator(func: FuncT) -> Callable[[Any, str], None]:
+        def wrapper(data: pd.DataFrame, column: str) -> None:
             if custom_widgets:
                 # Add each custom widget to the WAlt class
                 for name, widget in custom_widgets.items():
