@@ -39,7 +39,7 @@ class Ways:
             .properties(width=100, height=300)
 
     @staticmethod
-    def colour_bars(src: alt.Chart) -> alt.Chart:
+    def used_colours(src: alt.Chart) -> alt.Chart:
         y_axis = alt.Axis(orient='right', grid=False)
         x_axis = alt.Axis(labels=False, tickSize=0, grid=False, titleAngle=270, titleAlign='right')
         return alt.Chart(src.data) \
@@ -64,7 +64,7 @@ class Ways:
         Returns:
             Altair chart object: modified chart
         """
-        meta_chart: alt.Chart = (Ways.density_chart(src) | Ways.colour_bars(src)).resolve_scale(y='shared')
+        meta_chart: alt.Chart = (Ways.density_chart(src) | Ways.used_colours(src)).resolve_scale(y='shared')
         return (meta_chart | src) \
             .configure_view(strokeWidth=0) \
             .configure_concat(spacing=5)
