@@ -1,7 +1,8 @@
 from functools import wraps
-from IPython.display import display
-from ipywidgets import widgets, Layout, Box
 from typing import Any, Callable, cast, TypeVar
+
+from IPython.display import display
+from ipywidgets import Layout, Box, widgets
 
 import altair as alt  # type: ignore
 
@@ -173,7 +174,7 @@ class WAlt:
         self.colorschemetype.observe(choose_coloring_method, names='value')
 
     def get_altair_color_obj(self, data, column) -> alt.Color:
-        """Build color object for altair plot from widget selections
+        """Build color object for altair plot from widget selections.
             Args:
             data: pandas dataframe with the alatir chart data.
             column: column of source chart's data which contains the colour-encoded data.
@@ -181,7 +182,6 @@ class WAlt:
         Returns:
             alt.Color object to be used by alt.Chart
         """
-
         # If the bin checkbox selected
         if self.bin.value:
             # If not already set, set the default values of the extent widget to data min and max
@@ -205,8 +205,12 @@ class WAlt:
         return alt.Color(column, legend=None, bin=bin, scale=scale)
 
     def display(self, data, column, func, custom_widgets=False):
-        """Generate interactive plot from widgets and interactive plot function"""
-
+        """Generate interactive plot from widgets and interactive plot function.
+            Args:
+            data: pandas df.
+            column: column of data to be used for color binning.
+            func: chart plotting function.
+        """
         def interact_func(**kwargs):
 
             # Use the WAYS widgets to generate the altair color object
@@ -254,6 +258,10 @@ class WAlt:
 
 
 def altair_widgets(custom_widgets=False):
+    """Widgets decorator for altair color binning with option to add custom widgets.
+        Args:
+        custom_widgets: dictionary of string name keys and widget values.
+    """
     def decorator(func):
         def wrapper(data, column):
             if custom_widgets:
