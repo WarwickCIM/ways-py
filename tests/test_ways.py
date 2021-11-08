@@ -69,7 +69,6 @@ def test_altair_meta_hist(headless: bool) -> None:
     geo_states_trump = geo_states.merge(trump_data, on='NAME')
     candidate_geo_states = geo_states_trump[geo_states_trump.modeldate == '11/03/2020']
     scale = alt.Scale(type='band')
-    column = 'pct_estimate'
-    color = alt.Color(column, bin=alt.Bin(maxbins=20), scale=scale)
+    color = alt.Color(shorthand='pct_estimate', bin=alt.Bin(maxbins=20), scale=scale)
     chart: alt.Chart = usa_choro(candidate_geo_states, color, "Example choropleth")
     expect_fig(chart, "tests/expected_altair_meta_hist", headless)

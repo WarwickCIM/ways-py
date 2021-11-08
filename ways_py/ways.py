@@ -1,3 +1,5 @@
+import math
+
 from functools import wraps
 from typing import Any, Callable, cast, TypeVar
 
@@ -7,12 +9,20 @@ import altair as alt  # type: ignore
 class Ways:
     """WAYS library."""
 
+    # Centralise the assumption that this property stores just a field name.
+    @staticmethod
+    def field (src: alt.Chart) -> str:
+        return src.encoding.color.shorthand
+
     @staticmethod
     def density_chart(src: alt.Chart) -> alt.Chart:
+        ys = src.data[Ways.field(src)]  # assume src.data array-like in an appropriate way
+        y_min, y_max = min(ys), max(ys)
+        # tickCount/tickMinStep Axis properties are ignored (because we specify bins?), so hardcode for now
         y_axis = alt.Y(
             src.encoding.color.shorthand,
             bin=alt.Bin(maxbins=100),
-            axis=alt.Axis(orient='left', grid=False),
+            axis=alt.Axis(orient='left', grid=False, values=sorted([0, 50] + [y_min, y_max])),
             title="",
         )
         x_axis = alt.X(
@@ -32,10 +42,9 @@ class Ways:
     def colour_bars(src: alt.Chart) -> alt.Chart:
         y_axis = alt.Axis(orient='right', grid=False)
         x_axis = alt.Axis(labels=False, tickSize=0, grid=False, titleAngle=270, titleAlign='right')
-        # src.encoding.color.shorthand needs to be a field name for this to work
         return alt.Chart(src.data) \
             .mark_rect() \
-            .transform_bin(as_=['y', 'y2'], bin=src.encoding.color.bin, field=src.encoding.color.shorthand) \
+            .transform_bin(as_=['y', 'y2'], bin=src.encoding.color.bin, field=Ways.field(src)) \
             .transform_calculate(x='5') \
             .encode(
                 y=alt.Y('y:Q', scale=alt.Scale(zero=False), axis=y_axis, title=""),
@@ -55,7 +64,8 @@ class Ways:
         Returns:
             Altair chart object: modified chart
         """
-        return (Ways.density_chart(src) | Ways.colour_bars(src) | src) \
+        meta_chart: alt.Chart = (Ways.density_chart(src) | Ways.colour_bars(src)).resolve_scale(y='shared')
+        return (meta_chart | src) \
             .configure_view(strokeWidth=0) \
             .configure_concat(spacing=5)
 
