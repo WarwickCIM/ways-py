@@ -1,8 +1,0 @@
-altair
-cartopy
-certifi
-geopandas
-ipython
-ipywidgets
-shapely
-vega-datasets
