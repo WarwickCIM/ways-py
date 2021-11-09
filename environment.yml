@@ -1,0 +1,8 @@
+name: ways
+channels:
+  - default
+dependencies:
+  - python=3.9
+  - pip
+  - pip:
+    - poetry==1.1.9
