@@ -1,1 +1,5 @@
-name: python 3.9
+name: ways
+channels:
+  - default
+dependencies:
+  - python=3.9
