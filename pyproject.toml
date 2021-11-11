@@ -20,7 +20,7 @@ include = [
 ]
 
 [tool.poetry.dependencies]
-python = "3.9.7"
+python = "3.9.8"
 importlib-metadata = "^4.8.1"
 
 altair = "^4.1.0"
@@ -35,6 +35,7 @@ ipython = "^7.29.0"
 ipywidgets = "^7.6.5"
 Shapely = "^1.8.0"
 vega-datasets = "^0.9.0"
+jsonschema="3.2.0"  # pin to avoid https://github.com/altair-viz/altair/issues/2496
 
 
 [tool.poetry.dev-dependencies]
