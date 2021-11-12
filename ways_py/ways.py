@@ -43,10 +43,10 @@ class Ways:
     @staticmethod
     def used_colours(src: alt.Chart) -> alt.Chart:
         y_axis = alt.Axis(orient='right', grid=False)
-        y_scale = alt.Scale(zero=False)
-        if src.encoding.color.bin:
-            if type(src.encoding.color.bin.extent).__name__ != 'UndefinedType':
-                y_scale = alt.Scale(domain=src.encoding.color.bin.extent)
+        if src.encoding.color.bin and type(src.encoding.color.bin.extent).__name__ != 'UndefinedType':
+            y_scale = alt.Scale(domain=src.encoding.color.bin.extent)
+        else:
+            y_scale = alt.Scale(zero=False)
         x_axis = alt.Axis(labels=False, tickSize=0, grid=False, titleAngle=270, titleAlign='right')
         chart = alt.Chart(src.data) \
                    .mark_rect()
