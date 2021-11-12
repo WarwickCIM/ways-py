@@ -2,7 +2,7 @@
 
 import errno
 import os
-from typing import Any
+from typing import Any, List, Optional
 
 from _pytest.config import Config
 import altair as alt  # type: ignore
@@ -49,7 +49,7 @@ def expect_fig(fig: alt.Chart, filename: str, headless: bool) -> None:
 
 
 @meta_hist
-def example_choropleth(candidate_geo_states: pd.DataFrame, title: str, extent) -> alt.Chart:
+def example_choropleth(candidate_geo_states: pd.DataFrame, title: str, extent: Optional[List[int]]) -> alt.Chart:
     """Choropleth of the US states with the candidate vote percentage mapped to color."""
     scale = alt.Scale(type='band')
     color = alt.Color(shorthand='pct_estimate', bin=alt.Bin(maxbins=20), scale=scale)
