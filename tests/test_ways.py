@@ -65,12 +65,13 @@ def example_choropleth(candidate_geo_states: pd.DataFrame, title: str) -> alt.Ch
 def example_choropleth_extent(candidate_geo_states: pd.DataFrame, title: str) -> alt.Chart:
     """Choropleth of the US states with the candidate vote percentage mapped to color."""
     scale = alt.Scale(type='band')
-    color = alt.Color(shorthand='pct_estimate', bin=alt.Bin(maxbins=20, extent=[0, 100]), scale=scale)
+    color = alt.Color(shorthand='pct_estimate', bin=alt.Bin(maxbins=20), scale=scale)
     chart = alt.Chart(candidate_geo_states, title=title) \
         .mark_geoshape() \
         .encode(color, tooltip=['NAME', 'pct_estimate']) \
         .properties(width=500, height=300) \
         .project(type='albersUsa')
+    chart.encoding.color.bin.extent = [0, 100]
     return chart
 
 
