@@ -49,7 +49,7 @@ def expect_fig(fig: alt.Chart, filename: str, headless: bool) -> None:
 
 
 @meta_hist
-def example_choropleth(candidate_geo_states: pd.DataFrame, title: str) -> alt.Chart:
+def example_choropleth(candidate_geo_states: pd.DataFrame, title: str, extent) -> alt.Chart:
     """Choropleth of the US states with the candidate vote percentage mapped to color."""
     scale = alt.Scale(type='band')
     color = alt.Color(shorthand='pct_estimate', bin=alt.Bin(maxbins=20), scale=scale)
@@ -58,20 +58,10 @@ def example_choropleth(candidate_geo_states: pd.DataFrame, title: str) -> alt.Ch
         .encode(color, tooltip=['NAME', 'pct_estimate']) \
         .properties(width=500, height=300) \
         .project(type='albersUsa')
-    return chart
 
+    if extent is not None:
+        chart.encoding.color.bin.extent = [0, 100]
 
-@meta_hist
-def example_choropleth_extent(candidate_geo_states: pd.DataFrame, title: str) -> alt.Chart:
-    """Choropleth of the US states with the candidate vote percentage mapped to color."""
-    scale = alt.Scale(type='band')
-    color = alt.Color(shorthand='pct_estimate', bin=alt.Bin(maxbins=20), scale=scale)
-    chart = alt.Chart(candidate_geo_states, title=title) \
-        .mark_geoshape() \
-        .encode(color, tooltip=['NAME', 'pct_estimate']) \
-        .properties(width=500, height=300) \
-        .project(type='albersUsa')
-    chart.encoding.color.bin.extent = [0, 100]
     return chart
 
 
@@ -89,11 +79,11 @@ def dataset() -> Any:
 
 def test_altair_meta_hist(headless: bool) -> None:
     """Altair meta-histogram generates without error."""
-    chart: alt.Chart = example_choropleth(dataset(), "Example choropleth")
+    chart: alt.Chart = example_choropleth(dataset(), "Example choropleth", None)
     expect_fig(chart, "tests/expected_altair_meta_hist", headless)
 
 
 def test_altair_meta_hist_extent(headless: bool) -> None:
     """Altair meta-histogram generates without error."""
-    chart: alt.Chart = example_choropleth_extent(dataset(), "Example choropleth")
+    chart: alt.Chart = example_choropleth(dataset(), "Example choropleth", [0, 100])
     expect_fig(chart, "tests/expected_altair_meta_hist_extent", headless)
