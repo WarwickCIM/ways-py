@@ -43,15 +43,16 @@ class Ways:
     @staticmethod
     def used_colours(src: alt.Chart) -> alt.Chart:
         y_axis = alt.Axis(orient='right', grid=False)
-        if type(src.encoding.color.bin.extent).__name__ != 'UndefinedType':
+        if src.encoding.color.bin and type(src.encoding.color.bin.extent).__name__ != 'UndefinedType':
             y_scale = alt.Scale(domain=src.encoding.color.bin.extent)
         else:
             y_scale = alt.Scale(zero=False)
         x_axis = alt.Axis(labels=False, tickSize=0, grid=False, titleAngle=270, titleAlign='right')
-        return alt.Chart(src.data) \
-            .mark_rect() \
-            .transform_bin(as_=['y', 'y2'], bin=src.encoding.color.bin, field=Ways.field(src)) \
-            .transform_calculate(x='5') \
+        chart = alt.Chart(src.data) \
+                   .mark_rect()
+        if src.encoding.color.bin:
+            chart = chart.transform_bin(as_=['y', 'y2'], bin=src.encoding.color.bin, field=Ways.field(src))
+        return chart.transform_calculate(x='5') \
             .encode(
                 y=alt.Y('y:Q', scale=y_scale, axis=y_axis, title=""),
                 y2='y2:Q',
