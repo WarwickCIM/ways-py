@@ -42,7 +42,9 @@ class Ways:
 
     @staticmethod
     def used_colours(src: alt.Chart) -> alt.Chart:
-        y_axis = alt.Axis(orient='right', grid=False)
+#        if src.encoding.color.bin.extent:
+
+        y_axis = alt.Axis(orient='right', grid=False, domain=False)
         x_axis = alt.Axis(labels=False, tickSize=0, grid=False, titleAngle=270, titleAlign='right')
         return alt.Chart(src.data) \
             .mark_rect() \
