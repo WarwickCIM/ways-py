@@ -60,7 +60,7 @@ def example_choropleth(candidate_geo_states: pd.DataFrame, title: str, extent) -
         .project(type='albersUsa')
 
     if extent is not None:
-        chart.encoding.color.bin.extent = [0, 100]
+        chart.encoding.color.bin.extent = extent
 
     return chart
 
