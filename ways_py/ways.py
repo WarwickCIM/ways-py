@@ -23,7 +23,7 @@ class Ways:
         # tickCount/tickMinStep Axis properties are ignored (perhaps because we specify bins), so hard code
         y_axis = alt.Y(
             src.encoding.color.shorthand,
-            bin=alt.Bin(maxbins=100) if src.encoding.color.bin else False,
+            bin=alt.Bin(maxbins=100),
             axis=alt.Axis(orient='left', grid=False, values=sorted([0, 50] + [y_min, y_max])),
             title="",
         )
@@ -44,10 +44,10 @@ class Ways:
     def used_colours(src: alt.Chart) -> alt.Chart:
         y_axis = alt.Axis(orient='right', grid=False)
         x_axis = alt.Axis(labels=False, tickSize=0, grid=False, titleAngle=270, titleAlign='right')
-        # passing the value of extent works even if it's 'Undefined'
         y_scale = alt.Scale(zero=False)
         chart = alt.Chart(src.data).mark_rect()
         if src.encoding.color.bin:
+            # passing the value of extent works even if it's 'Undefined'
             y_scale = alt.Scale(domain=src.encoding.color.bin.extent)
             chart = alt.Chart(src.data).mark_rect() \
                        .transform_bin(as_=['y', 'y2'], bin=src.encoding.color.bin, field=Ways.field(src))
