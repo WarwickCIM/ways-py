@@ -62,8 +62,8 @@ def example_choropleth(candidate_geo_states: pd.DataFrame, title: str) -> alt.Ch
 
 def test_altair_meta_hist(headless: bool) -> None:
     """Altair meta-histogram generates without error."""
-    geo_states = gpd.read_file('notebooks/choropleth_teaching/gz_2010_us_040_00_500k.json')
-    df_polls = pd.read_csv('notebooks/choropleth_teaching/presidential_poll_averages_2020.csv')
+    geo_states = gpd.read_file('notebooks/gz_2010_us_040_00_500k.json')
+    df_polls = pd.read_csv('notebooks/presidential_poll_averages_2020.csv')
     trump_data = df_polls[df_polls.candidate_name == 'Donald Trump']
     trump_data.columns = [
         'cycle', 'NAME', 'modeldate', 'candidate_name', 'pct_estimate', 'pct_trend_adjusted'
