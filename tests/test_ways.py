@@ -71,8 +71,7 @@ def example_choropleth_extent(candidate_geo_states: pd.DataFrame, title: str) ->
         .project(type='albersUsa')
     return chart
 
-def test_altair_meta_hist(headless: bool) -> None:
-    """Altair meta-histogram generates without error."""
+def dataset() -> str:
     geo_states = gpd.read_file('notebooks/gz_2010_us_040_00_500k.json')
     df_polls = pd.read_csv('notebooks/presidential_poll_averages_2020.csv')
     trump_data = df_polls[df_polls.candidate_name == 'Donald Trump']
@@ -80,19 +79,15 @@ def test_altair_meta_hist(headless: bool) -> None:
         'cycle', 'NAME', 'modeldate', 'candidate_name', 'pct_estimate', 'pct_trend_adjusted'
     ]
     geo_states_trump = geo_states.merge(trump_data, on='NAME')
-    candidate_geo_states = geo_states_trump[geo_states_trump.modeldate == '11/03/2020']
-    chart: alt.Chart = example_choropleth(candidate_geo_states, "Example choropleth")
+    return geo_states_trump[geo_states_trump.modeldate == '11/03/2020']
+
+
+def test_altair_meta_hist(headless: bool) -> None:
+    """Altair meta-histogram generates without error."""
+    chart: alt.Chart = example_choropleth(dataset(), "Example choropleth")
     expect_fig(chart, "tests/expected_altair_meta_hist", headless)
 
 def test_altair_meta_hist_extent(headless: bool) -> None:
     """Altair meta-histogram generates without error."""
-    geo_states = gpd.read_file('notebooks/gz_2010_us_040_00_500k.json')
-    df_polls = pd.read_csv('notebooks/presidential_poll_averages_2020.csv')
-    trump_data = df_polls[df_polls.candidate_name == 'Donald Trump']
-    trump_data.columns = [
-        'cycle', 'NAME', 'modeldate', 'candidate_name', 'pct_estimate', 'pct_trend_adjusted'
-    ]
-    geo_states_trump = geo_states.merge(trump_data, on='NAME')
-    candidate_geo_states = geo_states_trump[geo_states_trump.modeldate == '11/03/2020']
-    chart: alt.Chart = example_choropleth_extent(candidate_geo_states, "Example choropleth")
+    chart: alt.Chart = example_choropleth_extent(dataset(), "Example choropleth")
     expect_fig(chart, "tests/expected_altair_meta_hist_extent", headless)
