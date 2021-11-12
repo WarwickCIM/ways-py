@@ -2,6 +2,7 @@
 
 import errno
 import os
+from typing import Any, List, Optional
 
 from _pytest.config import Config
 import altair as alt  # type: ignore
@@ -48,27 +49,41 @@ def expect_fig(fig: alt.Chart, filename: str, headless: bool) -> None:
 
 
 @meta_hist
-def example_choropleth(candidate_geo_states: pd.DataFrame, title: str) -> alt.Chart:
+def example_choropleth(candidate_states: pd.DataFrame, title: str, extent: Optional[List[int]]) -> alt.Chart:
     """Choropleth of the US states with the candidate vote percentage mapped to color."""
     scale = alt.Scale(type='band')
     color = alt.Color(shorthand='pct_estimate', bin=alt.Bin(maxbins=20), scale=scale)
-    chart = alt.Chart(candidate_geo_states, title=title) \
+    chart = alt.Chart(candidate_states, title=title) \
         .mark_geoshape() \
         .encode(color, tooltip=['NAME', 'pct_estimate']) \
         .properties(width=500, height=300) \
         .project(type='albersUsa')
+
+    if extent is not None:
+        chart.encoding.color.bin.extent = extent
+
     return chart
 
 
-def test_altair_meta_hist(headless: bool) -> None:
-    """Altair meta-histogram generates without error."""
-    geo_states = gpd.read_file('notebooks/choropleth_teaching/gz_2010_us_040_00_500k.json')
-    df_polls = pd.read_csv('notebooks/choropleth_teaching/presidential_poll_averages_2020.csv')
+def dataset() -> Any:
+    """Dataset for choropleth example."""
+    geo_states = gpd.read_file('notebooks/gz_2010_us_040_00_500k.json')
+    df_polls = pd.read_csv('notebooks/presidential_poll_averages_2020.csv')
     trump_data = df_polls[df_polls.candidate_name == 'Donald Trump']
     trump_data.columns = [
         'cycle', 'NAME', 'modeldate', 'candidate_name', 'pct_estimate', 'pct_trend_adjusted'
     ]
     geo_states_trump = geo_states.merge(trump_data, on='NAME')
-    candidate_geo_states = geo_states_trump[geo_states_trump.modeldate == '11/03/2020']
-    chart: alt.Chart = example_choropleth(candidate_geo_states, "Example choropleth")
+    return geo_states_trump[geo_states_trump.modeldate == '11/03/2020']
+
+
+def test_altair_meta_hist(headless: bool) -> None:
+    """Altair meta-histogram generates without error."""
+    chart: alt.Chart = example_choropleth(dataset(), "Example choropleth", None)
     expect_fig(chart, "tests/expected_altair_meta_hist", headless)
+
+
+def test_altair_meta_hist_extent(headless: bool) -> None:
+    """Altair meta-histogram generates without error."""
+    chart: alt.Chart = example_choropleth(dataset(), "Example choropleth", [0, 100])
+    expect_fig(chart, "tests/expected_altair_meta_hist_extent", headless)
