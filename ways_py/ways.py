@@ -43,21 +43,22 @@ class Ways:
     @staticmethod
     def used_colours(src: alt.Chart) -> alt.Chart:
         y_axis = alt.Axis(orient='right', grid=False)
-        x_axis = alt.Axis(labels=False, tickSize=0, grid=False, titleAngle=270, titleAlign='right')
-        y_scale = alt.Scale(zero=False)
-        chart = alt.Chart(src.data).mark_rect()
-        if src.encoding.color.bin:
-            # passing the value of extent works even if it's 'Undefined'
+        if type(src.encoding.color.bin.extent).__name__ != 'UndefinedType':
             y_scale = alt.Scale(domain=src.encoding.color.bin.extent)
-            chart = alt.Chart(src.data).mark_rect() \
-                       .transform_bin(as_=['y', 'y2'], bin=src.encoding.color.bin, field=Ways.field(src))
-        return chart.transform_calculate(x='5') \
-                    .encode(
-                        y=alt.Y('y:Q', scale=y_scale, axis=y_axis, title=""),
-                        y2='y2:Q',
-                        x=alt.X('x:Q', sort='descending', axis=x_axis, title="colours used")) \
-                    .encode(src.encoding.color) \
-                    .properties(width=20, height=300)  # noqa: E123
+        else:
+            y_scale = alt.Scale(zero=False)
+        x_axis = alt.Axis(labels=False, tickSize=0, grid=False, titleAngle=270, titleAlign='right')
+        chart = alt.Chart(src.data) \
+                   .mark_rect()
+        return chart.transform_bin(as_=['y', 'y2'], bin=src.encoding.color.bin, field=Ways.field(src)) \
+            .transform_calculate(x='5') \
+            .encode(
+                y=alt.Y('y:Q', scale=y_scale, axis=y_axis, title=""),
+                y2='y2:Q',
+                x=alt.X('x:Q', sort='descending', axis=x_axis, title="colours used")
+            ) \
+            .encode(src.encoding.color) \
+            .properties(width=20, height=300)  # noqa: E123
 
     @staticmethod
     def altair_meta_hist(src: alt.Chart) -> alt.Chart:
