@@ -2,6 +2,7 @@
 
 import errno
 import os
+from typing import Any
 
 from _pytest.config import Config
 import altair as alt  # type: ignore
@@ -59,6 +60,7 @@ def example_choropleth(candidate_geo_states: pd.DataFrame, title: str) -> alt.Ch
         .project(type='albersUsa')
     return chart
 
+
 @meta_hist
 def example_choropleth_extent(candidate_geo_states: pd.DataFrame, title: str) -> alt.Chart:
     """Choropleth of the US states with the candidate vote percentage mapped to color."""
@@ -71,7 +73,9 @@ def example_choropleth_extent(candidate_geo_states: pd.DataFrame, title: str) ->
         .project(type='albersUsa')
     return chart
 
-def dataset() -> str:
+
+def dataset() -> Any:
+    """Dataset for choropleth example."""
     geo_states = gpd.read_file('notebooks/gz_2010_us_040_00_500k.json')
     df_polls = pd.read_csv('notebooks/presidential_poll_averages_2020.csv')
     trump_data = df_polls[df_polls.candidate_name == 'Donald Trump']
@@ -86,6 +90,7 @@ def test_altair_meta_hist(headless: bool) -> None:
     """Altair meta-histogram generates without error."""
     chart: alt.Chart = example_choropleth(dataset(), "Example choropleth")
     expect_fig(chart, "tests/expected_altair_meta_hist", headless)
+
 
 def test_altair_meta_hist_extent(headless: bool) -> None:
     """Altair meta-histogram generates without error."""

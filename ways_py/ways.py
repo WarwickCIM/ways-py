@@ -20,7 +20,7 @@ class Ways:
     def density_chart(src: alt.Chart) -> alt.Chart:
         ys = src.data[Ways.field(src)]  # assume src.data array-like in an appropriate way
         y_min, y_max = min(ys), max(ys)
-        # tickCount/tickMinStep Axis properties are ignored (perhaps because we specify bins); hardcode for now
+        # tickCount/tickMinStep Axis properties are ignored (perhaps because we specify bins), so hard code
         y_axis = alt.Y(
             src.encoding.color.shorthand,
             bin=alt.Bin(maxbins=100),
