@@ -49,11 +49,11 @@ def expect_fig(fig: alt.Chart, filename: str, headless: bool) -> None:
 
 
 @meta_hist
-def example_choropleth(candidate_geo_states: pd.DataFrame, title: str, extent: Optional[List[int]]) -> alt.Chart:
+def example_choropleth(candidate_states: pd.DataFrame, title: str, extent: Optional[List[int]]) -> alt.Chart:
     """Choropleth of the US states with the candidate vote percentage mapped to color."""
     scale = alt.Scale(type='band')
     color = alt.Color(shorthand='pct_estimate', bin=alt.Bin(maxbins=20), scale=scale)
-    chart = alt.Chart(candidate_geo_states, title=title) \
+    chart = alt.Chart(candidate_states, title=title) \
         .mark_geoshape() \
         .encode(color, tooltip=['NAME', 'pct_estimate']) \
         .properties(width=500, height=300) \
