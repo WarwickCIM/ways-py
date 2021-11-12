@@ -45,17 +45,17 @@ class Ways:
         y_axis = alt.Axis(orient='right', grid=False)
         x_axis = alt.Axis(labels=False, tickSize=0, grid=False, titleAngle=270, titleAlign='right')
         # passing the value of extent works even if it's 'Undefined'
-        y_scale = alt.Scale(domain=src.encoding.color.bin.extent) if src.encoding.color.bin else alt.Scale(zero=False)
+        y_scale = alt.Scale(zero=False)
         chart = alt.Chart(src.data).mark_rect()
         if src.encoding.color.bin:
+            y_scale = alt.Scale(domain=src.encoding.color.bin.extent)
             chart = alt.Chart(src.data).mark_rect() \
-            .transform_bin(as_=['y', 'y2'], bin=src.encoding.color.bin, field=Ways.field(src))
+                       .transform_bin(as_=['y', 'y2'], bin=src.encoding.color.bin, field=Ways.field(src))
         return chart.transform_calculate(x='5') \
                     .encode(
                         y=alt.Y('y:Q', scale=y_scale, axis=y_axis, title=""),
                         y2='y2:Q',
-                        x=alt.X('x:Q', sort='descending', axis=x_axis, title="colours used")
-                    ) \
+                        x=alt.X('x:Q', sort='descending', axis=x_axis, title="colours used")) \
                     .encode(src.encoding.color) \
                     .properties(width=20, height=300)  # noqa: E123
 
