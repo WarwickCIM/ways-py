@@ -26,11 +26,13 @@ class Ways:
         # tickCount/tickMinStep Axis properties are ignored (perhaps because we specify bins), so hard code
         if src.encoding.color.bin and type(src.encoding.color.bin.extent).__name__ != 'UndefinedType':
             y_scale = alt.Scale(domain=src.encoding.color.bin.extent)
+            bin = alt.Bin(maxbins=100, extent=src.encoding.color.bin.extent)
         else:
             y_scale = alt.Scale(zero=False)
+            bin = alt.Bin(maxbins=100)
         y_axis = alt.Y(
             src.encoding.color.shorthand,
-            bin=alt.Bin(maxbins=100),
+            bin=bin,
             # axis=alt.Axis(orient='left', grid=False, values=sorted([0, 50] + [y_min, y_max])),
             axis=alt.Axis(orient='left', grid=False, values=[y_min, y_max]),
             title="",
