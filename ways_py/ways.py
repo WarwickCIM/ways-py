@@ -73,8 +73,8 @@ class Ways:
         """
         def meta_chart(src: alt.Chart) -> alt.Chart:
             """Create a density chart with used colors plot that share a y axis."""
-            return Ways.density_chart(src) | Ways.used_colours(src).resolve_scale(y='shared')
-        return (meta_chart(src) | src) \
+            return (Ways.density_chart(src) | Ways.used_colours(src)).resolve_scale(y='shared')
+        return (meta_chart(src) | src).resolve_scale(y='independent') \
             .configure_view(strokeWidth=0) \
             .configure_concat(spacing=5)
 
