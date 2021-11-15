@@ -18,14 +18,23 @@ class Ways:
 
     @staticmethod
     def density_chart(src: alt.Chart) -> alt.Chart:
-        ys = src.data[Ways.field(src)]  # assume src.data array-like in an appropriate way
-        y_min, y_max = min(ys), max(ys)
+        if src.encoding.color.bin and type(src.encoding.color.bin.extent).__name__ != 'UndefinedType':
+            y_min, y_max = src.encoding.color.bin.extent
+        else:
+            ys = src.data[Ways.field(src)]  # assume src.data array-like in an appropriate way
+            y_min, y_max = min(ys), max(ys)
         # tickCount/tickMinStep Axis properties are ignored (perhaps because we specify bins), so hard code
+        if src.encoding.color.bin and type(src.encoding.color.bin.extent).__name__ != 'UndefinedType':
+            y_scale = alt.Scale(domain=src.encoding.color.bin.extent)
+        else:
+            y_scale = alt.Scale(zero=False)
         y_axis = alt.Y(
             src.encoding.color.shorthand,
             bin=alt.Bin(maxbins=100),
-            axis=alt.Axis(orient='left', grid=False, values=sorted([0, 50] + [y_min, y_max])),
+            # axis=alt.Axis(orient='left', grid=False, values=sorted([0, 50] + [y_min, y_max])),
+            axis=alt.Axis(orient='left', grid=False, values=[y_min, y_max]),
             title="",
+            scale=y_scale
         )
         x_axis = alt.X(
             'sum(proportion):Q',
