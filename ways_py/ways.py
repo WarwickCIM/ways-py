@@ -51,11 +51,16 @@ class Ways:
 
     @staticmethod
     def used_colours(src: alt.Chart) -> alt.Chart:
-        y_axis = alt.Axis(orient='right', grid=False)
+        if src.encoding.color.bin and type(src.encoding.color.bin.extent).__name__ != 'UndefinedType':
+            y_min, y_max = src.encoding.color.bin.extent
+        else:
+            ys = src.data[Ways.field(src)]  # assume src.data array-like in an appropriate way
+            y_min, y_max = min(ys), max(ys)
         if src.encoding.color.bin and type(src.encoding.color.bin.extent).__name__ != 'UndefinedType':
             y_scale = alt.Scale(domain=src.encoding.color.bin.extent)
         else:
             y_scale = alt.Scale(zero=False)
+        y_axis = alt.Y('y:Q', scale=y_scale, axis=alt.Axis(orient='right', grid=False, values=[y_min, y_max]), title="")
         x_axis = alt.Axis(labels=False, tickSize=0, grid=False, titleAngle=270, titleAlign='right')
         chart = alt.Chart(src.data) \
                    .mark_rect()
@@ -63,7 +68,7 @@ class Ways:
             chart = chart.transform_bin(as_=['y', 'y2'], bin=src.encoding.color.bin, field=Ways.field(src))
         return chart.transform_calculate(x='5') \
             .encode(
-                y=alt.Y('y:Q', scale=y_scale, axis=y_axis, title=""),
+                y=y_axis,
                 y2='y2:Q',
                 x=alt.X('x:Q', sort='descending', axis=x_axis, title="colours used")
             ) \
