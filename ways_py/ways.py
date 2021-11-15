@@ -34,7 +34,7 @@ class Ways:
             src.encoding.color.shorthand,
             bin=bin,
             # axis=alt.Axis(orient='left', grid=False, values=sorted([0, 50] + [y_min, y_max])),
-            axis=alt.Axis(orient='left', grid=False, values=[y_min, y_max]),
+            axis=alt.Axis(orient='left', grid=False),
             title="",
             scale=y_scale
         )
@@ -62,7 +62,7 @@ class Ways:
             y_scale = alt.Scale(domain=src.encoding.color.bin.extent)
         else:
             y_scale = alt.Scale(zero=False)
-        y_axis = alt.Y('y:Q', scale=y_scale, axis=alt.Axis(orient='right', grid=False, values=[y_min, y_max]), title="")
+        y_axis = alt.Y('y:Q', scale=y_scale, axis=alt.Axis(orient='right', grid=False, title=""))
         x_axis = alt.Axis(labels=False, tickSize=0, grid=False, titleAngle=270, titleAlign='right')
         chart = alt.Chart(src.data) \
                    .mark_rect()
@@ -87,7 +87,12 @@ class Ways:
         Returns:
             Altair chart object: modified chart
         """
-        meta_chart: alt.Chart = (Ways.density_chart(src) | Ways.used_colours(src)).resolve_scale(y='shared')
+        density = Ways.density_chart(src)
+        colours = Ways.used_colours(src)
+        # colours.encode(
+        #     y=density.encoding.y
+        # )
+        meta_chart: alt.Chart = (density | colours).resolve_scale(y='shared')
         return (meta_chart | src) \
             .resolve_scale(y='independent') \
             .configure_view(strokeWidth=0) \
