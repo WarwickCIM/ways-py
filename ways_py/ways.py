@@ -71,12 +71,10 @@ class Ways:
         Returns:
             Altair chart object: modified chart
         """
-        def meta_chart(src: alt.Chart) -> alt.Chart:
-            """Create a density chart with used colors plot that share a y axis."""
-            return (Ways.density_chart(src) | Ways.used_colours(src)).resolve_scale(y='shared')
-        return (meta_chart(src) | src).resolve_scale(y='independent') \
-            .configure_view(strokeWidth=0) \
-            .configure_concat(spacing=5)
+        meta_chart = (Ways.density_chart(src) | Ways.used_colours(src)).resolve_scale(y='shared')
+        return (meta_chart | src).resolve_scale(y='independent') \
+                                 .configure_view(strokeWidth=0) \
+                                 .configure_concat(spacing=5)
 
 
 FuncT = TypeVar("FuncT", bound=Callable[..., Any])
