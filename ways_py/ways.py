@@ -32,7 +32,6 @@ class Ways:
         y_axis = alt.Y(
             src.encoding.color.shorthand,
             bin=bin,
-            # axis=alt.Axis(orient='left', grid=False, values=sorted([0, 50] + [y_min, y_max])),
             axis=alt.Axis(orient='left', grid=False),
             title="",
             scale=y_scale
