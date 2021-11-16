@@ -20,16 +20,13 @@ class Ways:
     def density_chart(src: alt.Chart) -> alt.Chart:
         if src.encoding.color.bin and type(src.encoding.color.bin.extent).__name__ != 'UndefinedType':
             y_min, y_max = src.encoding.color.bin.extent
-        else:
-            ys = src.data[Ways.field(src)]  # assume src.data array-like in an appropriate way
-            y_min, y_max = min(ys), max(ys)
-        # tickCount/tickMinStep Axis properties are ignored (perhaps because we specify bins), so hard code
-        if src.encoding.color.bin and type(src.encoding.color.bin.extent).__name__ != 'UndefinedType':
             extent = src.encoding.color.bin.extent
             bins = alt.ScaleBins(step=(extent[1] - extent[0])/100) #TODO: can we change to use alt.ScaleBins
             y_scale = alt.Scale(domain=src.encoding.color.bin.extent, bins=bins, nice=True)
             bin = alt.Bin(step=(extent[1] - extent[0])/100, extent=extent) #TODO: adjust min sep size
         else:
+            ys = src.data[Ways.field(src)]  # assume src.data array-like in an appropriate way
+            y_min, y_max = min(ys), max(ys)
             y_scale = alt.Scale(zero=False)
             bin = alt.Bin(maxbins=100)
         y_axis = alt.Y(
