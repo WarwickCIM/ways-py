@@ -19,22 +19,18 @@ class Ways:
     @staticmethod
     def y_scale(src: alt.Chart) -> alt.Scale:
         if src.encoding.color.bin and type(src.encoding.color.bin.extent).__name__ != 'UndefinedType':
-            y_min, y_max = src.encoding.color.bin.extent
             extent = src.encoding.color.bin.extent
-            bins = alt.ScaleBins(step=(extent[1] - extent[0])/100)
-            y_scale = alt.Scale(domain=src.encoding.color.bin.extent, bins=bins, nice=True)
+            bins = alt.ScaleBins(step=(extent[1] - extent[0]) / 100)
+            return alt.Scale(domain=src.encoding.color.bin.extent, bins=bins, nice=True)
         else:
-            ys = src.data[Ways.field(src)]  # assume src.data array-like in an appropriate way
-            y_min, y_max = min(ys), max(ys)
-            y_scale = alt.Scale(zero=False)
-        return y_scale
+            return alt.Scale(zero=False)
 
     @staticmethod
     def density_chart(src: alt.Chart) -> alt.Chart:
         y_scale = Ways.y_scale(src)
         if src.encoding.color.bin and type(src.encoding.color.bin.extent).__name__ != 'UndefinedType':
             extent = src.encoding.color.bin.extent
-            bin = alt.Bin(step=(extent[1] - extent[0])/100, extent=extent)
+            bin = alt.Bin(step=(extent[1] - extent[0]) / 100, extent=extent)
         else:
             bin = alt.Bin(maxbins=100)
         y_axis = alt.Y(
