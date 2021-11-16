@@ -57,14 +57,12 @@ class Ways:
     def used_colours(src: alt.Chart) -> alt.Chart:
         if src.encoding.color.bin and type(src.encoding.color.bin.extent).__name__ != 'UndefinedType':
             y_min, y_max = src.encoding.color.bin.extent
-        else:
-            ys = src.data[Ways.field(src)]  # assume src.data array-like in an appropriate way
-            y_min, y_max = min(ys), max(ys)
-        if src.encoding.color.bin and type(src.encoding.color.bin.extent).__name__ != 'UndefinedType':
             extent = src.encoding.color.bin.extent
             bins = alt.ScaleBins(step=(extent[1] - extent[0])/100) #TODO: can we change to use alt.ScaleBins
             y_scale = alt.Scale(domain=src.encoding.color.bin.extent, bins=bins, nice=True)
         else:
+            ys = src.data[Ways.field(src)]  # assume src.data array-like in an appropriate way
+            y_min, y_max = min(ys), max(ys)
             y_scale = alt.Scale(zero=False)
         y_axis = alt.Y('y:Q', scale=y_scale, axis=alt.Axis(orient='right', grid=False, title=""))
         x_axis = alt.Axis(labels=False, tickSize=0, grid=False, titleAngle=270, titleAlign='right')
