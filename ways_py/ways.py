@@ -8,6 +8,10 @@ import pandas as pd  # type: ignore
 import traitlets  # type: ignore
 
 
+def is_defined(v: Any) -> bool:
+    return type(v).__name__ != 'UndefinedType'
+
+
 class Ways:
     """WAYS library."""
 
@@ -18,7 +22,7 @@ class Ways:
 
     @staticmethod
     def y_scale(src: alt.Chart) -> alt.Scale:
-        if src.encoding.color.bin and type(src.encoding.color.bin.extent).__name__ != 'UndefinedType':
+        if src.encoding.color.bin and is_defined(src.encoding.color.bin.extent):
             extent = src.encoding.color.bin.extent
             bins = alt.ScaleBins(step=(extent[1] - extent[0]) / 100)
             return alt.Scale(domain=src.encoding.color.bin.extent, bins=bins, nice=True)
@@ -28,7 +32,7 @@ class Ways:
     @staticmethod
     def density_chart(src: alt.Chart) -> alt.Chart:
         y_scale = Ways.y_scale(src)
-        if src.encoding.color.bin and type(src.encoding.color.bin.extent).__name__ != 'UndefinedType':
+        if src.encoding.color.bin and is_defined(src.encoding.color.bin.extent):
             extent = src.encoding.color.bin.extent
             bin = alt.Bin(step=(extent[1] - extent[0]) / 100, extent=extent)
         else:
