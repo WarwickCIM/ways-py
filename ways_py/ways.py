@@ -26,10 +26,9 @@ class Ways:
         # tickCount/tickMinStep Axis properties are ignored (perhaps because we specify bins), so hard code
         if src.encoding.color.bin and type(src.encoding.color.bin.extent).__name__ != 'UndefinedType':
             extent = src.encoding.color.bin.extent
-            # bins = alt.ScaleBins(step=(extent[1] - extent[0])/100)
-            # y_scale = alt.Scale(domain=src.encoding.color.bin.extent, bins=bins)
+            bins = alt.ScaleBins(step=(extent[1] - extent[0])/100) #TODO: can we change to use alt.ScaleBins
+            y_scale = alt.Scale(domain=src.encoding.color.bin.extent, bins=bins, nice=True)
             bin = alt.Bin(step=(extent[1] - extent[0])/100, extent=extent) #TODO: adjust min sep size
-            # bin=src.encoding.color.bin
         else:
             y_scale = alt.Scale(zero=False)
             bin = alt.Bin(maxbins=100)
@@ -39,7 +38,7 @@ class Ways:
             # axis=alt.Axis(orient='left', grid=False, values=sorted([0, 50] + [y_min, y_max])),
             axis=alt.Axis(orient='left', grid=False),
             title="",
-            # scale=y_scale
+            scale=y_scale
         )
         x_axis = alt.X(
             'sum(proportion):Q',
@@ -64,7 +63,7 @@ class Ways:
         if src.encoding.color.bin and type(src.encoding.color.bin.extent).__name__ != 'UndefinedType':
             extent = src.encoding.color.bin.extent
             bins = alt.ScaleBins(step=(extent[1] - extent[0])/100) #TODO: can we change to use alt.ScaleBins
-            y_scale = alt.Scale(domain=src.encoding.color.bin.extent, bins=bins)
+            y_scale = alt.Scale(domain=src.encoding.color.bin.extent, bins=bins, nice=True)
         else:
             y_scale = alt.Scale(zero=False)
         y_axis = alt.Y('y:Q', scale=y_scale, axis=alt.Axis(orient='right', grid=False, title=""))
