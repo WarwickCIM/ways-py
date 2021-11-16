@@ -8,6 +8,11 @@ import pandas as pd  # type: ignore
 import traitlets  # type: ignore
 
 
+def is_defined(v: Any) -> bool:
+    """Altair representation of an undefined Vega Lite value."""
+    return type(v).__name__ != 'UndefinedType'
+
+
 class Ways:
     """WAYS library."""
 
@@ -17,15 +22,28 @@ class Ways:
         return cast(str, src.encoding.color.shorthand)
 
     @staticmethod
+    def y_scale(src: alt.Chart) -> alt.Scale:
+        if src.encoding.color.bin and is_defined(src.encoding.color.bin.extent):
+            extent = src.encoding.color.bin.extent
+            bins = alt.ScaleBins(step=(extent[1] - extent[0]) / 100)
+            return alt.Scale(domain=extent, bins=bins, nice=True)
+        else:
+            return alt.Scale(zero=False, nice=True)
+
+    @staticmethod
     def density_chart(src: alt.Chart) -> alt.Chart:
-        ys = src.data[Ways.field(src)]  # assume src.data array-like in an appropriate way
-        y_min, y_max = min(ys), max(ys)
-        # tickCount/tickMinStep Axis properties are ignored (perhaps because we specify bins), so hard code
+        y_scale = Ways.y_scale(src)
+        if src.encoding.color.bin and is_defined(src.encoding.color.bin.extent):
+            extent = src.encoding.color.bin.extent
+            bin = alt.Bin(step=(extent[1] - extent[0]) / 100, extent=extent)
+        else:
+            bin = alt.Bin(maxbins=100)
         y_axis = alt.Y(
             src.encoding.color.shorthand,
-            bin=alt.Bin(maxbins=100),
-            axis=alt.Axis(orient='left', grid=False, values=sorted([0, 50] + [y_min, y_max])),
+            bin=bin,
+            axis=alt.Axis(orient='left', grid=False),
             title="",
+            scale=y_scale
         )
         x_axis = alt.X(
             'sum(proportion):Q',
@@ -42,11 +60,8 @@ class Ways:
 
     @staticmethod
     def used_colours(src: alt.Chart) -> alt.Chart:
-        y_axis = alt.Axis(orient='right', grid=False)
-        if src.encoding.color.bin and type(src.encoding.color.bin.extent).__name__ != 'UndefinedType':
-            y_scale = alt.Scale(domain=src.encoding.color.bin.extent)
-        else:
-            y_scale = alt.Scale(zero=False)
+        y_scale = Ways.y_scale(src)
+        y_axis = alt.Y('y:Q', scale=y_scale, axis=alt.Axis(orient='right', grid=False, title=""))
         x_axis = alt.Axis(labels=False, tickSize=0, grid=False, titleAngle=270, titleAlign='right')
         chart = alt.Chart(src.data) \
                    .mark_rect()
@@ -54,7 +69,7 @@ class Ways:
             chart = chart.transform_bin(as_=['y', 'y2'], bin=src.encoding.color.bin, field=Ways.field(src))
         return chart.transform_calculate(x='5') \
             .encode(
-                y=alt.Y('y:Q', scale=y_scale, axis=y_axis, title=""),
+                y=y_axis,
                 y2='y2:Q',
                 x=alt.X('x:Q', sort='descending', axis=x_axis, title="colours used")
             ) \
@@ -73,6 +88,7 @@ class Ways:
         """
         meta_chart: alt.Chart = (Ways.density_chart(src) | Ways.used_colours(src)).resolve_scale(y='shared')
         return (meta_chart | src) \
+            .resolve_scale(y='independent') \
             .configure_view(strokeWidth=0) \
             .configure_concat(spacing=5)
 
