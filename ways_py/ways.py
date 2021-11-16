@@ -21,9 +21,9 @@ class Ways:
         if src.encoding.color.bin and type(src.encoding.color.bin.extent).__name__ != 'UndefinedType':
             y_min, y_max = src.encoding.color.bin.extent
             extent = src.encoding.color.bin.extent
-            bins = alt.ScaleBins(step=(extent[1] - extent[0])/100) #TODO: can we change to use alt.ScaleBins
+            bins = alt.ScaleBins(step=(extent[1] - extent[0])/100)
             y_scale = alt.Scale(domain=src.encoding.color.bin.extent, bins=bins, nice=True)
-            bin = alt.Bin(step=(extent[1] - extent[0])/100, extent=extent) #TODO: adjust min sep size
+            bin = alt.Bin(step=(extent[1] - extent[0])/100, extent=extent)
         else:
             ys = src.data[Ways.field(src)]  # assume src.data array-like in an appropriate way
             y_min, y_max = min(ys), max(ys)
