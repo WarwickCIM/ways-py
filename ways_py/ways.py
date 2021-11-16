@@ -25,7 +25,7 @@ class Ways:
         if src.encoding.color.bin and is_defined(src.encoding.color.bin.extent):
             extent = src.encoding.color.bin.extent
             bins = alt.ScaleBins(step=(extent[1] - extent[0]) / 100)
-            return alt.Scale(domain=src.encoding.color.bin.extent, bins=bins, nice=True)
+            return alt.Scale(domain=extent, bins=bins, nice=True)
         else:
             return alt.Scale(zero=False, nice=True)
 
