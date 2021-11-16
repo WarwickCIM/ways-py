@@ -58,7 +58,7 @@ class Ways:
         if src.encoding.color.bin and type(src.encoding.color.bin.extent).__name__ != 'UndefinedType':
             y_min, y_max = src.encoding.color.bin.extent
             extent = src.encoding.color.bin.extent
-            bins = alt.ScaleBins(step=(extent[1] - extent[0])/100) #TODO: can we change to use alt.ScaleBins
+            bins = alt.ScaleBins(step=(extent[1] - extent[0])/100)
             y_scale = alt.Scale(domain=src.encoding.color.bin.extent, bins=bins, nice=True)
         else:
             ys = src.data[Ways.field(src)]  # assume src.data array-like in an appropriate way
@@ -70,7 +70,6 @@ class Ways:
                    .mark_rect()
         if src.encoding.color.bin:
             extent = src.encoding.color.bin.extent
-            # bin = alt.Bin(step=(extent[1] - extent[0])/100, extent=extent)
             bin=src.encoding.color.bin
             chart = chart.transform_bin(as_=['y', 'y2'], bin=bin, field=Ways.field(src))
         return chart.transform_calculate(x='5') \
