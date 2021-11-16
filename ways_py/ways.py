@@ -9,6 +9,7 @@ import traitlets  # type: ignore
 
 
 def is_defined(v: Any) -> bool:
+    """Altair representation of an undefined Vega Lite value."""
     return type(v).__name__ != 'UndefinedType'
 
 
