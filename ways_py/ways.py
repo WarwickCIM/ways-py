@@ -94,12 +94,7 @@ class Ways:
         Returns:
             Altair chart object: modified chart
         """
-        density = Ways.density_chart(src)
-        colours = Ways.used_colours(src)
-        # density.encode(
-        #     y=colours.encoding.y
-        # )
-        meta_chart: alt.Chart = (density | colours).resolve_scale(y='shared')
+        meta_chart: alt.Chart = (Ways.density_chart(src) | Ways.used_colours(src)).resolve_scale(y='shared')
         return (meta_chart | src) \
             .resolve_scale(y='independent') \
             .configure_view(strokeWidth=0) \
