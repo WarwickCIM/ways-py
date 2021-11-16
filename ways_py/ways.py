@@ -25,8 +25,10 @@ class Ways:
             y_min, y_max = min(ys), max(ys)
         # tickCount/tickMinStep Axis properties are ignored (perhaps because we specify bins), so hard code
         if src.encoding.color.bin and type(src.encoding.color.bin.extent).__name__ != 'UndefinedType':
-            y_scale = alt.Scale(domain=src.encoding.color.bin.extent)
-            bin = alt.Bin(maxbins=100, extent=src.encoding.color.bin.extent)
+            extent = src.encoding.color.bin.extent
+            bins = alt.ScaleBins(step=(extent[1] - extent[0])/100)
+            y_scale = alt.Scale(domain=src.encoding.color.bin.extent, bins=bins)
+            bin = alt.Bin(step=(extent[1] - extent[0])/100, extent=extent)
         else:
             y_scale = alt.Scale(zero=False)
             bin = alt.Bin(maxbins=100)
@@ -59,7 +61,9 @@ class Ways:
             ys = src.data[Ways.field(src)]  # assume src.data array-like in an appropriate way
             y_min, y_max = min(ys), max(ys)
         if src.encoding.color.bin and type(src.encoding.color.bin.extent).__name__ != 'UndefinedType':
-            y_scale = alt.Scale(domain=src.encoding.color.bin.extent)
+            extent = src.encoding.color.bin.extent
+            bins = alt.ScaleBins(step=(extent[1] - extent[0])/100) #TODO: can we change to use alt.ScaleBins
+            y_scale = alt.Scale(domain=src.encoding.color.bin.extent, bins=bins)
         else:
             y_scale = alt.Scale(zero=False)
         y_axis = alt.Y('y:Q', scale=y_scale, axis=alt.Axis(orient='right', grid=False, title=""))
@@ -67,7 +71,10 @@ class Ways:
         chart = alt.Chart(src.data) \
                    .mark_rect()
         if src.encoding.color.bin:
-            chart = chart.transform_bin(as_=['y', 'y2'], bin=src.encoding.color.bin, field=Ways.field(src))
+            extent = src.encoding.color.bin.extent
+            # bin = alt.Bin(step=(extent[1] - extent[0])/100, extent=extent)
+            bin=src.encoding.color.bin
+            chart = chart.transform_bin(as_=['y', 'y2'], bin=bin, field=Ways.field(src))
         return chart.transform_calculate(x='5') \
             .encode(
                 y=y_axis,
@@ -89,8 +96,8 @@ class Ways:
         """
         density = Ways.density_chart(src)
         colours = Ways.used_colours(src)
-        # colours.encode(
-        #     y=density.encoding.y
+        # density.encode(
+        #     y=colours.encoding.y
         # )
         meta_chart: alt.Chart = (density | colours).resolve_scale(y='shared')
         return (meta_chart | src) \
