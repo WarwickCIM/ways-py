@@ -23,7 +23,7 @@ class Ways:
             bins = alt.ScaleBins(step=(extent[1] - extent[0]) / 100)
             return alt.Scale(domain=src.encoding.color.bin.extent, bins=bins, nice=True)
         else:
-            return alt.Scale(zero=False)
+            return alt.Scale(zero=False, nice=True)
 
     @staticmethod
     def density_chart(src: alt.Chart) -> alt.Chart:
