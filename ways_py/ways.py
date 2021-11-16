@@ -65,9 +65,7 @@ class Ways:
         chart = alt.Chart(src.data) \
                    .mark_rect()
         if src.encoding.color.bin:
-            extent = src.encoding.color.bin.extent
-            bin=src.encoding.color.bin
-            chart = chart.transform_bin(as_=['y', 'y2'], bin=bin, field=Ways.field(src))
+            chart = chart.transform_bin(as_=['y', 'y2'], bin=src.encoding.color.bin, field=Ways.field(src))
         return chart.transform_calculate(x='5') \
             .encode(
                 y=y_axis,
