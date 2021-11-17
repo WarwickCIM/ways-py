@@ -94,6 +94,8 @@ def example_scatterplot(data: pd.DataFrame, color: alt.Color) -> alt.Chart:
 
 
 class TestMetaHist:
+    """Test the @meta_hist decorator."""
+
     @staticmethod
     def test_choropleth(headless: bool) -> None:
         """Altair meta-visualisation generates without error."""
@@ -113,7 +115,6 @@ class TestMetaHist:
             example_scatterplot(scatterplot_data(), 'Production_Budget')
         assert e.value.args[0] == "Can only apply decorator to chart with color.bin defined."
 
-
     # In this case "colors used" is an empty plot. See https://github.com/WarwickCIM/ways-py/issues/63.
     @staticmethod
     def test_scatterplot_color_bin_False(headless: bool) -> None:
@@ -121,7 +122,6 @@ class TestMetaHist:
         color = alt.Color(shorthand='Production_Budget', bin=False)
         chart: alt.Chart = example_scatterplot(scatterplot_data(), color)
         expect_fig(chart, "tests/expected_meta_hist_scatterplot_color_bin_False", headless)
-
 
     @staticmethod
     def test_scatterplot(headless: bool) -> None:
