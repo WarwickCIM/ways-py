@@ -1,6 +1,7 @@
 """Test module for backfillz."""
 
 import errno
+import inspect
 import os
 from typing import Any, List, Optional
 
@@ -85,9 +86,9 @@ def scatterplot_data() -> Any:
 
 
 @meta_hist
-def example_scatterplot(data: pd.DataFrame, color: alt.Color) -> alt.Chart:
+def example_scatterplot(data: pd.DataFrame, color: alt.Color, title: str) -> alt.Chart:
     """Scatterplot of IMdB ratings vs. Rotten Tomatoes by budget."""
-    chart = alt.Chart(data, title='IMdB vs. RT by Budget') \
+    chart = alt.Chart(data, title=title) \
         .mark_circle() \
         .encode(x='IMDB_Rating', y='Rotten_Tomatoes_Rating', color=color)
     return chart
@@ -99,20 +100,20 @@ class TestMetaHist:
     @staticmethod
     def test_choropleth(headless: bool) -> None:
         """Altair meta-visualisation generates without error."""
-        chart: alt.Chart = example_choropleth(choropleth_data(), "Example choropleth", None)
+        chart: alt.Chart = example_choropleth(choropleth_data(), inspect.stack()[0][3], None)
         expect_fig(chart, "tests/expected_meta_hist_choropleth", headless)
 
     @staticmethod
     def test_choropleth_extent(headless: bool) -> None:
         """Altair meta-visualisation generates without error."""
-        chart: alt.Chart = example_choropleth(choropleth_data(), "Example choropleth", [0, 100])
+        chart: alt.Chart = example_choropleth(choropleth_data(), inspect.stack()[0][3], [0, 100])
         expect_fig(chart, "tests/expected_meta_hist_choropleth_extent", headless)
 
     @staticmethod
     def test_scatterplot_bin_undefined(headless: bool) -> None:
         """Altair meta-visualisation generates with error."""
         with pytest.raises(Exception) as e:
-            example_scatterplot(scatterplot_data(), 'Production_Budget')
+            example_scatterplot(scatterplot_data(), 'Production_Budget', inspect.stack()[0][3])
         assert e.value.args[0] == "Can only apply decorator to chart with color.bin defined."
 
     # In this case "colors used" is an empty plot. See https://github.com/WarwickCIM/ways-py/issues/63.
@@ -120,7 +121,7 @@ class TestMetaHist:
     def test_scatterplot_bin_False(headless: bool) -> None:
         """Altair meta-visualisation generates without error."""
         color = alt.Color(shorthand='Production_Budget', bin=False)
-        chart: alt.Chart = example_scatterplot(scatterplot_data(), color)
+        chart: alt.Chart = example_scatterplot(scatterplot_data(), color, inspect.stack()[0][3])
         expect_fig(chart, "tests/expected_meta_hist_scatterplot_bin_False", headless)
 
     @staticmethod
@@ -128,5 +129,5 @@ class TestMetaHist:
         """Altair meta-visualisation generates without error."""
         scale = alt.Scale(type='band')
         color = alt.Color(shorthand='Production_Budget', bin=alt.Bin(maxbins=20), scale=scale)
-        chart: alt.Chart = example_scatterplot(scatterplot_data(), color)
+        chart: alt.Chart = example_scatterplot(scatterplot_data(), color, inspect.stack()[0][3])
         expect_fig(chart, "tests/expected_meta_hist_scatterplot", headless)
