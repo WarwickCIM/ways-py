@@ -79,7 +79,7 @@ def example_choropleth(candidate_states: pd.DataFrame, title: str, extent: Optio
 def test_meta_hist_choropleth(headless: bool) -> None:
     """Altair meta-visualisation generates without error."""
     chart: alt.Chart = example_choropleth(choropleth_data(), "Example choropleth", None)
-    expect_fig(chart, "tests/expected_altair_meta_hist", headless)
+    expect_fig(chart, "tests/expected_meta_hist_choropleth", headless)
 
 
 def test_meta_hist_choropleth_extent(headless: bool) -> None:
