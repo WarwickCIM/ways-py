@@ -31,9 +31,10 @@ def expect_fig(fig: alt.Chart, filename: str, headless: bool) -> None:
     ext_png = 'png'
     new_filename_png: str = filename + '.new.' + ext_png
     fig.save(new_filename_png)
-    file = open(new_filename_png, 'rb')
+    file_png = open(new_filename_png, 'rb')
     os.remove(new_filename_png)
-    have_png = file.read()
+    have_png = file_png.read()
+    print(type(have_png))
 
     try:
         # Garbage collect any existing .new file
