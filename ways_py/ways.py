@@ -48,7 +48,7 @@ class Ways:
     @staticmethod
     def used_colours(src: alt.Chart) -> alt.Chart:
         y_axis = alt.Axis(orient='right', grid=False)
-        if src.encoding.color.bin and type(src.encoding.color.bin.extent).__name__ != 'UndefinedType':
+        if src.encoding.color.bin and is_defined(src.encoding.color.bin.extent):
             y_scale = alt.Scale(domain=src.encoding.color.bin.extent)
         else:
             y_scale = alt.Scale(zero=False)
