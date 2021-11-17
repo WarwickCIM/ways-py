@@ -28,13 +28,12 @@ def expect_fig(fig: alt.Chart, filename: str, headless: bool) -> None:
     """Check for JSON-equivalence to stored image."""
     have = fig.to_json()
 
-    ext_png = 'png'
-    new_filename_png: str = filename + '.new.' + ext_png
-    fig.save(new_filename_png)
-    file_png = open(new_filename_png, 'rb')
-    os.remove(new_filename_png)
-    have_png = file_png.read()
-    print(type(have_png))
+    ext_image = 'svg'
+    new_filename_image: str = filename + '.new.' + ext_image
+    fig.save(new_filename_image)
+    file_image = open(new_filename_image, 'rb')
+    have_image = file_image.read()
+    print(type(have_image))
 
     try:
         # Garbage collect any existing .new file
