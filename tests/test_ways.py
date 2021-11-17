@@ -65,7 +65,18 @@ def example_choropleth(candidate_states: pd.DataFrame, title: str, extent: Optio
     return chart
 
 
-def dataset() -> Any:
+@meta_hist
+def example_scatterplot(data):
+    color = alt.Color(shorthand='pct_estimate', bin=alt.Bin(maxbins=20), scale=scale)
+    chart = alt.Chart(data, title='IMDB VS RT by Budget').mark_circle().encode(
+        x='IMDB_Rating',
+        y='Rotten_Tomatoes_Rating',
+        color='Production_Budget',
+    )
+    return chart
+
+
+def choropleth_data() -> Any:
     """Dataset for choropleth example."""
     geo_states = gpd.read_file('notebooks/gz_2010_us_040_00_500k.json')
     df_polls = pd.read_csv('notebooks/presidential_poll_averages_2020.csv')
@@ -77,13 +88,28 @@ def dataset() -> Any:
     return geo_states_trump[geo_states_trump.modeldate == '11/03/2020']
 
 
-def test_altair_meta_hist(headless: bool) -> None:
+def scatterplot_data() -> Any:
+    # Grab an example dataset - data on movies from IMDB and Rotten Tomatoes
+    from vega_datasets import data
+    import ssl
+    ssl._create_default_https_context = ssl._create_unverified_context
+    return pd.read_json(data.movies.url)
+
+
+def test_meta_hist_choropleth(headless: bool) -> None:
     """Altair meta-histogram generates without error."""
-    chart: alt.Chart = example_choropleth(dataset(), "Example choropleth", None)
+    chart: alt.Chart = example_choropleth(choropleth_data(), "Example choropleth", None)
     expect_fig(chart, "tests/expected_altair_meta_hist", headless)
 
 
-def test_altair_meta_hist_extent(headless: bool) -> None:
+def test_meta_hist_choropleth_extent(headless: bool) -> None:
     """Altair meta-histogram generates without error."""
-    chart: alt.Chart = example_choropleth(dataset(), "Example choropleth", [0, 100])
+    chart: alt.Chart = example_choropleth(choropleth_data(), "Example choropleth", [0, 100])
+    expect_fig(chart, "tests/expected_altair_meta_hist_extent", headless)
+
+
+@pytest.mark.skip
+def test_meta_hist_scatterplot(headless: bool) -> None:
+    """Altair meta-histogram generates without error."""
+    chart: alt.Chart = example_scatterplot(scatterplot_data())
     expect_fig(chart, "tests/expected_altair_meta_hist_extent", headless)
