@@ -85,7 +85,7 @@ def test_meta_hist_choropleth(headless: bool) -> None:
 def test_meta_hist_choropleth_extent(headless: bool) -> None:
     """Altair meta-visualisation generates without error."""
     chart: alt.Chart = example_choropleth(choropleth_data(), "Example choropleth", [0, 100])
-    expect_fig(chart, "tests/expected_altair_meta_hist_extent", headless)
+    expect_fig(chart, "tests/expected_meta_hist_choropleth_extent", headless)
 
 
 def scatterplot_data() -> Any:
