@@ -67,7 +67,6 @@ def example_choropleth(candidate_states: pd.DataFrame, title: str, extent: Optio
 
 @meta_hist
 def example_scatterplot(data):
-    color = alt.Color(shorthand='pct_estimate', bin=alt.Bin(maxbins=20), scale=scale)
     chart = alt.Chart(data, title='IMDB VS RT by Budget').mark_circle().encode(
         x='IMDB_Rating',
         y='Rotten_Tomatoes_Rating',
@@ -108,8 +107,9 @@ def test_meta_hist_choropleth_extent(headless: bool) -> None:
     expect_fig(chart, "tests/expected_altair_meta_hist_extent", headless)
 
 
-@pytest.mark.skip
 def test_meta_hist_scatterplot(headless: bool) -> None:
     """Altair meta-histogram generates without error."""
-    chart: alt.Chart = example_scatterplot(scatterplot_data())
-    expect_fig(chart, "tests/expected_altair_meta_hist_extent", headless)
+    with pytest.raises(Exception) as e:
+        chart: alt.Chart = example_scatterplot(scatterplot_data())
+        expect_fig(chart, "tests/expected_altair_meta_hist_extent", headless)
+    assert e.value.args[0] == "Can only apply decorator to chart with colour binning."
