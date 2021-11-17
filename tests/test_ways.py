@@ -114,7 +114,7 @@ def test_meta_hist_scatterplot_color_bin_undefined(headless: bool) -> None:
 
 # In this case "colors used" is an empty plot. See https://github.com/WarwickCIM/ways-py/issues/63.
 def test_meta_hist_scatterplot_color_bin_False(headless: bool) -> None:
-    """Altair meta-visualisation generates with error."""
+    """Altair meta-visualisation generates without error."""
     color = alt.Color(shorthand='Production_Budget', bin=False)
     chart: alt.Chart = example_scatterplot(scatterplot_data(), color)
     expect_fig(chart, "tests/expected_meta_hist_scatterplot_color_bin_False", headless)
