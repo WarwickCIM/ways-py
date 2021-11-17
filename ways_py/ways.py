@@ -8,6 +8,11 @@ import pandas as pd  # type: ignore
 import traitlets  # type: ignore
 
 
+def is_defined(v: Any) -> bool:
+    """Altair's notion of an undefined schema property."""
+    return type(v).__name__ != 'UndefinedType'
+
+
 class Ways:
     """WAYS library."""
 
@@ -43,13 +48,12 @@ class Ways:
     @staticmethod
     def used_colours(src: alt.Chart) -> alt.Chart:
         y_axis = alt.Axis(orient='right', grid=False)
-        if src.encoding.color.bin and type(src.encoding.color.bin.extent).__name__ != 'UndefinedType':
+        if src.encoding.color.bin and is_defined(src.encoding.color.bin.extent):
             y_scale = alt.Scale(domain=src.encoding.color.bin.extent)
         else:
             y_scale = alt.Scale(zero=False)
         x_axis = alt.Axis(labels=False, tickSize=0, grid=False, titleAngle=270, titleAlign='right')
-        chart = alt.Chart(src.data) \
-                   .mark_rect()
+        chart = alt.Chart(src.data).mark_rect()
         if src.encoding.color.bin:
             chart = chart.transform_bin(as_=['y', 'y2'], bin=src.encoding.color.bin, field=Ways.field(src))
         return chart.transform_calculate(x='5') \
@@ -63,7 +67,7 @@ class Ways:
 
     @staticmethod
     def altair_meta_hist(src: alt.Chart) -> alt.Chart:
-        """Decorate an Altair chart with histogram metavisualisation showing color binning.
+        """Decorate an Altair chart with colour binning, with metavisualisations showing the binning profile.
 
         Args:
         src: colour-encoded Altair chart to be decorated.
@@ -71,6 +75,9 @@ class Ways:
         Returns:
             Altair chart object: modified chart
         """
+        if not is_defined(src.encoding.color.bin):
+            raise Exception("Can only apply decorator to chart with color.bin defined.")
+
         meta_chart: alt.Chart = (Ways.density_chart(src) | Ways.used_colours(src)).resolve_scale(y='shared')
         return (meta_chart | src) \
             .configure_view(strokeWidth=0) \
