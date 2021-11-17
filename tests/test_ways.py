@@ -105,11 +105,18 @@ def example_scatterplot(data: pd.DataFrame, color: alt.Color) -> alt.Chart:
     return chart
 
 
-def test_meta_hist_scatterplot_no_binning(headless: bool) -> None:
+def test_meta_hist_scatterplot_color_bin_undefined(headless: bool) -> None:
     """Altair meta-visualisation generates with error."""
     with pytest.raises(Exception) as e:
         example_scatterplot(scatterplot_data(), 'Production_Budget')
-    assert e.value.args[0] == "Can only apply decorator to chart with colour binning."
+    assert e.value.args[0] == "Can only apply decorator to chart with color.bin defined."
+
+
+def test_meta_hist_scatterplot_color_bin_False(headless: bool) -> None:
+    """Altair meta-visualisation generates with error."""
+    color = alt.Color(shorthand='Production_Budget', bin=False)
+    chart: alt.Chart = example_scatterplot(scatterplot_data(), color)
+    expect_fig(chart, "tests/expected_meta_hist_scatterplot_color_bin_False", headless)
 
 
 def test_meta_hist_scatterplot(headless: bool) -> None:
