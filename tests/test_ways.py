@@ -48,33 +48,6 @@ def expect_fig(fig: alt.Chart, filename: str, headless: bool) -> None:
         assert False, f"{filename}: image changed."
 
 
-@meta_hist
-def example_choropleth(candidate_states: pd.DataFrame, title: str, extent: Optional[List[int]]) -> alt.Chart:
-    """Choropleth of the US states with the candidate vote percentage mapped to color."""
-    scale = alt.Scale(type='band')
-    color = alt.Color(shorthand='pct_estimate', bin=alt.Bin(maxbins=20), scale=scale)
-    chart = alt.Chart(candidate_states, title=title) \
-        .mark_geoshape() \
-        .encode(color, tooltip=['NAME', 'pct_estimate']) \
-        .properties(width=500, height=300) \
-        .project(type='albersUsa')
-
-    if extent is not None:
-        chart.encoding.color.bin.extent = extent
-
-    return chart
-
-
-@meta_hist
-def example_scatterplot(data):
-    chart = alt.Chart(data, title='IMDB VS RT by Budget').mark_circle().encode(
-        x='IMDB_Rating',
-        y='Rotten_Tomatoes_Rating',
-        color='Production_Budget',
-    )
-    return chart
-
-
 def choropleth_data() -> Any:
     """Dataset for choropleth example."""
     geo_states = gpd.read_file('notebooks/gz_2010_us_040_00_500k.json')
@@ -87,6 +60,34 @@ def choropleth_data() -> Any:
     return geo_states_trump[geo_states_trump.modeldate == '11/03/2020']
 
 
+@meta_hist
+def example_choropleth(candidate_states: pd.DataFrame, title: str, extent: Optional[List[int]]) -> alt.Chart:
+    """Choropleth of the US states with the candidate vote percentage mapped to color."""
+    color = alt.Color(shorthand='pct_estimate', bin=alt.Bin(maxbins=20), scale=alt.Scale(type='band'))
+    chart = alt.Chart(candidate_states, title=title) \
+        .mark_geoshape() \
+        .encode(color, tooltip=['NAME', 'pct_estimate']) \
+        .properties(width=500, height=300) \
+        .project(type='albersUsa')
+
+    if extent is not None:
+        chart.encoding.color.bin.extent = extent
+
+    return chart
+
+
+def test_meta_hist_choropleth(headless: bool) -> None:
+    """Altair meta-visualisation generates without error."""
+    chart: alt.Chart = example_choropleth(choropleth_data(), "Example choropleth", None)
+    expect_fig(chart, "tests/expected_altair_meta_hist", headless)
+
+
+def test_meta_hist_choropleth_extent(headless: bool) -> None:
+    """Altair meta-visualisation generates without error."""
+    chart: alt.Chart = example_choropleth(choropleth_data(), "Example choropleth", [0, 100])
+    expect_fig(chart, "tests/expected_altair_meta_hist_extent", headless)
+
+
 def scatterplot_data() -> Any:
     # Grab an example dataset - data on movies from IMDB and Rotten Tomatoes
     from vega_datasets import data
@@ -95,21 +96,28 @@ def scatterplot_data() -> Any:
     return pd.read_json(data.movies.url)
 
 
-def test_meta_hist_choropleth(headless: bool) -> None:
-    """Altair meta-histogram generates without error."""
-    chart: alt.Chart = example_choropleth(choropleth_data(), "Example choropleth", None)
-    expect_fig(chart, "tests/expected_altair_meta_hist", headless)
+@meta_hist
+def example_scatterplot(data, color):
+    chart = alt.Chart(data, title='IMDB VS RT by Budget') \
+        .mark_circle() \
+        .encode(
+            x='IMDB_Rating',
+            y='Rotten_Tomatoes_Rating',
+            color=color,
+        )
+    return chart
 
 
-def test_meta_hist_choropleth_extent(headless: bool) -> None:
-    """Altair meta-histogram generates without error."""
-    chart: alt.Chart = example_choropleth(choropleth_data(), "Example choropleth", [0, 100])
-    expect_fig(chart, "tests/expected_altair_meta_hist_extent", headless)
-
-
-def test_meta_hist_scatterplot(headless: bool) -> None:
-    """Altair meta-histogram generates without error."""
+def test_meta_hist_scatterplot_no_binning(headless: bool) -> None:
+    """Altair meta-visualisation generates with error."""
     with pytest.raises(Exception) as e:
-        chart: alt.Chart = example_scatterplot(scatterplot_data())
-        expect_fig(chart, "tests/expected_altair_meta_hist_extent", headless)
+        example_scatterplot(scatterplot_data(), 'Production_Budget')
     assert e.value.args[0] == "Can only apply decorator to chart with colour binning."
+
+
+@pytest.mark.skip
+def test_meta_hist_scatterplot(headless: bool) -> None:
+    """Altair meta-visualisation generates without error."""
+    color: alt.Color = alt.Color(shorthand='Production_Budget', bin=alt.Bin(maxbins=20), scale=alt.Scale(type='band'))
+    chart: alt.Chart = example_scatterplot(scatterplot_data(), color)
+    expect_fig(chart, "tests/expected_altair_meta_hist_extent", headless)
