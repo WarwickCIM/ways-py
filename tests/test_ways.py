@@ -20,15 +20,13 @@ def headless(pytestconfig: Config) -> bool:
     return str(pytestconfig.getoption("headless")) == "True"
 
 
-ext: str = 'json'
-
-
 # Plotly doesn't generate SVG deterministically; use PNG instead.
 def expect_fig(fig: alt.Chart, filename: str, headless: bool) -> None:
     """Check for JSON-equivalence to stored image."""
-    have = fig.to_json()
+    have_vl = fig.to_json()
 
-    ext_image = 'svg'
+    ext_vl: str = 'json'
+    ext_image: str = 'svg'
     new_filename_image: str = filename + '.new.' + ext_image
     fig.save(new_filename_image)
     file_image = open(new_filename_image, 'rb')
@@ -36,27 +34,33 @@ def expect_fig(fig: alt.Chart, filename: str, headless: bool) -> None:
     print(type(have_image))
 
     try:
-        # Garbage collect any existing .new file
-        new_filename: str = filename + '.new.' + ext
+        # Garbage collect any existing .new files
+        new_filename: str = filename + '.new.' + ext_vl
         if os.path.isfile(new_filename):
             os.remove(new_filename)
 
-        file = open(filename + '.' + ext, 'r')
-        expected = file.read()
-        if expected != have:
-            print(f"{filename}: differs from reference image.")
-            raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), new_filename)
-        print(f"{filename}: image identical.")
+        file_vl = open(filename + '.' + ext_vl, 'r')
+        expected_vl = file_vl.read()
+        if expected_vl != have_vl:
+            print(f"{filename}: differs from baseline Vega Lite.")
+
+            file_image = open(filename + '.' + ext_image, 'rb')
+            expected_image = file_image.read()
+
+            if expected_image != have_image:
+                print(f"{filename}: differs from baseline image.")
+                raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), new_filename)
+        print(f"{filename}: Vega Lite identical.")
         if not headless:
             fig.show()
     except FileNotFoundError as e:
         file_new = open(e.filename, 'w')
-        file_new.write(have)
-        print(f"{filename}: creating new reference image.")
+        file_new.write(have_vl)
+        print(f"{filename}: creating new Vega Lite baseline.")
         alt.renderers.enable('mimetype')  # not sure what this is for
         if not headless:
             fig.show()
-        assert False, f"{filename}: image changed."
+        assert False, f"{filename}: Vega Lite changed."
 
 
 def choropleth_data() -> Any:
