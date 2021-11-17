@@ -31,16 +31,16 @@ def expect_fig(fig: alt.Chart, filename: str, headless: bool) -> None:
     fig.save(new_filename_image)
     file_image = open(new_filename_image, 'rb')
     have_image = file_image.read()
-    print(type(have_image))
 
     try:
         # Garbage collect any existing .new files
-        new_filename: str = filename + '.new.' + ext_vl
-        if os.path.isfile(new_filename):
-            os.remove(new_filename)
+        new_filename_vl: str = filename + '.new.' + ext_vl
+        if os.path.isfile(new_filename_vl):
+            os.remove(new_filename_vl)
 
         file_vl = open(filename + '.' + ext_vl, 'r')
         expected_vl = file_vl.read()
+
         if expected_vl != have_vl:
             print(f"{filename}: differs from baseline Vega Lite.")
 
@@ -49,8 +49,14 @@ def expect_fig(fig: alt.Chart, filename: str, headless: bool) -> None:
 
             if expected_image != have_image:
                 print(f"{filename}: differs from baseline image.")
-                raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), new_filename)
-        print(f"{filename}: Vega Lite identical.")
+                raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), new_filename_vl)
+        else:
+            print(f"{filename}: Vega Lite identical.")
+            # therefore: image identical
+
+        print(f"{filename}: image identical.")
+        os.remove(new_filename_image)
+
         if not headless:
             fig.show()
     except FileNotFoundError as e:
