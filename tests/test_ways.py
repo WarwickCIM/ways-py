@@ -1,6 +1,5 @@
 """Test module for backfillz."""
 
-import errno
 import inspect
 import os
 from typing import Any, List, Optional
@@ -27,35 +26,38 @@ def expect_fig(fig: alt.Chart, filename: str, headless: bool) -> None:
 
     ext_vl: str = 'json'
     ext_image: str = 'svg'
-    new_filename_image: str = filename + '.new.' + ext_image
-    fig.save(new_filename_image)
-    file_image = open(new_filename_image, 'rb')
+    filename_new_image: str = filename + '.new.' + ext_image
+    fig.save(filename_new_image)
+    file_image = open(filename_new_image, 'rb')
     have_image = file_image.read()
 
     try:
-        # Garbage collect any existing .new files
-        new_filename_vl: str = filename + '.new.' + ext_vl
-        if os.path.isfile(new_filename_vl):
-            os.remove(new_filename_vl)
-
-        file_vl = open(filename + '.' + ext_vl, 'r')
+        filename_vl: str = filename + '.' + ext_vl
+        file_vl = open(filename_vl, 'r')
         expected_vl = file_vl.read()
+
+        file_image = open(filename + '.' + ext_image, 'rb')
+        expected_image = file_image.read()
 
         if expected_vl != have_vl:
             print(f"{filename}: differs from baseline Vega Lite.")
-
-            file_image = open(filename + '.' + ext_image, 'rb')
-            expected_image = file_image.read()
+            filename_new_vl = filename_vl
 
             if expected_image != have_image:
                 print(f"{filename}: differs from baseline image.")
-                raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), new_filename_vl)
+                filename_new_vl = filename + '.new.' + ext_vl
+
+            file_new_vl = open(filename_new_vl, 'w')
+            file_new_vl.write(have_vl)
+            print(f"{filename}: creating new Vega Lite baseline.")
+
+            assert False, f"{filename}: image changed."
         else:
             print(f"{filename}: Vega Lite identical.")
-            # therefore: image identical
+            assert expected_image == have_image  # require (Vega Lite -> image) to be a function
 
         print(f"{filename}: image identical.")
-        os.remove(new_filename_image)
+        os.remove(filename_new_image)
 
         if not headless:
             fig.show()
@@ -66,7 +68,7 @@ def expect_fig(fig: alt.Chart, filename: str, headless: bool) -> None:
         alt.renderers.enable('mimetype')  # not sure what this is for
         if not headless:
             fig.show()
-        assert False, f"{filename}: Vega Lite changed."
+        assert False, f"{filename}: image not found."
 
 
 def choropleth_data() -> Any:
