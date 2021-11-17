@@ -20,11 +20,21 @@ def headless(pytestconfig: Config) -> bool:
     return str(pytestconfig.getoption("headless")) == "True"
 
 
+ext: str = 'json'
+
+
 # Plotly doesn't generate SVG deterministically; use PNG instead.
 def expect_fig(fig: alt.Chart, filename: str, headless: bool) -> None:
     """Check for JSON-equivalence to stored image."""
-    ext = 'json'
     have = fig.to_json()
+
+    ext_png = 'png'
+    new_filename_png: str = filename + '.new.' + ext_png
+    fig.save(new_filename_png)
+    file = open(new_filename_png, 'rb')
+    os.remove(new_filename_png)
+    have_png = file.read()
+
     try:
         # Garbage collect any existing .new file
         new_filename: str = filename + '.new.' + ext
