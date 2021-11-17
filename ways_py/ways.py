@@ -53,8 +53,7 @@ class Ways:
         else:
             y_scale = alt.Scale(zero=False)
         x_axis = alt.Axis(labels=False, tickSize=0, grid=False, titleAngle=270, titleAlign='right')
-        chart = alt.Chart(src.data) \
-                   .mark_rect()
+        chart = alt.Chart(src.data).mark_rect()
         if src.encoding.color.bin:
             chart = chart.transform_bin(as_=['y', 'y2'], bin=src.encoding.color.bin, field=Ways.field(src))
         return chart.transform_calculate(x='5') \
