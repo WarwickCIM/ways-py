@@ -112,6 +112,7 @@ def test_meta_hist_scatterplot_color_bin_undefined(headless: bool) -> None:
     assert e.value.args[0] == "Can only apply decorator to chart with color.bin defined."
 
 
+# In this case "colors used" is an empty plot. See https://github.com/WarwickCIM/ways-py/issues/63.
 def test_meta_hist_scatterplot_color_bin_False(headless: bool) -> None:
     """Altair meta-visualisation generates with error."""
     color = alt.Color(shorthand='Production_Budget', bin=False)
