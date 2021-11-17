@@ -98,13 +98,10 @@ def scatterplot_data() -> Any:
 
 @meta_hist
 def example_scatterplot(data: pd.DataFrame, color: alt.Color) -> alt.Chart:
-    chart = alt.Chart(data, title='IMDB VS RT by Budget') \
+    """Scatterplot of IMdB ratings vs. Rotten Tomatoes by budget."""
+    chart = alt.Chart(data, title='IMdB vs. RT by Budget') \
         .mark_circle() \
-        .encode(
-            x='IMDB_Rating',
-            y='Rotten_Tomatoes_Rating',
-            color=color,
-        )
+        .encode(x='IMDB_Rating', y='Rotten_Tomatoes_Rating', color=color)
     return chart
 
 
@@ -117,6 +114,7 @@ def test_meta_hist_scatterplot_no_binning(headless: bool) -> None:
 
 def test_meta_hist_scatterplot(headless: bool) -> None:
     """Altair meta-visualisation generates without error."""
-    color: alt.Color = alt.Color(shorthand='Production_Budget', bin=alt.Bin(maxbins=20), scale=alt.Scale(type='band'))
+    scale = alt.Scale(type='band')
+    color = alt.Color(shorthand='Production_Budget', bin=alt.Bin(maxbins=20), scale=scale)
     chart: alt.Chart = example_scatterplot(scatterplot_data(), color)
     expect_fig(chart, "tests/expected_meta_hist_scatterplot", headless)

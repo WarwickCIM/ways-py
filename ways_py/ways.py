@@ -8,7 +8,7 @@ import pandas as pd  # type: ignore
 import traitlets  # type: ignore
 
 
-def is_defined (v: Any) -> bool:
+def is_defined(v: Any) -> bool:
     """Altair's notion of an undefined schema property."""
     return type(v).__name__ != 'UndefinedType'
 
