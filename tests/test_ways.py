@@ -89,15 +89,15 @@ def test_meta_hist_choropleth_extent(headless: bool) -> None:
 
 
 def scatterplot_data() -> Any:
-    # Grab an example dataset - data on movies from IMDB and Rotten Tomatoes
-    from vega_datasets import data
+    """Data on movies from IMDB and Rotten Tomatoes."""
+    from vega_datasets import data  # type: ignore
     import ssl
     ssl._create_default_https_context = ssl._create_unverified_context
     return pd.read_json(data.movies.url)
 
 
 @meta_hist
-def example_scatterplot(data, color):
+def example_scatterplot(data: pd.DataFrame, color: alt.Color) -> alt.Chart:
     chart = alt.Chart(data, title='IMDB VS RT by Budget') \
         .mark_circle() \
         .encode(
