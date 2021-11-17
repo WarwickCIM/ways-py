@@ -109,7 +109,7 @@ class TestMetaHist:
         expect_fig(chart, "tests/expected_meta_hist_choropleth_extent", headless)
 
     @staticmethod
-    def test_scatterplot_color_bin_undefined(headless: bool) -> None:
+    def test_scatterplot_bin_undefined(headless: bool) -> None:
         """Altair meta-visualisation generates with error."""
         with pytest.raises(Exception) as e:
             example_scatterplot(scatterplot_data(), 'Production_Budget')
@@ -117,11 +117,11 @@ class TestMetaHist:
 
     # In this case "colors used" is an empty plot. See https://github.com/WarwickCIM/ways-py/issues/63.
     @staticmethod
-    def test_scatterplot_color_bin_False(headless: bool) -> None:
+    def test_scatterplot_bin_False(headless: bool) -> None:
         """Altair meta-visualisation generates without error."""
         color = alt.Color(shorthand='Production_Budget', bin=False)
         chart: alt.Chart = example_scatterplot(scatterplot_data(), color)
-        expect_fig(chart, "tests/expected_meta_hist_scatterplot_color_bin_False", headless)
+        expect_fig(chart, "tests/expected_meta_hist_scatterplot_bin_False", headless)
 
     @staticmethod
     def test_scatterplot(headless: bool) -> None:
