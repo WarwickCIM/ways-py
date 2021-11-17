@@ -76,18 +76,6 @@ def example_choropleth(candidate_states: pd.DataFrame, title: str, extent: Optio
     return chart
 
 
-def test_meta_hist_choropleth(headless: bool) -> None:
-    """Altair meta-visualisation generates without error."""
-    chart: alt.Chart = example_choropleth(choropleth_data(), "Example choropleth", None)
-    expect_fig(chart, "tests/expected_meta_hist_choropleth", headless)
-
-
-def test_meta_hist_choropleth_extent(headless: bool) -> None:
-    """Altair meta-visualisation generates without error."""
-    chart: alt.Chart = example_choropleth(choropleth_data(), "Example choropleth", [0, 100])
-    expect_fig(chart, "tests/expected_meta_hist_choropleth_extent", headless)
-
-
 def scatterplot_data() -> Any:
     """Data on movies from IMDB and Rotten Tomatoes."""
     from vega_datasets import data  # type: ignore
@@ -105,24 +93,40 @@ def example_scatterplot(data: pd.DataFrame, color: alt.Color) -> alt.Chart:
     return chart
 
 
-def test_meta_hist_scatterplot_color_bin_undefined(headless: bool) -> None:
-    """Altair meta-visualisation generates with error."""
-    with pytest.raises(Exception) as e:
-        example_scatterplot(scatterplot_data(), 'Production_Budget')
-    assert e.value.args[0] == "Can only apply decorator to chart with color.bin defined."
+class TestMetaHist:
+    @staticmethod
+    def test_choropleth(headless: bool) -> None:
+        """Altair meta-visualisation generates without error."""
+        chart: alt.Chart = example_choropleth(choropleth_data(), "Example choropleth", None)
+        expect_fig(chart, "tests/expected_meta_hist_choropleth", headless)
+
+    @staticmethod
+    def test_choropleth_extent(headless: bool) -> None:
+        """Altair meta-visualisation generates without error."""
+        chart: alt.Chart = example_choropleth(choropleth_data(), "Example choropleth", [0, 100])
+        expect_fig(chart, "tests/expected_meta_hist_choropleth_extent", headless)
+
+    @staticmethod
+    def test_scatterplot_color_bin_undefined(headless: bool) -> None:
+        """Altair meta-visualisation generates with error."""
+        with pytest.raises(Exception) as e:
+            example_scatterplot(scatterplot_data(), 'Production_Budget')
+        assert e.value.args[0] == "Can only apply decorator to chart with color.bin defined."
 
 
-# In this case "colors used" is an empty plot. See https://github.com/WarwickCIM/ways-py/issues/63.
-def test_meta_hist_scatterplot_color_bin_False(headless: bool) -> None:
-    """Altair meta-visualisation generates without error."""
-    color = alt.Color(shorthand='Production_Budget', bin=False)
-    chart: alt.Chart = example_scatterplot(scatterplot_data(), color)
-    expect_fig(chart, "tests/expected_meta_hist_scatterplot_color_bin_False", headless)
+    # In this case "colors used" is an empty plot. See https://github.com/WarwickCIM/ways-py/issues/63.
+    @staticmethod
+    def test_scatterplot_color_bin_False(headless: bool) -> None:
+        """Altair meta-visualisation generates without error."""
+        color = alt.Color(shorthand='Production_Budget', bin=False)
+        chart: alt.Chart = example_scatterplot(scatterplot_data(), color)
+        expect_fig(chart, "tests/expected_meta_hist_scatterplot_color_bin_False", headless)
 
 
-def test_meta_hist_scatterplot(headless: bool) -> None:
-    """Altair meta-visualisation generates without error."""
-    scale = alt.Scale(type='band')
-    color = alt.Color(shorthand='Production_Budget', bin=alt.Bin(maxbins=20), scale=scale)
-    chart: alt.Chart = example_scatterplot(scatterplot_data(), color)
-    expect_fig(chart, "tests/expected_meta_hist_scatterplot", headless)
+    @staticmethod
+    def test_scatterplot(headless: bool) -> None:
+        """Altair meta-visualisation generates without error."""
+        scale = alt.Scale(type='band')
+        color = alt.Color(shorthand='Production_Budget', bin=alt.Bin(maxbins=20), scale=scale)
+        chart: alt.Chart = example_scatterplot(scatterplot_data(), color)
+        expect_fig(chart, "tests/expected_meta_hist_scatterplot", headless)
