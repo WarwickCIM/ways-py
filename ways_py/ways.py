@@ -62,7 +62,7 @@ class Ways:
                     y=alt.Y('y:Q', scale=y_scale, axis=y_axis, title=""),
                     y2='y2:Q',
                     x=alt.X('x:Q', sort='descending', axis=x_axis, title="colours used")
-                )
+                )  # noqa: E123
         else:
             # The following (which happens when bin=False) doesn't make sense; in particular y and y2 are
             # not defined, so it doesn't make sense to try and plot them.
@@ -73,11 +73,11 @@ class Ways:
                     y=alt.Y('y:Q', scale=y_scale, axis=y_axis, title=""),
                     y2='y2:Q',
                     x=alt.X('x:Q', sort='descending', axis=x_axis, title="colours used")
-                )
+                )  # noqa: E123
 
         return chart \
-                .encode(src.encoding.color) \
-                .properties(width=20, height=300)  # noqa: E123
+            .encode(src.encoding.color) \
+            .properties(width=20, height=300)  # noqa: E123
 
     @staticmethod
     def altair_meta_hist(src: alt.Chart) -> alt.Chart:
