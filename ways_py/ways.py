@@ -54,9 +54,10 @@ class Ways:
             y_scale = alt.Scale(zero=False)
         x_axis = alt.Axis(labels=False, tickSize=0, grid=False, titleAngle=270, titleAlign='right')
         if src.encoding.color.bin:
-            chart = alt.Chart(src.data).mark_rect()
-            chart = chart.transform_bin(as_=['y', 'y2'], bin=src.encoding.color.bin, field=Ways.field(src))
-            chart = chart.transform_calculate(x='5') \
+            chart = alt.Chart(src.data) \
+                .mark_rect() \
+                .transform_bin(as_=['y', 'y2'], bin=src.encoding.color.bin, field=Ways.field(src)) \
+                .transform_calculate(x='5') \
                 .encode(
                     y=alt.Y('y:Q', scale=y_scale, axis=y_axis, title=""),
                     y2='y2:Q',
@@ -65,8 +66,9 @@ class Ways:
                 .encode(src.encoding.color) \
                 .properties(width=20, height=300)  # noqa: E123
         else:
-            chart = alt.Chart(src.data).mark_rect()
-            chart = chart.transform_calculate(x='5') \
+            chart = alt.Chart(src.data) \
+                .mark_rect() \
+                .transform_calculate(x='5') \
                 .encode(
                     y=alt.Y('y:Q', scale=y_scale, axis=y_axis, title=""),
                     y2='y2:Q',
