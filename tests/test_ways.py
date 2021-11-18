@@ -47,10 +47,7 @@ def expect_fig(fig: alt.Chart, filename: str, headless: bool) -> None:
         if expected_vl != have_vl:
             print(f"{filename}: Vega-Lite changed.")
 
-            if expected_image != have_image:
-                filename_new_vl = filename + '.new.' + ext_vl
-            else:
-                filename_new_vl = filename_vl
+            filename_new_vl = filename + '.new.' + ext_vl if expected_image != have_image else filename_vl
 
             file_new_vl = open(filename_new_vl, 'w')
             file_new_vl.write(have_vl)
