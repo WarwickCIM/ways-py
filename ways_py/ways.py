@@ -31,7 +31,6 @@ class Ways:
             bin=alt.Bin(maxbins=100),
             axis=alt.Axis(orient='left', grid=False, values=sorted([0, 50] + [y_min, y_max])),
             title="",
-            scale=alt.Scale(nice=True),
         )
         x_axis = alt.X(
             'sum(proportion):Q',

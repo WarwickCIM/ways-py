@@ -57663,9 +57663,6 @@
             "maxbins": 100
           },
           "field": "Production_Budget",
-          "scale": {
-            "nice": true
-          },
           "title": "",
           "type": "quantitative"
         }
