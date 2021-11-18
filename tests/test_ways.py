@@ -1,6 +1,5 @@
 """Test module for backfillz."""
 
-import errno
 import inspect
 import os
 from typing import Any, List, Optional
@@ -20,44 +19,67 @@ def headless(pytestconfig: Config) -> bool:
     return str(pytestconfig.getoption("headless")) == "True"
 
 
-ext: str = 'json'
-
-
-# Plotly doesn't generate SVG deterministically; use PNG instead.
 def expect_fig(fig: alt.Chart, filename: str, headless: bool) -> None:
-    """Check for JSON-equivalence to stored image."""
-    have = fig.to_json()
+    """Check for equivalence to stored output baselines.
 
-    ext_png = 'png'
-    new_filename_png: str = filename + '.new.' + ext_png
-    fig.save(new_filename_png)
-    file_png = open(new_filename_png, 'rb')
-    os.remove(new_filename_png)
-    have_png = file_png.read()
-    print(type(have_png))
+    The tests rely on altair_saver (https://pypi.org/project/altair-saver/), which in turn needs chromedriver
+    or similar to be installed.
+
+    For each approval test, there are two expected outputs (a.k.a. "baselines"):
+      - Vega-Lite spec (in JSON format)
+      - SVG image corresponding to Vega-Lite spec
+
+    1. A change to the _image_ (which implies that the Vega Lite also changed) is reported as a test failure.
+       To promote to a baseline, move the .new.svg and .new.json files over the corresponding .svg and .json.
+       (The alias `git approve` helps with this, but use with care: it currently approves all .new files!)
+
+    2. Otherwise, the approval test passes. If the Vega Lite has changed, the change is interpreted as a
+       refactoring (since it has not visual consequences). This will generate a revised .json file without
+       the .new prefix, which can simply be committed as usual.
+
+    When a new approval test is run for the first time, the situation is similar to (1) except that there are
+    no preexisting .svg or .json files.
+    """
+    if not headless:
+        fig.show()
+
+    # easy API call to convert to Vega-Lite; create file later if needed
+    ext_vl: str = 'json'
+    filename_vl: str = filename + '.' + ext_vl
+    have_vl = fig.to_json()
+
+    # go via a file to convert to .svg; keep file around in case needed
+    ext_image: str = 'svg'
+    filename_new_image: str = filename + '.new.' + ext_image
+    fig.save(filename_new_image)
+    file_image = open(filename_new_image, 'rb')
+    have_image = file_image.read()
 
     try:
-        # Garbage collect any existing .new file
-        new_filename: str = filename + '.new.' + ext
-        if os.path.isfile(new_filename):
-            os.remove(new_filename)
+        # load baselines for both Vega-Lite and .svg
+        file_vl = open(filename_vl, 'r')
+        expected_vl = file_vl.read()
+        file_image = open(filename + '.' + ext_image, 'rb')
+        expected_image = file_image.read()
 
-        file = open(filename + '.' + ext, 'r')
-        expected = file.read()
-        if expected != have:
-            print(f"{filename}: differs from reference image.")
-            raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), new_filename)
+        if expected_vl != have_vl:
+            print(f"{filename}: Vega-Lite changed.")
+            filename_new_vl = filename + '.new.' + ext_vl if expected_image != have_image else filename_vl
+            file_new_vl = open(filename_new_vl, 'w')
+            file_new_vl.write(have_vl)
+        else:
+            print(f"{filename}: Vega Lite identical.")
+
+        # require (Vega Lite -> image) to be a function
+        assert expected_image == have_image, f"{filename}: image changed."
         print(f"{filename}: image identical.")
-        if not headless:
-            fig.show()
+        os.remove(filename_new_image)
+
     except FileNotFoundError as e:
         file_new = open(e.filename, 'w')
-        file_new.write(have)
-        print(f"{filename}: creating new reference image.")
-        alt.renderers.enable('mimetype')  # not sure what this is for
-        if not headless:
-            fig.show()
-        assert False, f"{filename}: image changed."
+        file_new.write(have_vl)
+        print(f"{filename}: initial Vega-Lite baseline.")
+        assert False, f"{filename}: image not found."
 
 
 def choropleth_data() -> Any:
