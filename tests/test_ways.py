@@ -71,8 +71,6 @@ def expect_fig(fig: alt.Chart, filename: str, headless: bool) -> None:
         file_new = open(e.filename, 'w')
         file_new.write(have_vl)
         print(f"{filename}: initial Vega-Lite baseline.")
-        if not headless:
-            fig.show()
         assert False, f"{filename}: image not found."
 
 
