@@ -1,6 +1,7 @@
 """Test module for backfillz."""
 
 import inspect
+import math
 import os
 from typing import Any, List, Optional
 
@@ -137,19 +138,18 @@ class TestMetaHist:
 
     @staticmethod
     def test_choropleth(headless: bool) -> None:
-        """Altair meta-visualisation generates without error."""
         chart: alt.Chart = example_choropleth(choropleth_data(), inspect.stack()[0][3], None)
+        assert [math.ceil(y) for y in chart.hconcat[0].encoding.y.axis.values] == [0, 6, 50, 62]
         expect_fig(chart, "tests/expected_meta_hist_choropleth", headless)
 
     @staticmethod
     def test_choropleth_extent(headless: bool) -> None:
-        """Altair meta-visualisation generates without error."""
         chart: alt.Chart = example_choropleth(choropleth_data(), inspect.stack()[0][3], [0, 100])
+        assert [math.ceil(y) for y in chart.hconcat[0].encoding.y.axis.values] == [0, 6, 50, 62]
         expect_fig(chart, "tests/expected_meta_hist_choropleth_extent", headless)
 
     @staticmethod
     def test_scatterplot_bin_undefined(headless: bool) -> None:
-        """Altair meta-visualisation generates with error."""
         with pytest.raises(Exception) as e:
             example_scatterplot(scatterplot_data(), 'Production_Budget', inspect.stack()[0][3])
         assert e.value.args[0] == "Can only apply decorator to chart with color.bin defined."
@@ -157,14 +157,12 @@ class TestMetaHist:
     # In this case "colors used" is an empty plot. See https://github.com/WarwickCIM/ways-py/issues/63.
     @staticmethod
     def test_scatterplot_bin_False(headless: bool) -> None:
-        """Altair meta-visualisation generates without error."""
         color = alt.Color(shorthand='Production_Budget', bin=False)
         chart: alt.Chart = example_scatterplot(scatterplot_data(), color, inspect.stack()[0][3])
         expect_fig(chart, "tests/expected_meta_hist_scatterplot_bin_False", headless)
 
     @staticmethod
     def test_scatterplot(headless: bool) -> None:
-        """Altair meta-visualisation generates without error."""
         scale = alt.Scale(type='band')
         color = alt.Color(shorthand='Production_Budget', bin=alt.Bin(maxbins=20), scale=scale)
         chart: alt.Chart = example_scatterplot(scatterplot_data(), color, inspect.stack()[0][3])
