@@ -22,9 +22,15 @@ def headless(pytestconfig: Config) -> bool:
 # Plotly doesn't generate SVG deterministically; use PNG instead.
 def expect_fig(fig: alt.Chart, filename: str, headless: bool) -> None:
     """Check for JSON-equivalence to stored image."""
+    if not headless:
+        fig.show()
+
+    # easy API call to convert to Vega-Lite (JSON); create file later if needed
+    ext_vl: str = 'json'
+    filename_vl: str = filename + '.' + ext_vl
     have_vl = fig.to_json()
 
-    ext_vl: str = 'json'
+    # go via a file to convert to .svg; keep file around in case needed
     ext_image: str = 'svg'
     filename_new_image: str = filename + '.new.' + ext_image
     fig.save(filename_new_image)
@@ -32,39 +38,35 @@ def expect_fig(fig: alt.Chart, filename: str, headless: bool) -> None:
     have_image = file_image.read()
 
     try:
-        filename_vl: str = filename + '.' + ext_vl
+        # load baselines for both Vega-Lite and .svg
         file_vl = open(filename_vl, 'r')
         expected_vl = file_vl.read()
-
         file_image = open(filename + '.' + ext_image, 'rb')
         expected_image = file_image.read()
 
         if expected_vl != have_vl:
-            print(f"{filename}: Vega Lite changed.")
-            filename_new_vl = filename_vl
+            print(f"{filename}: Vega-Lite changed.")
 
             if expected_image != have_image:
                 filename_new_vl = filename + '.new.' + ext_vl
+            else:
+                filename_new_vl = filename_vl
 
             file_new_vl = open(filename_new_vl, 'w')
             file_new_vl.write(have_vl)
-            print(f"{filename}: creating new Vega Lite baseline.")
-
-            assert expected_image == have_image, f"{filename}: image changed."
+            print(f"{filename}: new Vega-Lite baseline.")
         else:
             print(f"{filename}: Vega Lite identical.")
-            assert expected_image == have_image  # require (Vega Lite -> image) to be a function
 
+        # require (Vega Lite -> image) to be a function
+        assert expected_image == have_image, f"{filename}: image changed."
         print(f"{filename}: image identical.")
         os.remove(filename_new_image)
 
-        if not headless:
-            fig.show()
     except FileNotFoundError as e:
         file_new = open(e.filename, 'w')
         file_new.write(have_vl)
-        print(f"{filename}: creating new Vega Lite baseline.")
-        alt.renderers.enable('mimetype')  # not sure what this is for
+        print(f"{filename}: initial Vega-Lite baseline.")
         if not headless:
             fig.show()
         assert False, f"{filename}: image not found."
