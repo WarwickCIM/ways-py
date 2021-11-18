@@ -20,7 +20,10 @@ def headless(pytestconfig: Config) -> bool:
 
 
 def expect_fig(fig: alt.Chart, filename: str, headless: bool) -> None:
-    """Check for JSON-equivalence to stored image.
+    """Check for equivalence to stored output baselines.
+
+    The tests rely on altair_saver (https://pypi.org/project/altair-saver/), which in turn needs chromedriver
+    or similar to be installed.
 
     For each approval test, there are two expected outputs (a.k.a. "baselines"):
       - Vega-Lite spec (in JSON format)
