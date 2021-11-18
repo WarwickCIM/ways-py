@@ -31,7 +31,6 @@ def expect_fig(fig: alt.Chart, filename: str, headless: bool) -> None:
 
     1. A change to the _image_ (which implies that the Vega Lite also changed) is reported as a test failure.
        To promote to a baseline, move the .new.svg and .new.json files over the corresponding .svg and .json.
-       (The alias `git approve` helps with this, but use with care: it currently approves all .new files!)
 
     2. Otherwise, the approval test passes. If the Vega Lite has changed, the change is interpreted as a
        refactoring (since it has not visual consequences). This will generate a revised .json file without
@@ -39,6 +38,12 @@ def expect_fig(fig: alt.Chart, filename: str, headless: bool) -> None:
 
     When a new approval test is run for the first time, the situation is similar to (1) except that there are
     no preexisting .svg or .json files.
+
+    Some useful `git` aliases are defined in `.gitconfig.aliases` (include the file into your `.gitconfig` to
+    enable):
+
+    - `git approve` renames all .new files so that they overwrite the existing baselines (use with care)
+    - `git reject` discards all .new files
     """
     if not headless:
         fig.show()
