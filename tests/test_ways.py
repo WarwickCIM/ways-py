@@ -19,19 +19,24 @@ def headless(pytestconfig: Config) -> bool:
     return str(pytestconfig.getoption("headless")) == "True"
 
 
-# For each approval test, there are two expected outputs (a.k.a. "baselines"):
-# - Vega-Lite spec (in JSON format)
-# - SVG image corresponding to Vega-Lite spec
-
-# 1. A change to the _image_ (which implies that the Vega Lite also changed) is reported as a test failure.
-#    To accept as a new baseline, move the .new.svg and .new.json files over the corresponding .svg and .json.
-#    (The alias `git approve` helps with this, but use with care: it currently approves all .new files!)
-#
-# 2. Otherwise, the approval test passes. If the Vega Lite has changed, the change is interpreted as a
-#    refactoring (since it has not visual consequences). This will generate a revised .json file, but without
-#    the .new prefix; this can simply be committed as usual.
 def expect_fig(fig: alt.Chart, filename: str, headless: bool) -> None:
-    """Check for JSON-equivalence to stored image."""
+    """Check for JSON-equivalence to stored image.
+
+    For each approval test, there are two expected outputs (a.k.a. "baselines"):
+      - Vega-Lite spec (in JSON format)
+      - SVG image corresponding to Vega-Lite spec
+
+    1. A change to the _image_ (which implies that the Vega Lite also changed) is reported as a test failure.
+       To promote to a baseline, move the .new.svg and .new.json files over the corresponding .svg and .json.
+       (The alias `git approve` helps with this, but use with care: it currently approves all .new files!)
+
+    2. Otherwise, the approval test passes. If the Vega Lite has changed, the change is interpreted as a
+       refactoring (since it has not visual consequences). This will generate a revised .json file without
+       the .new prefix, which can simply be committed as usual.
+
+    When a new approval test is run for the first time, the situation is similar to (1) except that there are
+    no preexisting .svg or .json files.
+    """
     if not headless:
         fig.show()
 
