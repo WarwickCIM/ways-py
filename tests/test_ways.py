@@ -1,6 +1,7 @@
 """Test module for backfillz."""
 
 import inspect
+import math
 import os
 from typing import Any, List, Optional
 
@@ -31,7 +32,6 @@ def expect_fig(fig: alt.Chart, filename: str, headless: bool) -> None:
 
     1. A change to the _image_ (which implies that the Vega Lite also changed) is reported as a test failure.
        To promote to a baseline, move the .new.svg and .new.json files over the corresponding .svg and .json.
-       (The alias `git approve` helps with this, but use with care: it currently approves all .new files!)
 
     2. Otherwise, the approval test passes. If the Vega Lite has changed, the change is interpreted as a
        refactoring (since it has not visual consequences). This will generate a revised .json file without
@@ -39,6 +39,12 @@ def expect_fig(fig: alt.Chart, filename: str, headless: bool) -> None:
 
     When a new approval test is run for the first time, the situation is similar to (1) except that there are
     no preexisting .svg or .json files.
+
+    Some useful `git` aliases are defined in `.gitconfig.aliases` (include the file into your `.gitconfig` to
+    enable):
+
+    - `git approve` renames all .new files so that they overwrite the existing baselines (use with care)
+    - `git reject` discards all .new files
     """
     if not headless:
         fig.show()
@@ -132,19 +138,18 @@ class TestMetaHist:
 
     @staticmethod
     def test_choropleth(headless: bool) -> None:
-        """Altair meta-visualisation generates without error."""
         chart: alt.Chart = example_choropleth(choropleth_data(), inspect.stack()[0][3], None)
+        assert [math.ceil(y) for y in chart.hconcat[0].encoding.y.axis.values] == [0, 6, 50, 62]
         expect_fig(chart, "tests/expected_meta_hist_choropleth", headless)
 
     @staticmethod
     def test_choropleth_extent(headless: bool) -> None:
-        """Altair meta-visualisation generates without error."""
         chart: alt.Chart = example_choropleth(choropleth_data(), inspect.stack()[0][3], [0, 100])
+        assert [math.ceil(y) for y in chart.hconcat[0].encoding.y.axis.values] == [0, 6, 50, 62]
         expect_fig(chart, "tests/expected_meta_hist_choropleth_extent", headless)
 
     @staticmethod
     def test_scatterplot_bin_undefined(headless: bool) -> None:
-        """Altair meta-visualisation generates with error."""
         with pytest.raises(Exception) as e:
             example_scatterplot(scatterplot_data(), 'Production_Budget', inspect.stack()[0][3])
         assert e.value.args[0] == "Can only apply decorator to chart with color.bin defined."
@@ -152,14 +157,12 @@ class TestMetaHist:
     # In this case "colors used" is an empty plot. See https://github.com/WarwickCIM/ways-py/issues/63.
     @staticmethod
     def test_scatterplot_bin_False(headless: bool) -> None:
-        """Altair meta-visualisation generates without error."""
         color = alt.Color(shorthand='Production_Budget', bin=False)
         chart: alt.Chart = example_scatterplot(scatterplot_data(), color, inspect.stack()[0][3])
         expect_fig(chart, "tests/expected_meta_hist_scatterplot_bin_False", headless)
 
     @staticmethod
     def test_scatterplot(headless: bool) -> None:
-        """Altair meta-visualisation generates without error."""
         scale = alt.Scale(type='band')
         color = alt.Color(shorthand='Production_Budget', bin=alt.Bin(maxbins=20), scale=scale)
         chart: alt.Chart = example_scatterplot(scatterplot_data(), color, inspect.stack()[0][3])
