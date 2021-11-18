@@ -56,7 +56,7 @@ class Ways:
         if src.encoding.color.bin:
             chart = alt.Chart(src.data).mark_rect()
             chart = chart.transform_bin(as_=['y', 'y2'], bin=src.encoding.color.bin, field=Ways.field(src))
-            return chart.transform_calculate(x='5') \
+            chart = chart.transform_calculate(x='5') \
                 .encode(
                     y=alt.Y('y:Q', scale=y_scale, axis=y_axis, title=""),
                     y2='y2:Q',
@@ -66,7 +66,7 @@ class Ways:
                 .properties(width=20, height=300)  # noqa: E123
         else:
             chart = alt.Chart(src.data).mark_rect()
-            return chart.transform_calculate(x='5') \
+            chart = chart.transform_calculate(x='5') \
                 .encode(
                     y=alt.Y('y:Q', scale=y_scale, axis=y_axis, title=""),
                     y2='y2:Q',
@@ -74,6 +74,7 @@ class Ways:
                 ) \
                 .encode(src.encoding.color) \
                 .properties(width=20, height=300)  # noqa: E123
+        return chart
 
     @staticmethod
     def altair_meta_hist(src: alt.Chart) -> alt.Chart:
