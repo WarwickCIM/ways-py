@@ -19,13 +19,23 @@ def headless(pytestconfig: Config) -> bool:
     return str(pytestconfig.getoption("headless")) == "True"
 
 
-# Plotly doesn't generate SVG deterministically; use PNG instead.
+# For each approval test, there are two expected outputs (a.k.a. "baselines"):
+# - Vega-Lite spec (in JSON format)
+# - SVG image corresponding to Vega-Lite spec
+
+# 1. A change to the _image_ (which implies that the Vega Lite also changed) is reported as a test failure.
+#    To accept as a new baseline, move the .new.svg and .new.json files over the corresponding .svg and .json.
+#    (The alias `git approve` helps with this, but use with care: it currently approves all .new files!)
+#
+# 2. Otherwise, the approval test passes. If the Vega Lite has changed, the change is interpreted as a
+#    refactoring (since it has not visual consequences). This will generate a revised .json file, but without
+#    the .new prefix; this can simply be committed as usual.
 def expect_fig(fig: alt.Chart, filename: str, headless: bool) -> None:
     """Check for JSON-equivalence to stored image."""
     if not headless:
         fig.show()
 
-    # easy API call to convert to Vega-Lite (JSON); create file later if needed
+    # easy API call to convert to Vega-Lite; create file later if needed
     ext_vl: str = 'json'
     filename_vl: str = filename + '.' + ext_vl
     have_vl = fig.to_json()
