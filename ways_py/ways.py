@@ -26,13 +26,10 @@ class Ways:
         if src.encoding.color.bin and is_defined(src.encoding.color.bin.extent):
             extent = src.encoding.color.bin.extent
             y_scale = alt.Scale(domain=extent, nice=True)
-        else:
-            y_scale = alt.Scale(zero=False, nice=True)
-        if src.encoding.color.bin and is_defined(src.encoding.color.bin.extent):
-            extent = src.encoding.color.bin.extent
             bin = alt.Bin(step=(extent[1] - extent[0]) / 100, extent=extent)
         else:
-            bin = alt.Bin(maxbins=100)
+            y_scale = alt.Scale(zero=False, nice=True)
+            bin = alt.Bin(maxbins=100)        
         ys = src.data[Ways.field(src)]  # assume src.data array-like in an appropriate way
         y_min, y_max = min(ys), max(ys)
         y_axis = alt.Y(
