@@ -24,8 +24,7 @@ class Ways:
     @staticmethod
     def density_chart(src: alt.Chart) -> alt.Chart:
         if src.encoding.color.bin and is_defined(src.encoding.color.bin.extent):
-            extent = src.encoding.color.bin.extent
-            bin = alt.Bin(step=(extent[1] - extent[0]) / 100, extent=extent)
+            bin = alt.Bin(maxbins=100, extent=src.encoding.color.bin.extent)
         else:
             bin = alt.Bin(maxbins=100)
         ys = src.data[Ways.field(src)]  # assume src.data array-like in an appropriate way
