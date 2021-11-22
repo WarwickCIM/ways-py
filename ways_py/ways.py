@@ -25,10 +25,8 @@ class Ways:
     def density_chart(src: alt.Chart) -> alt.Chart:
         if src.encoding.color.bin and is_defined(src.encoding.color.bin.extent):
             extent = src.encoding.color.bin.extent
-            y_scale = alt.Scale(domain=extent, nice=True)
             bin = alt.Bin(step=(extent[1] - extent[0]) / 100, extent=extent)
         else:
-            y_scale = alt.Scale(zero=False, nice=True)
             bin = alt.Bin(maxbins=100)
         ys = src.data[Ways.field(src)]  # assume src.data array-like in an appropriate way
         y_min, y_max = min(ys), max(ys)
@@ -36,8 +34,7 @@ class Ways:
             src.encoding.color.shorthand,
             bin=bin,
             axis=alt.Axis(orient='left', grid=False, values=sorted([0, 50] + [y_min, y_max])),
-            title="",
-            scale=y_scale
+            title=""
         )
         x_axis = alt.X(
             'sum(proportion):Q',
