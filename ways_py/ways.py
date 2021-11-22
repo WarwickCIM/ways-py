@@ -20,43 +20,14 @@ class Ways:
     @staticmethod
     def field(src: alt.Chart) -> str:
         return cast(str, src.encoding.color.shorthand)
-
-    # @staticmethod
-    # def density_chart(src: alt.Chart) -> alt.Chart:
-    #     ys = src.data[Ways.field(src)]  # assume src.data array-like in an appropriate way
-    #     y_min, y_max = min(ys), max(ys)
-    #     # tickCount/tickMinStep Axis properties are ignored (perhaps because we specify bins), so hard code
-    #     y_axis = alt.Y(
-    #         src.encoding.color.shorthand,
-    #         bin=alt.Bin(maxbins=100),
-    #         axis=alt.Axis(orient='left', grid=False, values=sorted([0, 50] + [y_min, y_max])),
-    #         title="",
-    #     )
-    #     x_axis = alt.X(
-    #         'sum(proportion):Q',
-    #         sort='descending',
-    #         axis=alt.Axis(grid=False),
-    #         title="density"
-    #     )
-    #     return alt.Chart(src.data) \
-    #         .transform_joinaggregate(total='count(*)') \
-    #         .transform_calculate(proportion="1 / datum.total") \
-    #         .mark_bar(color='gray') \
-    #         .encode(y_axis, x_axis) \
-    #         .properties(width=100, height=300)
             
     @staticmethod
-    def y_scale(src: alt.Chart) -> alt.Scale:
+    def density_chart(src: alt.Chart) -> alt.Chart:
         if src.encoding.color.bin and is_defined(src.encoding.color.bin.extent):
             extent = src.encoding.color.bin.extent
-            # bins = alt.ScaleBins(step=(extent[1] - extent[0]) / 100)
-            return alt.Scale(domain=extent, nice=True)
+            y_scale = alt.Scale(domain=extent, nice=True)
         else:
-            return alt.Scale(zero=False, nice=True)
-    
-    @staticmethod
-    def density_chart(src: alt.Chart) -> alt.Chart:
-        y_scale = Ways.y_scale(src)
+            y_scale = alt.Scale(zero=False, nice=True)
         if src.encoding.color.bin and is_defined(src.encoding.color.bin.extent):
             extent = src.encoding.color.bin.extent
             bin = alt.Bin(step=(extent[1] - extent[0]) / 100, extent=extent)
