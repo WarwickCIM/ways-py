@@ -52,10 +52,6 @@ class Ways:
     @staticmethod
     def used_colours(src: alt.Chart) -> alt.Chart:
         y_axis = alt.Axis(orient='right', grid=False)
-        if src.encoding.color.bin and is_defined(src.encoding.color.bin.extent):
-            y_scale = alt.Scale(domain=src.encoding.color.bin.extent)
-        else:
-            y_scale = alt.Scale(zero=False)
         x_axis = alt.Axis(labels=False, tickSize=0, grid=False, titleAngle=270, titleAlign='right')
         if src.encoding.color.bin:
             chart = alt.Chart(src.data) \
@@ -63,7 +59,7 @@ class Ways:
                 .transform_bin(as_=['y', 'y2'], bin=src.encoding.color.bin, field=Ways.field(src)) \
                 .transform_calculate(x='5') \
                 .encode(
-                    y=alt.Y('y:Q', scale=y_scale, axis=y_axis, title=""),
+                    y=alt.Y('y:Q', axis=y_axis, title=""),
                     y2='y2:Q',
                     x=alt.X('x:Q', sort='descending', axis=x_axis, title="colours used")
                 )  # noqa: E123
@@ -74,7 +70,7 @@ class Ways:
                 .mark_rect() \
                 .transform_calculate(x='5') \
                 .encode(
-                    y=alt.Y('y:Q', scale=y_scale, axis=y_axis, title=""),
+                    y=alt.Y('y:Q', axis=y_axis, title=""),
                     y2='y2:Q',
                     x=alt.X('x:Q', sort='descending', axis=x_axis, title="colours used")
                 )  # noqa: E123
