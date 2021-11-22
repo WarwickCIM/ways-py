@@ -23,12 +23,16 @@ class Ways:
 
     @staticmethod
     def density_chart(src: alt.Chart) -> alt.Chart:
+        if src.encoding.color.bin and is_defined(src.encoding.color.bin.extent):
+            bin = alt.Bin(maxbins=100, extent=src.encoding.color.bin.extent)
+        else:
+            bin = alt.Bin(maxbins=100)
         ys = src.data[Ways.field(src)]  # assume src.data array-like in an appropriate way
         y_min, y_max = min(ys), max(ys)
         # tickCount/tickMinStep Axis properties are ignored (perhaps because we specify bins), so hard code
         y_axis = alt.Y(
             src.encoding.color.shorthand,
-            bin=alt.Bin(maxbins=100),
+            bin=bin,
             axis=alt.Axis(orient='left', grid=False, values=sorted([0, 50] + [y_min, y_max])),
             title="",
         )
@@ -48,10 +52,6 @@ class Ways:
     @staticmethod
     def used_colours(src: alt.Chart) -> alt.Chart:
         y_axis = alt.Axis(orient='right', grid=False)
-        if src.encoding.color.bin and is_defined(src.encoding.color.bin.extent):
-            y_scale = alt.Scale(domain=src.encoding.color.bin.extent)
-        else:
-            y_scale = alt.Scale(zero=False)
         x_axis = alt.Axis(labels=False, tickSize=0, grid=False, titleAngle=270, titleAlign='right')
         if src.encoding.color.bin:
             chart = alt.Chart(src.data) \
@@ -59,7 +59,7 @@ class Ways:
                 .transform_bin(as_=['y', 'y2'], bin=src.encoding.color.bin, field=Ways.field(src)) \
                 .transform_calculate(x='5') \
                 .encode(
-                    y=alt.Y('y:Q', scale=y_scale, axis=y_axis, title=""),
+                    y=alt.Y('y:Q', axis=y_axis, title=""),
                     y2='y2:Q',
                     x=alt.X('x:Q', sort='descending', axis=x_axis, title="colours used")
                 )  # noqa: E123
@@ -70,7 +70,7 @@ class Ways:
                 .mark_rect() \
                 .transform_calculate(x='5') \
                 .encode(
-                    y=alt.Y('y:Q', scale=y_scale, axis=y_axis, title=""),
+                    y=alt.Y('y:Q', axis=y_axis, title=""),
                     y2='y2:Q',
                     x=alt.X('x:Q', sort='descending', axis=x_axis, title="colours used")
                 )  # noqa: E123
