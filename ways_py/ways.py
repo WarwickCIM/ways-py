@@ -20,7 +20,7 @@ class Ways:
     @staticmethod
     def field(src: alt.Chart) -> str:
         return cast(str, src.encoding.color.shorthand)
-            
+
     @staticmethod
     def density_chart(src: alt.Chart) -> alt.Chart:
         if src.encoding.color.bin and is_defined(src.encoding.color.bin.extent):
@@ -29,7 +29,7 @@ class Ways:
             bin = alt.Bin(step=(extent[1] - extent[0]) / 100, extent=extent)
         else:
             y_scale = alt.Scale(zero=False, nice=True)
-            bin = alt.Bin(maxbins=100)        
+            bin = alt.Bin(maxbins=100)
         ys = src.data[Ways.field(src)]  # assume src.data array-like in an appropriate way
         y_min, y_max = min(ys), max(ys)
         y_axis = alt.Y(
