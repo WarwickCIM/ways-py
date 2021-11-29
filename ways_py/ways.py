@@ -122,14 +122,7 @@ class WAlt:
     """WAYS widgets class for Altair."""
 
     def __init__(self) -> None:
-        self.altair_jupyter_widgets()
-
-    def altair_jupyter_widgets(self) -> None:
-        """Create jupyter widgets with values that can be used as input to altair objects in a jupyter notebook.
-
-        Returns:
-            Dictionary of jupyter widgets and grid with these widgets arranged for display.
-        """
+        """Create jupyter widgets with values that can be used as input to altair objects in a jupyter notebook."""
         # Checkbox widget that determines whether binning is enabled
         self.bin = widgets.Checkbox(value=True, description='Bin')
 
