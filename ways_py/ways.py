@@ -101,8 +101,9 @@ class Ways:
         if not is_defined(src.encoding.color.bin):
             raise Exception("Can only apply decorator to chart with color.bin defined.")
 
-        meta_chart: alt.Chart = (Ways.density_chart(src) | Ways.used_colours(src))
+        meta_chart: alt.Chart = (Ways.density_chart(src) | Ways.used_colours(src)).resolve_scale(y='shared')
         return (meta_chart | src) \
+            .resolve_scale(y='independent') \
             .configure_view(strokeWidth=0) \
             .configure_concat(spacing=5)
 
