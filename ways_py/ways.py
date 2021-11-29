@@ -116,7 +116,7 @@ class WAlt:
         """Create jupyter widgets that can be used as input to altair objects in a jupyter notebook."""
         # Checkbox widget that determines whether binning is enabled
         self.bin = widgets.RadioButtons(value='Binned',
-                                        options=['Binned', 'Continous'],
+                                        options=['Binned', 'continuous'],
                                         description='Color Binning')
 
         # Textbox accepting integer to select the maximum number of bins
@@ -227,7 +227,7 @@ class WAlt:
         # Depending on whether scheme or range selected, use different widgets to create the alt.Scale obj
         if self.colorschemetype.value == 'Scheme':
             # Only use the scale widget when bin not selected
-            # (otherwise binning colour scale ignored in favour of continous scale)
+            # (otherwise binning colour scale ignored in favour of continuous scale)
             if self.bin.value == 'Binned':
                 scale = alt.Scale(scheme=self.colorscheme.value)
             else:
@@ -237,7 +237,7 @@ class WAlt:
                           self.color_2.value,
                           self.color_3.value
                           ]
-            # The below only looks right when bin is false (continous scale).
+            # The below only looks right when bin is false (continuous scale).
             # Widgets have been set up so that self.colorschemetype.value is always 'Scheme'
             # when self.bin.value is 'Binned'.
             scale = alt.Scale(type=self.scale.value, range=colorrange)
@@ -295,7 +295,7 @@ class WAlt:
         # Change the value of a widget so the plot auto-generates
         # Note: for some reason doing this once instead of twice results in duplicate plots...
         # TODO: may have to change this if there are scenarios where bin isn't used
-        self.bin.value = 'Continous'
+        self.bin.value = 'continuous'
         self.bin.value = 'Binned'
 
 
