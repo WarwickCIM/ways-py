@@ -116,7 +116,7 @@ class WAlt:
         """Create jupyter widgets that can be used as input to altair objects in a jupyter notebook."""
         # Checkbox widget that determines whether binning is enabled
         self.bin = widgets.RadioButtons(value='Binned',
-                                        options=['Binned', 'continuous'],
+                                        options=['Binned', 'Continuous'],
                                         description='Color Binning')
 
         # Textbox accepting integer to select the maximum number of bins
@@ -295,7 +295,7 @@ class WAlt:
         # Change the value of a widget so the plot auto-generates
         # Note: for some reason doing this once instead of twice results in duplicate plots...
         # TODO: may have to change this if there are scenarios where bin isn't used
-        self.bin.value = 'continuous'
+        self.bin.value = 'Continuous'
         self.bin.value = 'Binned'
 
 
