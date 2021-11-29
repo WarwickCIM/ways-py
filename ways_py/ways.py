@@ -230,7 +230,8 @@ class WAlt:
             bin = False
         # Depending on whether scheme or range selected, use different widgets to create the alt.Scale obj
         if self.colorschemetype.value == 'Scheme':
-            scale = alt.Scale(type=self.scale.value, scheme=self.colorscheme.value)
+            # Only use the scale widget when bin not selected, otherwise binning colour scale ignored in favour of continous scale
+            scale = alt.Scale(scheme=self.colorscheme.value) if self.bin.value else alt.Scale(type=self.scale.value, scheme=self.colorscheme.value)
         elif self.colorschemetype.value == 'Range':
             colorrange = [self.color_1.value,
                           self.color_2.value,
