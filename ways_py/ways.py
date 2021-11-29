@@ -199,11 +199,14 @@ class WAlt:
                 self.extentmin.disabled = False
                 self.extentmax.disabled = False
                 self.scale.disabled = True
+                self.colorschemetype.value = 'Scheme'
+                self.colorschemetype.disabled = True
             else:
                 self.maxbins.disabled = True
                 self.extentmin.disabled = True
                 self.extentmax.disabled = True
                 self.scale.disabled = False
+                self.colorschemetype.disabled = False
 
         self.bin.observe(bin_options, names='value')
 
