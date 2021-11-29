@@ -138,7 +138,7 @@ class WAlt:
         # https://altair-viz.github.io/user_guide/generated/core/altair.ScaleType.html#altair.ScaleType
         scales = ['linear', 'log', 'pow', 'sqrt', 'symlog', 'identity', 'sequential', 'time', 'utc',
                   'quantile', 'quantize', 'threshold', 'bin-ordinal', 'ordinal', 'point', 'band']
-        self.scale = widgets.Dropdown(value='linear', options=scales, description='Scales')
+        self.scale = widgets.Dropdown(value='linear', options=scales, description='Color Scale')
         # list from https://vega.github.io/vega/docs/schemes/#reference
         schemes = ['blues', 'tealblues', 'teals', 'greens', 'browns', 'oranges', 'reds', 'purples',
                    'warmgreys', 'greys', 'viridis', 'magma', 'inferno', 'plasma', 'cividis', 'turbo',
