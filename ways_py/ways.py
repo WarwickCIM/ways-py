@@ -115,7 +115,9 @@ class WAlt:
     def __init__(self) -> None:
         """Create jupyter widgets that can be used as input to altair objects in a jupyter notebook."""
         # Checkbox widget that determines whether binning is enabled
-        self.bin = widgets.Checkbox(value=True, description='Bin')
+        self.bin = widgets.RadioButtons(value='Binned',
+                                        options=['Binned', 'Continous'],
+                                        description='Color Binning')
 
         # Textbox accepting integer to select the maximum number of bins
         self.maxbins = widgets.IntText(value=7, description='Max Bins:', continuous_update=True)
@@ -185,7 +187,7 @@ class WAlt:
 
         # Grey out extent and maxbins widgets when binning is disabled
         def bin_options(change: traitlets.utils.bunch.Bunch) -> None:
-            if change.new:
+            if change.new == 'Binned':
                 self.maxbins.disabled = False
                 self.extentmin.disabled = False
                 self.extentmax.disabled = False
@@ -212,7 +214,7 @@ class WAlt:
             alt.Color object to be used by alt.Chart
         """
         # If the bin checkbox selected
-        if self.bin.value:
+        if self.bin.value == 'Binned':
             # If not already set, set the default values of the extent widget to data min and max
             if self.extentmax.value == 0:
                 self.extentmin.value = data[column].min()
@@ -226,7 +228,7 @@ class WAlt:
         if self.colorschemetype.value == 'Scheme':
             # Only use the scale widget when bin not selected
             # (otherwise binning colour scale ignored in favour of continous scale)
-            if self.bin.value:
+            if self.bin.value == 'Binned':
                 scale = alt.Scale(scheme=self.colorscheme.value)
             else:
                 scale = alt.Scale(type=self.scale.value, scheme=self.colorscheme.value)
@@ -237,7 +239,7 @@ class WAlt:
                           ]
             # The below only looks right when bin is false (continous scale).
             # Widgets have been set up so that self.colorschemetype.value is always 'Scheme'
-            # when self.bin.value is True.
+            # when self.bin.value is 'Binned'.
             scale = alt.Scale(type=self.scale.value, range=colorrange)
         return alt.Color(column, legend=None, bin=bin, scale=scale)
 
@@ -293,8 +295,8 @@ class WAlt:
         # Change the value of a widget so the plot auto-generates
         # Note: for some reason doing this once instead of twice results in duplicate plots...
         # TODO: may have to change this if there are scenarios where bin isn't used
-        self.bin.value = False
-        self.bin.value = True
+        self.bin.value = 'Continous'
+        self.bin.value = 'Binned'
 
 
 def altair_widgets(custom_widgets: dict[str, Any] = {}) -> Callable[[FuncT], Callable[[Any, str], None]]:
