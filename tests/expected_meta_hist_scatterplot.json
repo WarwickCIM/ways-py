@@ -57721,7 +57721,6 @@
           },
           "field": "y",
           "scale": {
-            "nice": true,
             "zero": false
           },
           "title": "",
@@ -57775,5 +57774,10 @@
       "mark": "circle",
       "title": "test_scatterplot"
     }
-  ]
+  ],
+  "resolve": {
+    "scale": {
+      "y": "shared"
+    }
+  }
 }
