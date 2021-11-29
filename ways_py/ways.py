@@ -122,11 +122,10 @@ class WAlt:
     """WAYS widgets class for Altair."""
 
     def __init__(self) -> None:
-        self.altair_bin_jupyter_widgets()
-        self.altair_scale_jupyter_widgets()
+        self.altair_jupyter_widgets()
 
-    def altair_bin_jupyter_widgets(self) -> None:
-        """Create jupyter widgets with values that can be used as input to alt.Bin objects in a jupyter notebook.
+    def altair_jupyter_widgets(self) -> None:
+        """Create jupyter widgets with values that can be used as input to altair objects in a jupyter notebook.
 
         Returns:
             Dictionary of jupyter widgets and grid with these widgets arranged for display.
@@ -163,12 +162,6 @@ class WAlt:
                                             grid_template_columns="repeat(3, 300px)")
                                         )
 
-    def altair_scale_jupyter_widgets(self) -> None:
-        """Create jupyter widgets with values that can be used as input to alt.Scale objects in a jupyter notebook.
-
-        Returns:
-            Dictionary of jupyter widgets and grid with these widgets arranged for display.
-        """
         # list of scales from:
         # https://altair-viz.github.io/user_guide/generated/core/altair.ScaleType.html#altair.ScaleType
         scales = ['linear', 'log', 'pow', 'sqrt', 'symlog', 'identity', 'sequential', 'time', 'utc',
