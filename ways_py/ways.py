@@ -26,7 +26,8 @@ class Ways:
         if src.encoding.color.bin and is_defined(src.encoding.color.bin.extent):
             extent = src.encoding.color.bin.extent
             bin = alt.Bin(maxbins=100, extent=extent)
-            y_scale = alt.Scale(domain=extent, nice=True)
+            bins = alt.ScaleBins(step=(extent[1] - extent[0]) / 100)
+            y_scale = alt.Scale(domain=extent, bins=bins, nice=True)
         else:
             bin = alt.Bin(maxbins=100)
             y_scale = alt.Scale(zero=False, nice=True)
@@ -59,7 +60,8 @@ class Ways:
         x_axis = alt.Axis(labels=False, tickSize=0, grid=False, titleAngle=270, titleAlign='right')
         if src.encoding.color.bin and is_defined(src.encoding.color.bin.extent):
             extent = src.encoding.color.bin.extent
-            y_scale = alt.Scale(domain=extent, nice=True)
+            bins = alt.ScaleBins(step=(extent[1] - extent[0]) / 100) #TODO change to same as chart bins
+            y_scale = alt.Scale(domain=extent, bins=bins, nice=True)
         else:
             y_scale = alt.Scale(zero=False, nice=True)
         if src.encoding.color.bin:
