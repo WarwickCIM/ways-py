@@ -113,7 +113,7 @@ class WAlt:
     """WAYS widgets class for Altair."""
 
     def __init__(self) -> None:
-        """Create jupyter widgets with values that can be used as input to altair objects in a jupyter notebook."""
+        """Create jupyter widgets that can be used as input to altair objects in a jupyter notebook."""
         # Checkbox widget that determines whether binning is enabled
         self.bin = widgets.Checkbox(value=True, description='Bin')
 
@@ -182,7 +182,7 @@ class WAlt:
                 self.color_3.disabled = False
 
         self.colorschemetype.observe(choose_coloring_method, names='value')
-        
+
         # Grey out extent and maxbins widgets when binning is disabled
         def bin_options(change: traitlets.utils.bunch.Bunch) -> None:
             if change.new:
@@ -224,13 +224,20 @@ class WAlt:
             bin = False
         # Depending on whether scheme or range selected, use different widgets to create the alt.Scale obj
         if self.colorschemetype.value == 'Scheme':
-            # Only use the scale widget when bin not selected, otherwise binning colour scale ignored in favour of continous scale
-            scale = alt.Scale(scheme=self.colorscheme.value) if self.bin.value else alt.Scale(type=self.scale.value, scheme=self.colorscheme.value)
+            # Only use the scale widget when bin not selected
+            # (otherwise binning colour scale ignored in favour of continous scale)
+            if self.bin.value:
+                scale = alt.Scale(scheme=self.colorscheme.value)
+            else:
+                scale = alt.Scale(type=self.scale.value, scheme=self.colorscheme.value)
         elif self.colorschemetype.value == 'Range':
             colorrange = [self.color_1.value,
                           self.color_2.value,
                           self.color_3.value
                           ]
+            # The below only looks right when bin is false (continous scale).
+            # Widgets have been set up so that self.colorschemetype.value is always 'Scheme'
+            # when self.bin.value is True.
             scale = alt.Scale(type=self.scale.value, range=colorrange)
         return alt.Color(column, legend=None, bin=bin, scale=scale)
 
