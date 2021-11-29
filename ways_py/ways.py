@@ -135,18 +135,6 @@ class WAlt:
         wide_Vbox = Layout(display='flex', flex_flow='column', align_items='center', width='110%')
         self.extent = Box(children=[self.extentmin, self.extentmax], layout=wide_Vbox)
 
-        # Grey out extent and maxbins widgets when binning is disabled
-        def bin_options(change: traitlets.utils.bunch.Bunch) -> None:
-            if change.new:
-                self.maxbins.disabled = False
-                self.extentmin.disabled = False
-                self.extentmax.disabled = False
-            else:
-                self.maxbins.disabled = True
-                self.extentmin.disabled = True
-                self.extentmax.disabled = True
-        self.bin.observe(bin_options, names='value')
-
         # Create a horizontal box that contains these widgets
         self.bin_grid = widgets.GridBox([self.bin,
                                          self.maxbins,
@@ -203,6 +191,21 @@ class WAlt:
                 self.color_3.disabled = False
 
         self.colorschemetype.observe(choose_coloring_method, names='value')
+        
+        # Grey out extent and maxbins widgets when binning is disabled
+        def bin_options(change: traitlets.utils.bunch.Bunch) -> None:
+            if change.new:
+                self.maxbins.disabled = False
+                self.extentmin.disabled = False
+                self.extentmax.disabled = False
+                self.scale.disabled = True
+            else:
+                self.maxbins.disabled = True
+                self.extentmin.disabled = True
+                self.extentmax.disabled = True
+                self.scale.disabled = False
+
+        self.bin.observe(bin_options, names='value')
 
     def get_altair_color_obj(self, data: pd.DataFrame, column: str) -> alt.Color:
         """Build color object for altair plot from widget selections.
