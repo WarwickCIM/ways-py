@@ -71,22 +71,19 @@ class Ways:
                     y=alt.Y('y:Q', axis=y_axis, title="", scale=y_scale),
                     y2='y2:Q',
                     x=alt.X('x:Q', sort='descending', axis=x_axis, title="colours used")
-                )  # noqa: E123
+                ) \
+                .encode(src.encoding.color) \
+                .properties(width=20, height=300)
         else:
-            # The following (which happens when bin=False) doesn't make sense; in particular y and y2 are
-            # not defined, so it doesn't make sense to try and plot them.
             chart = alt.Chart(src.data) \
                 .mark_rect() \
-                .transform_calculate(x='5') \
                 .encode(
-                    y=alt.Y('y:Q', axis=y_axis, title=""),
-                    y2='y2:Q',
-                    x=alt.X('x:Q', sort='descending', axis=x_axis, title="colours used")
-                )  # noqa: E123
+                    y=alt.Y(src.encoding.color.shorthand, axis=y_axis, ),
+                    ) \
+                .encode(src.encoding.color) \
+                .properties(width=20, height=300)
 
-        return chart \
-            .encode(src.encoding.color) \
-            .properties(width=20, height=300)  # noqa: E123
+        return chart
 
     @staticmethod
     def altair_meta_hist(src: alt.Chart) -> alt.Chart:
@@ -250,7 +247,7 @@ class WAlt:
             # Widgets have been set up so that self.colorschemetype.value is always 'Scheme'
             # when self.bin.value is 'Binned'.
             scale = alt.Scale(type=self.scale.value, range=colorrange)
-        return alt.Color(column, legend=None, bin=bin, scale=scale)
+        return alt.Color(column, bin=bin, scale=scale)
 
     def display(self, data: pd.DataFrame, column: str, func: FuncT,
                 custom_widgets: dict[str, Any] = {}) -> None:
