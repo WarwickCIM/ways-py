@@ -24,9 +24,12 @@ class Ways:
     @staticmethod
     def density_chart(src: alt.Chart) -> alt.Chart:
         if src.encoding.color.bin and is_defined(src.encoding.color.bin.extent):
-            bin = alt.Bin(maxbins=100, extent=src.encoding.color.bin.extent)
+            extent = src.encoding.color.bin.extent
+            bin = alt.Bin(maxbins=100, extent=extent)
+            y_scale = alt.Scale(domain=extent, nice=True)
         else:
             bin = alt.Bin(maxbins=100)
+            y_scale = alt.Scale(zero=False, nice=True)
         ys = src.data[Ways.field(src)]  # assume src.data array-like in an appropriate way
         y_min, y_max = min(ys), max(ys)
         # tickCount/tickMinStep Axis properties are ignored (perhaps because we specify bins), so hard code
@@ -35,6 +38,7 @@ class Ways:
             bin=bin,
             axis=alt.Axis(orient='left', grid=False, values=sorted([0, 50] + [y_min, y_max])),
             title="",
+            scale=y_scale
         )
         x_axis = alt.X(
             'sum(proportion):Q',
@@ -53,13 +57,18 @@ class Ways:
     def used_colours(src: alt.Chart) -> alt.Chart:
         y_axis = alt.Axis(orient='right', grid=False)
         x_axis = alt.Axis(labels=False, tickSize=0, grid=False, titleAngle=270, titleAlign='right')
+        if src.encoding.color.bin and is_defined(src.encoding.color.bin.extent):
+            extent = src.encoding.color.bin.extent
+            y_scale = alt.Scale(domain=extent, nice=True)
+        else:
+            y_scale = alt.Scale(zero=False, nice=True)
         if src.encoding.color.bin:
             chart = alt.Chart(src.data) \
                 .mark_rect() \
                 .transform_bin(as_=['y', 'y2'], bin=src.encoding.color.bin, field=Ways.field(src)) \
                 .transform_calculate(x='5') \
                 .encode(
-                    y=alt.Y('y:Q', axis=y_axis, title=""),
+                    y=alt.Y('y:Q', axis=y_axis, title="", scale=y_scale),
                     y2='y2:Q',
                     x=alt.X('x:Q', sort='descending', axis=x_axis, title="colours used")
                 )  # noqa: E123
@@ -92,7 +101,7 @@ class Ways:
         if not is_defined(src.encoding.color.bin):
             raise Exception("Can only apply decorator to chart with color.bin defined.")
 
-        meta_chart: alt.Chart = (Ways.density_chart(src) | Ways.used_colours(src)).resolve_scale(y='shared')
+        meta_chart: alt.Chart = (Ways.density_chart(src) | Ways.used_colours(src))
         return (meta_chart | src) \
             .configure_view(strokeWidth=0) \
             .configure_concat(spacing=5)

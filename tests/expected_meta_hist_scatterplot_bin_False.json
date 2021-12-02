@@ -57715,9 +57715,6 @@
             "orient": "right"
           },
           "field": "y",
-          "scale": {
-            "zero": false
-          },
           "title": "",
           "type": "quantitative"
         },
@@ -57754,10 +57751,5 @@
       "mark": "circle",
       "title": "test_scatterplot_bin_False"
     }
-  ],
-  "resolve": {
-    "scale": {
-      "y": "shared"
-    }
-  }
+  ]
 }
