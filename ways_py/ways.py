@@ -243,7 +243,7 @@ class WAlt:
             # Widgets have been set up so that self.colorschemetype.value is always 'Scheme'
             # when self.bin.value is 'Binned'.
             scale = alt.Scale(type=self.scale.value, range=colorrange)
-        return alt.Color(column, bin=bin, scale=scale)
+        return alt.Color(column, legend=None, bin=bin, scale=scale)
 
     def display(self, data: pd.DataFrame, column: str, func: FuncT,
                 custom_widgets: dict[str, Any] = {}) -> None:
