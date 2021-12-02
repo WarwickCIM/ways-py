@@ -71,13 +71,13 @@ class Ways:
                     y=alt.Y('y:Q', axis=y_axis, title="", scale=y_scale),
                     y2='y2:Q',
                     x=alt.X('x:Q', sort='descending', axis=x_axis, title="colours used")
-                )
+                )  # noqa: E123
         else:
             chart = alt.Chart(src.data) \
                 .mark_rect() \
                 .encode(
                     y=alt.Y(src.encoding.color.shorthand, axis=y_axis)
-                )        
+                )  # noqa: E123
         return chart.encode(src.encoding.color) \
                     .properties(width=20, height=300)
 
