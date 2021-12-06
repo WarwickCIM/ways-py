@@ -1,6 +1,5 @@
 name: CI notify
 
-# Only trigger, when the build workflow succeeded
 on:
   workflow_run:
     workflows: ["build-publish"]
