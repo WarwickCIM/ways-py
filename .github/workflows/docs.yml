@@ -1,0 +1,26 @@
+name: CI notify
+
+on:
+  workflow_run:
+    workflows: ["build-publish"]
+    types:
+      - completed
+
+jobs:
+  docs:
+#    if: github.ref == 'refs/heads/docs'
+    runs-on: macos-10.15
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.9.9
+      - name: Install poetry
+        run: pip install poetry
+      - name: Install dependencies
+        run: poetry install
+      - run: poetry run pdocs as_html ways_py -o docs
+      - uses: JamesIves/github-pages-deploy-action@4.1.7
+        with:
+          branch: gh-pages
+          folder: docs/ways_py
