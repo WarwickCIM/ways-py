@@ -2,13 +2,14 @@
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/WarwickCIM/ways-py/develop)
 [![Project Status: Concept – Minimal or no implementation has been done yet, or the repository is only intended to be a limited example, demo, or proof-of-concept.](https://www.repostatus.org/badges/latest/concept.svg)](https://www.repostatus.org/#concept)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+<!-- badges: end -->
 
+# _WAYS: What Aren't You Seeing_
+<!-- badges: start -->
 [![Release build](https://github.com/WarwickCIM/ways-py/actions/workflows/build-publish.yml/badge.svg?branch=release)](https://github.com/WarwickCIM/ways-py/actions/workflows/build-publish.yml)
 [![Develop build](https://github.com/WarwickCIM/ways-py/actions/workflows/build-publish.yml/badge.svg?branch=develop)](https://github.com/WarwickCIM/ways-py/actions/workflows/build-publish.yml)
 [![Docs](https://github.com/WarwickCIM/ways-py/actions/workflows/docs.yml/badge.svg)](https://github.com/WarwickCIM/ways-py/actions/workflows/docs.yml)
 <!-- badges: end -->
-
-# _WAYS: What Aren't You Seeing_
 
 Python package for the [WAYS](https://www.turing.ac.uk/research/research-projects/ways-what-arent-you-seeing) project.
 
