@@ -75,7 +75,10 @@ class Ways:
                     x=alt.X('x:Q', sort='descending', axis=x_axis, title="")
                 )  # noqa: E123
         else:
-            chart = alt.Chart(src.data) \
+            # Get a dataframe to plot where there is only one row for each unique value
+            # of the column of the source chart data being plotted
+            df = src.data.drop_duplicates(subset=[src.encoding.color.shorthand])
+            chart = alt.Chart(df) \
                 .mark_bar() \
                 .encode(
                     y=alt.Y(src.encoding.color.shorthand, title="", axis=y_axis),
