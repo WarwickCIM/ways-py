@@ -29,7 +29,7 @@ class Ways:
             y_scale = alt.Scale(domain=extent, nice=True)
         else:
             bin = alt.Bin(maxbins=100)
-            y_scale = alt.Scale(zero=False, nice=True)
+            y_scale = alt.Scale(zero=False, nice=False)
         ys = src.data[Ways.field(src)]  # assume src.data array-like in an appropriate way
         y_min, y_max = min(ys), max(ys)
         # tickCount/tickMinStep Axis properties are ignored (perhaps because we specify bins), so hard code
