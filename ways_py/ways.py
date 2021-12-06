@@ -79,7 +79,7 @@ class Ways:
                 .mark_bar() \
                 .encode(
                     y=alt.Y(src.encoding.color.shorthand, title="", axis=y_axis),
-                    x='count()'
+                    x=alt.X('count()', sort='descending', axis=x_axis, title="")
                 )  # noqa: E123
         return chart.encode(src.encoding.color) \
                     .properties(width=20, height=300)
