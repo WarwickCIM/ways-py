@@ -63,7 +63,9 @@ class Ways:
             extent = src.encoding.color.bin.extent
             y_scale = alt.Scale(domain=extent, nice=True)
         else:
-            y_scale = alt.Scale(zero=False, nice=True)
+            data_min = min(src.data[src.encoding.color.shorthand])
+            data_max = max(src.data[src.encoding.color.shorthand])
+            y_scale = alt.Scale(domain=[data_min, data_max], nice=False, zero=False)
         if src.encoding.color.bin:
             chart = alt.Chart(src.data) \
                 .mark_rect() \
@@ -81,7 +83,7 @@ class Ways:
             chart = alt.Chart(df) \
                 .mark_bar() \
                 .encode(
-                    y=alt.Y(src.encoding.color.shorthand, title="", axis=y_axis),
+                    y=alt.Y(src.encoding.color.shorthand, axis=y_axis, title="", scale=y_scale),
                     x=alt.X('count()', sort='descending', axis=x_axis, title="")
                 )  # noqa: E123
         return chart.encode(src.encoding.color) \
