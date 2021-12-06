@@ -37,7 +37,7 @@ class Ways:
             src.encoding.color.shorthand,
             bin=bin,
             axis=alt.Axis(orient='left', grid=False, values=sorted([0, 50] + [y_min, y_max])),
-            title="",
+            title=src.encoding.color.shorthand,
             scale=y_scale
         )
         x_axis = alt.X(
