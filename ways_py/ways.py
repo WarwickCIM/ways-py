@@ -78,7 +78,7 @@ class Ways:
             chart = alt.Chart(src.data) \
                 .mark_rect() \
                 .encode(
-                    y=alt.Y(src.encoding.color.shorthand, axis=y_axis)
+                    y=alt.Y(src.encoding.color.shorthand, title="", axis=y_axis)
                 )  # noqa: E123
         return chart.encode(src.encoding.color) \
                     .properties(width=20, height=300)
