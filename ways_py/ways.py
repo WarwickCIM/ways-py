@@ -46,7 +46,9 @@ class Ways:
             axis=alt.Axis(grid=False),
             title="density"
         )
-        return alt.Chart(src.data) \
+        # Title for both the density_chart and used_colours plots
+        title = "Colours used"
+        return alt.Chart(src.data, title=title) \
             .transform_joinaggregate(total='count(*)') \
             .transform_calculate(proportion="1 / datum.total") \
             .mark_bar(color='gray') \
@@ -70,7 +72,7 @@ class Ways:
                 .encode(
                     y=alt.Y('y:Q', axis=y_axis, title="", scale=y_scale),
                     y2='y2:Q',
-                    x=alt.X('x:Q', sort='descending', axis=x_axis, title="colours used")
+                    x=alt.X('x:Q', sort='descending', axis=x_axis)
                 )  # noqa: E123
         else:
             chart = alt.Chart(src.data) \
