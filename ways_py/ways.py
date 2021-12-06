@@ -105,24 +105,6 @@ class Ways:
             .configure_view(strokeWidth=0) \
             .configure_concat(spacing=5)
 
-    # @staticmethod
-    # def altair_meta_hist(src: alt.Chart) -> alt.Chart:
-    #     """Altair metavisualisation; histogram visualising color bins of another Altair chart.
-    # 
-    #     Args:
-    #     src: colour-encoded Altair chart underlying the metavisualisation.
-    #     str: column of source chart's data which contains the colour-encoded data.
-    # 
-    #     Returns:
-    #         altair chart object: histogram
-    #     """
-    #     chart = alt.Chart(src.data) \
-    #         .mark_bar() \
-    #         .encode(alt.Y(src.encoding.color.shorthand, bin=src.encoding.color.bin), x='count()') \
-    #         .encode(src.encoding.color) \
-    #         .properties(width=300, height=300)
-    #     return chart | src
-
 FuncT = TypeVar("FuncT", bound=Callable[..., Any])
 
 
