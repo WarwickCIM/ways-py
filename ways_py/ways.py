@@ -72,7 +72,7 @@ class Ways:
                 .encode(
                     y=alt.Y('y:Q', axis=y_axis, title="", scale=y_scale),
                     y2='y2:Q',
-                    x=alt.X('x:Q', sort='descending', axis=x_axis)
+                    x=alt.X('x:Q', sort='descending', axis=x_axis, title="")
                 )  # noqa: E123
         else:
             chart = alt.Chart(src.data) \
