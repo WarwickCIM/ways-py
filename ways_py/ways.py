@@ -97,7 +97,7 @@ class AltairColorViz:
 
         return chart \
             .encode(src.encoding.color) \
-            .properties(width=20, height=300)  # noqa: E123
+            .properties(width=20, height=300)
 
     @staticmethod
     def decorate(src: alt.Chart) -> alt.Chart:
