@@ -23,10 +23,14 @@ class Ways:
 
     @staticmethod
     def density_chart(src: alt.Chart) -> alt.Chart:
-        if src.encoding.color.bin and is_defined(src.encoding.color.bin.extent):
-            extent = src.encoding.color.bin.extent
-            bin = alt.Bin(maxbins=100, extent=extent)
-            y_scale = alt.Scale(domain=extent, nice=True)
+        if src.encoding.color.bin:
+            if is_defined(src.encoding.color.bin.extent):
+                extent = src.encoding.color.bin.extent
+                bin = alt.Bin(maxbins=100, extent=extent)
+                y_scale = alt.Scale(domain=extent, nice=True)
+            else:
+                bin = alt.Bin(maxbins=100)
+                y_scale = alt.Scale(zero=False, nice=True)
         else:
             bin = alt.Bin(maxbins=100)
             y_scale = alt.Scale(nice=False)
