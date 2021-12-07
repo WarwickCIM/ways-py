@@ -1,6 +1,10 @@
 name: docs
 
 on:
+  # These events I think only fire for the default branch (develop). So docs currently build only on
+  # develop, which is reasonable for now. (The reason for using the workflow_run event, rather than
+  # simply having docs be one of the jobs in build-publish, is that it gives us a separate status badge
+  # for the docs job.)
   workflow_run:
     workflows: ["build-publish"]
     types:
@@ -8,7 +12,6 @@ on:
 
 jobs:
   docs:
-#    if: github.ref == 'refs/heads/docs'
     runs-on: macos-10.15
     steps:
       - uses: actions/checkout@v2
