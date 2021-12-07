@@ -1087,7 +1087,6 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   <ul>
     <li class="mono"><a href="#ways_py.ways.AltairColorViz.decorate">decorate</a></li>
     <li class="mono"><a href="#ways_py.ways.AltairColorViz.density_chart">density_chart</a></li>
-    <li class="mono"><a href="#ways_py.ways.AltairColorViz.field">field</a></li>
     <li class="mono"><a href="#ways_py.ways.AltairColorViz.used_colours">used_colours</a></li>
   </ul>
 
@@ -1138,9 +1137,9 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="k">class</span> <span class="nc">AltairColorViz</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Meta-visualisation for alt.Color object.&quot;&quot;&quot;</span>
 
-    <span class="c1"># Centralise the assumption that this property stores just a field name.</span>
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">field</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">_field</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Centralise the assumption that this property stores just a field name.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">shorthand</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
@@ -1152,7 +1151,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
         <span class="k">else</span><span class="p">:</span>
             <span class="nb">bin</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Bin</span><span class="p">(</span><span class="n">maxbins</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
             <span class="n">y_scale</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Scale</span><span class="p">(</span><span class="n">zero</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">nice</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">ys</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">AltairColorViz</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">src</span><span class="p">)]</span>  <span class="c1"># assume src.data array-like in an appropriate way</span>
+        <span class="n">ys</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">AltairColorViz</span><span class="o">.</span><span class="n">_field</span><span class="p">(</span><span class="n">src</span><span class="p">)]</span>  <span class="c1"># assume src.data array-like in an appropriate way</span>
         <span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">ys</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">ys</span><span class="p">)</span>
         <span class="c1"># tickCount/tickMinStep Axis properties are ignored (perhaps because we specify bins), so hard code</span>
         <span class="n">y_axis</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Y</span><span class="p">(</span>
@@ -1190,7 +1189,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
                 <span class="o">.</span><span class="n">transform_bin</span><span class="p">(</span>
                     <span class="n">as_</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;y2&#39;</span><span class="p">],</span>
                     <span class="nb">bin</span><span class="o">=</span><span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span><span class="p">,</span>
-                    <span class="n">field</span><span class="o">=</span><span class="n">AltairColorViz</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
+                    <span class="n">field</span><span class="o">=</span><span class="n">AltairColorViz</span><span class="o">.</span><span class="n">_field</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
                 <span class="p">)</span> \
                 <span class="o">.</span><span class="n">transform_calculate</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;5&#39;</span><span class="p">)</span> \
                 <span class="o">.</span><span class="n">encode</span><span class="p">(</span>
@@ -1216,7 +1215,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">decorate</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Decorate an Altair chart with colour binning, with metavisualisations showing the binning profile.</span>
+        <span class="sd">&quot;&quot;&quot;Decorate a colour-ended Altair chart with meta-visualisations showing how the colours are used.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">        src: colour-encoded Altair chart to be decorated.</span>
@@ -1241,7 +1240,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
     <span class="sd">&quot;&quot;&quot;Decorator which attaches an AltairColorViz meta-visualisation to a colour-encoded Altair chart.</span>
 
 <span class="sd">    Given a function which creates an Altair chart using an alt.Color object for colour encoding, adapt</span>
-<span class="sd">    that function so that it returns the original chart decorated with an AltairColorViz meta-visualisation.</span>
+<span class="sd">    that function to return the original chart decorated with an AltairColorViz meta-visualisation.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="nd">@wraps</span><span class="p">(</span><span class="n">make_chart</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
@@ -1346,7 +1345,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
     <span class="k">def</span> <span class="nf">get_altair_color_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">alt</span><span class="o">.</span><span class="n">Color</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Build color object for altair plot from widget selections.</span>
 
-<span class="sd">            Args:</span>
+<span class="sd">        Args:</span>
 <span class="sd">            data: pandas dataframe with the alatir chart data.</span>
 <span class="sd">            column: column of source chart&#39;s data which contains the colour-encoded data.</span>
 
@@ -1485,7 +1484,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   
     <div class="desc"><p>Decorator which attaches an AltairColorViz meta-visualisation to a colour-encoded Altair chart.</p>
 <p>Given a function which creates an Altair chart using an alt.Color object for colour encoding, adapt
-that function so that it returns the original chart decorated with an AltairColorViz meta-visualisation.</p></div>
+that function to return the original chart decorated with an AltairColorViz meta-visualisation.</p></div>
   <div class="source_cont">
   <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ways_py.ways.altair_color_viz', this);">Show source &equiv;</a></p>
   <div id="source-ways_py.ways.altair_color_viz" class="source">
@@ -1493,7 +1492,7 @@ that function so that it returns the original chart decorated with an AltairColo
     <span class="sd">&quot;&quot;&quot;Decorator which attaches an AltairColorViz meta-visualisation to a colour-encoded Altair chart.</span>
 
 <span class="sd">    Given a function which creates an Altair chart using an alt.Color object for colour encoding, adapt</span>
-<span class="sd">    that function so that it returns the original chart decorated with an AltairColorViz meta-visualisation.</span>
+<span class="sd">    that function to return the original chart decorated with an AltairColorViz meta-visualisation.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="nd">@wraps</span><span class="p">(</span><span class="n">make_chart</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
@@ -1581,9 +1580,9 @@ custom_widgets: dictionary of string name keys and widget values.</p></div>
     <div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">AltairColorViz</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Meta-visualisation for alt.Color object.&quot;&quot;&quot;</span>
 
-    <span class="c1"># Centralise the assumption that this property stores just a field name.</span>
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">field</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">_field</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Centralise the assumption that this property stores just a field name.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">shorthand</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
@@ -1595,7 +1594,7 @@ custom_widgets: dictionary of string name keys and widget values.</p></div>
         <span class="k">else</span><span class="p">:</span>
             <span class="nb">bin</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Bin</span><span class="p">(</span><span class="n">maxbins</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
             <span class="n">y_scale</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Scale</span><span class="p">(</span><span class="n">zero</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">nice</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">ys</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">AltairColorViz</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">src</span><span class="p">)]</span>  <span class="c1"># assume src.data array-like in an appropriate way</span>
+        <span class="n">ys</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">AltairColorViz</span><span class="o">.</span><span class="n">_field</span><span class="p">(</span><span class="n">src</span><span class="p">)]</span>  <span class="c1"># assume src.data array-like in an appropriate way</span>
         <span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">ys</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">ys</span><span class="p">)</span>
         <span class="c1"># tickCount/tickMinStep Axis properties are ignored (perhaps because we specify bins), so hard code</span>
         <span class="n">y_axis</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Y</span><span class="p">(</span>
@@ -1633,7 +1632,7 @@ custom_widgets: dictionary of string name keys and widget values.</p></div>
                 <span class="o">.</span><span class="n">transform_bin</span><span class="p">(</span>
                     <span class="n">as_</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;y2&#39;</span><span class="p">],</span>
                     <span class="nb">bin</span><span class="o">=</span><span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span><span class="p">,</span>
-                    <span class="n">field</span><span class="o">=</span><span class="n">AltairColorViz</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
+                    <span class="n">field</span><span class="o">=</span><span class="n">AltairColorViz</span><span class="o">.</span><span class="n">_field</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
                 <span class="p">)</span> \
                 <span class="o">.</span><span class="n">transform_calculate</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;5&#39;</span><span class="p">)</span> \
                 <span class="o">.</span><span class="n">encode</span><span class="p">(</span>
@@ -1659,7 +1658,7 @@ custom_widgets: dictionary of string name keys and widget values.</p></div>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">decorate</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Decorate an Altair chart with colour binning, with metavisualisations showing the binning profile.</span>
+        <span class="sd">&quot;&quot;&quot;Decorate a colour-ended Altair chart with meta-visualisations showing how the colours are used.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">        src: colour-encoded Altair chart to be decorated.</span>
@@ -1691,7 +1690,7 @@ custom_widgets: dictionary of string name keys and widget values.</p></div>
 
     
   
-    <div class="desc"><p>Decorate an Altair chart with colour binning, with metavisualisations showing the binning profile.</p>
+    <div class="desc"><p>Decorate a colour-ended Altair chart with meta-visualisations showing how the colours are used.</p>
 <p>Args:
 src: colour-encoded Altair chart to be decorated.</p>
 <p>Returns:
@@ -1701,7 +1700,7 @@ src: colour-encoded Altair chart to be decorated.</p>
   <div id="source-ways_py.ways.AltairColorViz.decorate" class="source">
     <div class="codehilite"><pre><span></span><span class="nd">@staticmethod</span>
 <span class="k">def</span> <span class="nf">decorate</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Decorate an Altair chart with colour binning, with metavisualisations showing the binning profile.</span>
+    <span class="sd">&quot;&quot;&quot;Decorate a colour-ended Altair chart with meta-visualisations showing how the colours are used.</span>
 <span class="sd">    Args:</span>
 <span class="sd">    src: colour-encoded Altair chart to be decorated.</span>
 <span class="sd">    Returns:</span>
@@ -1741,7 +1740,7 @@ src: colour-encoded Altair chart to be decorated.</p>
     <span class="k">else</span><span class="p">:</span>
         <span class="nb">bin</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Bin</span><span class="p">(</span><span class="n">maxbins</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
         <span class="n">y_scale</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Scale</span><span class="p">(</span><span class="n">zero</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">nice</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">ys</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">AltairColorViz</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">src</span><span class="p">)]</span>  <span class="c1"># assume src.data array-like in an appropriate way</span>
+    <span class="n">ys</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">AltairColorViz</span><span class="o">.</span><span class="n">_field</span><span class="p">(</span><span class="n">src</span><span class="p">)]</span>  <span class="c1"># assume src.data array-like in an appropriate way</span>
     <span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">ys</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">ys</span><span class="p">)</span>
     <span class="c1"># tickCount/tickMinStep Axis properties are ignored (perhaps because we specify bins), so hard code</span>
     <span class="n">y_axis</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Y</span><span class="p">(</span>
@@ -1763,28 +1762,6 @@ src: colour-encoded Altair chart to be decorated.</p>
         <span class="o">.</span><span class="n">mark_bar</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span> \
         <span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">y_axis</span><span class="p">,</span> <span class="n">x_axis</span><span class="p">)</span> \
         <span class="o">.</span><span class="n">properties</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
-</pre></div>
-
-  </div>
-</div>
-
-  </div>
-  
-            
-  <div class="item">
-    <div class="name def" id="ways_py.ways.AltairColorViz.field">
-    <p>def <span class="ident">field</span>(</p><p>src: altair.vegalite.v4.api.Chart)</p>
-    </div>
-    
-
-    
-  
-  <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ways_py.ways.AltairColorViz.field', this);">Show source &equiv;</a></p>
-  <div id="source-ways_py.ways.AltairColorViz.field" class="source">
-    <div class="codehilite"><pre><span></span><span class="nd">@staticmethod</span>
-<span class="k">def</span> <span class="nf">field</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">shorthand</span><span class="p">)</span>
 </pre></div>
 
   </div>
@@ -1819,7 +1796,7 @@ src: colour-encoded Altair chart to be decorated.</p>
             <span class="o">.</span><span class="n">transform_bin</span><span class="p">(</span>
                 <span class="n">as_</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;y2&#39;</span><span class="p">],</span>
                 <span class="nb">bin</span><span class="o">=</span><span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span><span class="p">,</span>
-                <span class="n">field</span><span class="o">=</span><span class="n">AltairColorViz</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
+                <span class="n">field</span><span class="o">=</span><span class="n">AltairColorViz</span><span class="o">.</span><span class="n">_field</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
             <span class="p">)</span> \
             <span class="o">.</span><span class="n">transform_calculate</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;5&#39;</span><span class="p">)</span> \
             <span class="o">.</span><span class="n">encode</span><span class="p">(</span>
@@ -1956,7 +1933,7 @@ src: colour-encoded Altair chart to be decorated.</p>
     <span class="k">def</span> <span class="nf">get_altair_color_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">alt</span><span class="o">.</span><span class="n">Color</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Build color object for altair plot from widget selections.</span>
 
-<span class="sd">            Args:</span>
+<span class="sd">        Args:</span>
 <span class="sd">            data: pandas dataframe with the alatir chart data.</span>
 <span class="sd">            column: column of source chart&#39;s data which contains the colour-encoded data.</span>
 
@@ -2138,10 +2115,9 @@ custom_widgets: dictionary of string name keys and widget values.</p></div>
     
   
     <div class="desc"><p>Build color object for altair plot from widget selections.</p>
-<pre><code>Args:
-data: pandas dataframe with the alatir chart data.
-column: column of source chart's data which contains the colour-encoded data.
-</code></pre>
+<p>Args:
+    data: pandas dataframe with the alatir chart data.
+    column: column of source chart's data which contains the colour-encoded data.</p>
 <p>Returns:
     alt.Color object to be used by alt.Chart</p></div>
   <div class="source_cont">
@@ -2149,7 +2125,7 @@ column: column of source chart's data which contains the colour-encoded data.
   <div id="source-ways_py.ways.WAlt.get_altair_color_obj" class="source">
     <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">get_altair_color_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">alt</span><span class="o">.</span><span class="n">Color</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Build color object for altair plot from widget selections.</span>
-<span class="sd">        Args:</span>
+<span class="sd">    Args:</span>
 <span class="sd">        data: pandas dataframe with the alatir chart data.</span>
 <span class="sd">        column: column of source chart&#39;s data which contains the colour-encoded data.</span>
 <span class="sd">    Returns:</span>
