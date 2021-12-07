@@ -8,7 +8,7 @@
 
 Python package for the [WAYS](https://www.turing.ac.uk/research/research-projects/ways-what-arent-you-seeing) project. See [API documentation](https://warwickcim.github.io/ways-py/).
 <!-- badges: start -->
-[![Publish](https://github.com/WarwickCIM/ways-py/actions/workflows/publish.yml/badge.svg?branch=release)](https://github.com/WarwickCIM/ways-py/actions/workflows/publish.yml)
+[![publish](https://github.com/WarwickCIM/ways-py/actions/workflows/publish.yml/badge.svg?branch=develop)](https://github.com/WarwickCIM/ways-py/actions/workflows/publish.yml)
 [![Build](https://github.com/WarwickCIM/ways-py/actions/workflows/build.yml/badge.svg?branch=develop)](https://github.com/WarwickCIM/ways-py/actions/workflows/build.yml)
 [![Docs](https://github.com/WarwickCIM/ways-py/actions/workflows/docs.yml/badge.svg?branch=develop)](https://github.com/WarwickCIM/ways-py/actions/workflows/docs.yml)
 <!-- badges: end -->
