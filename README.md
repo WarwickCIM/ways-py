@@ -33,14 +33,4 @@ To create the development environment, do the following:
 
 # Emojis on commit messages
 
-We use the following `git` aliases (add to `[alias]` section of your `.gitconfig` to have these):
-
-```
-approve  = "!f() { scripts/add-new-outputs.sh; }; f"
-doc      = "!f() { git commit -m \"📚 : $1\"; }; f"
-fix      = "!f() { git commit -m \"🐛 : $1\"; }; f"
-lint     = "!f() { git commit -m \"✨ : $1\"; }; f"
-modify   = "!f() { git commit -m \"❗ : $1\"; }; f"
-new      = "!f() { git commit -m \"🧩 : $1\"; }; f"
-refactor = "!f() { git commit -m \"♻️ : $1\"; }; f"
-```
+We use a number of [`git` aliases](/.gitconfig.aliases) to track different kinds of commit; to use these yourself, add an [`[include]` section](https://git-scm.com/docs/git-config) to your `.gitconfig`.
