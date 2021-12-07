@@ -16,9 +16,9 @@ def is_defined(v: Any) -> bool:
 class AltairColorViz:
     """Meta-visualisation for alt.Color object."""
 
-    # Centralise the assumption that this property stores just a field name.
     @staticmethod
-    def field(src: alt.Chart) -> str:
+    def _field(src: alt.Chart) -> str:
+        """Centralise the assumption that this property stores just a field name."""
         return cast(str, src.encoding.color.shorthand)
 
     @staticmethod
@@ -30,7 +30,7 @@ class AltairColorViz:
         else:
             bin = alt.Bin(maxbins=100)
             y_scale = alt.Scale(zero=False, nice=True)
-        ys = src.data[AltairColorViz.field(src)]  # assume src.data array-like in an appropriate way
+        ys = src.data[AltairColorViz._field(src)]  # assume src.data array-like in an appropriate way
         y_min, y_max = min(ys), max(ys)
         # tickCount/tickMinStep Axis properties are ignored (perhaps because we specify bins), so hard code
         y_axis = alt.Y(
@@ -68,7 +68,7 @@ class AltairColorViz:
                 .transform_bin(
                     as_=['y', 'y2'],
                     bin=src.encoding.color.bin,
-                    field=AltairColorViz.field(src)
+                    field=AltairColorViz._field(src)
                 ) \
                 .transform_calculate(x='5') \
                 .encode(
