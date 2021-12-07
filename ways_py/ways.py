@@ -23,13 +23,17 @@ class AltairColorViz:
 
     @staticmethod
     def density_chart(src: alt.Chart) -> alt.Chart:
-        if src.encoding.color.bin and is_defined(src.encoding.color.bin.extent):
-            extent = src.encoding.color.bin.extent
-            bin = alt.Bin(maxbins=100, extent=extent)
-            y_scale = alt.Scale(domain=extent, nice=True)
+        if src.encoding.color.bin:
+            if is_defined(src.encoding.color.bin.extent):
+                extent = src.encoding.color.bin.extent
+                bin = alt.Bin(maxbins=100, extent=extent)
+                y_scale = alt.Scale(domain=extent, nice=True)
+            else:
+                bin = alt.Bin(maxbins=100)
+                y_scale = alt.Scale(zero=False, nice=True)
         else:
             bin = alt.Bin(maxbins=100)
-            y_scale = alt.Scale(zero=False, nice=True)
+            y_scale = alt.Scale(nice=False)
         ys = src.data[AltairColorViz.field(src)]  # assume src.data array-like in an appropriate way
         y_min, y_max = min(ys), max(ys)
         # tickCount/tickMinStep Axis properties are ignored (perhaps because we specify bins), so hard code
@@ -37,7 +41,7 @@ class AltairColorViz:
             src.encoding.color.shorthand,
             bin=bin,
             axis=alt.Axis(orient='left', grid=False, values=sorted([0, 50] + [y_min, y_max])),
-            title="",
+            title=src.encoding.color.shorthand,
             scale=y_scale
         )
         x_axis = alt.X(
@@ -46,7 +50,9 @@ class AltairColorViz:
             axis=alt.Axis(grid=False),
             title="density"
         )
-        return alt.Chart(src.data) \
+        # Title for both the density_chart and used_colours plots
+        title = "Colours used"
+        return alt.Chart(src.data, title=title) \
             .transform_joinaggregate(total='count(*)') \
             .transform_calculate(proportion="1 / datum.total") \
             .mark_bar(color='gray') \
@@ -57,12 +63,12 @@ class AltairColorViz:
     def used_colours(src: alt.Chart) -> alt.Chart:
         y_axis = alt.Axis(orient='right', grid=False)
         x_axis = alt.Axis(labels=False, tickSize=0, grid=False, titleAngle=270, titleAlign='right')
-        if src.encoding.color.bin and is_defined(src.encoding.color.bin.extent):
-            extent = src.encoding.color.bin.extent
-            y_scale = alt.Scale(domain=extent, nice=True)
-        else:
-            y_scale = alt.Scale(zero=False, nice=True)
         if src.encoding.color.bin:
+            if is_defined(src.encoding.color.bin.extent):
+                extent = src.encoding.color.bin.extent
+                y_scale = alt.Scale(domain=extent, nice=True)
+            else:
+                y_scale = alt.Scale(zero=False, nice=True)
             chart = alt.Chart(src.data) \
                 .mark_rect() \
                 .transform_bin(
@@ -74,23 +80,21 @@ class AltairColorViz:
                 .encode(
                     y=alt.Y('y:Q', axis=y_axis, title="", scale=y_scale),
                     y2='y2:Q',
-                    x=alt.X('x:Q', sort='descending', axis=x_axis, title="colours used")
-                )
+                    x=alt.X('x:Q', sort='descending', axis=x_axis, title="")
+                )  # noqa: E123
         else:
-            # The following (which happens when bin=False) doesn't make sense; in particular y and y2 are
-            # not defined, so it doesn't make sense to try and plot them.
-            chart = alt.Chart(src.data) \
-                .mark_rect() \
-                .transform_calculate(x='5') \
+            y_scale = alt.Scale(nice=False)
+            # Get a dataframe to plot where there is only one row for each unique value
+            # of the column of the source chart data being plotted
+            df = src.data.drop_duplicates(subset=[src.encoding.color.shorthand])
+            chart = alt.Chart(df) \
+                .mark_bar() \
                 .encode(
-                    y=alt.Y('y:Q', axis=y_axis, title=""),
-                    y2='y2:Q',
-                    x=alt.X('x:Q', sort='descending', axis=x_axis, title="colours used")
-                )
-
-        return chart \
-            .encode(src.encoding.color) \
-            .properties(width=20, height=300)  # noqa: E123
+                    y=alt.Y(src.encoding.color.shorthand, axis=y_axis, title="", scale=y_scale),
+                    x=alt.X('count()', sort='descending', axis=x_axis, title="")
+                )  # noqa: E123
+        return chart.encode(src.encoding.color) \
+                    .properties(width=20, height=300)
 
     @staticmethod
     def decorate(src: alt.Chart) -> alt.Chart:
