@@ -1071,9 +1071,9 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
     <li class="set"><h3><a href="#header-functions">Functions</a></h3>
       
   <ul>
+    <li class="mono"><a href="#ways_py.ways.altair_color_viz">altair_color_viz</a></li>
     <li class="mono"><a href="#ways_py.ways.altair_widgets">altair_widgets</a></li>
     <li class="mono"><a href="#ways_py.ways.is_defined">is_defined</a></li>
-    <li class="mono"><a href="#ways_py.ways.meta_hist">meta_hist</a></li>
   </ul>
 
     </li>
@@ -1081,24 +1081,24 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
     <li class="set"><h3><a href="#header-classes">Classes</a></h3>
       <ul>
         <li class="mono">
+        <span class="class_name"><a href="#ways_py.ways.AltairColorViz">AltairColorViz</a></span>
+        
+          
+  <ul>
+    <li class="mono"><a href="#ways_py.ways.AltairColorViz.decorate">decorate</a></li>
+    <li class="mono"><a href="#ways_py.ways.AltairColorViz.density_chart">density_chart</a></li>
+    <li class="mono"><a href="#ways_py.ways.AltairColorViz.field">field</a></li>
+    <li class="mono"><a href="#ways_py.ways.AltairColorViz.used_colours">used_colours</a></li>
+  </ul>
+
+        </li>
+        <li class="mono">
         <span class="class_name"><a href="#ways_py.ways.WAlt">WAlt</a></span>
         
           
   <ul>
     <li class="mono"><a href="#ways_py.ways.WAlt.display">display</a></li>
     <li class="mono"><a href="#ways_py.ways.WAlt.get_altair_color_obj">get_altair_color_obj</a></li>
-  </ul>
-
-        </li>
-        <li class="mono">
-        <span class="class_name"><a href="#ways_py.ways.Ways">Ways</a></span>
-        
-          
-  <ul>
-    <li class="mono"><a href="#ways_py.ways.Ways.altair_meta_hist">altair_meta_hist</a></li>
-    <li class="mono"><a href="#ways_py.ways.Ways.density_chart">density_chart</a></li>
-    <li class="mono"><a href="#ways_py.ways.Ways.field">field</a></li>
-    <li class="mono"><a href="#ways_py.ways.Ways.used_colours">used_colours</a></li>
   </ul>
 
         </li>
@@ -1135,8 +1135,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
     <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">!=</span> <span class="s1">&#39;UndefinedType&#39;</span>
 
 
-<span class="k">class</span> <span class="nc">Ways</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;WAYS library.&quot;&quot;&quot;</span>
+<span class="k">class</span> <span class="nc">AltairColorViz</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Meta-visualisation for alt.Color object.&quot;&quot;&quot;</span>
 
     <span class="c1"># Centralise the assumption that this property stores just a field name.</span>
     <span class="nd">@staticmethod</span>
@@ -1152,7 +1152,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
         <span class="k">else</span><span class="p">:</span>
             <span class="nb">bin</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Bin</span><span class="p">(</span><span class="n">maxbins</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
             <span class="n">y_scale</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Scale</span><span class="p">(</span><span class="n">zero</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">nice</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">ys</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">Ways</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">src</span><span class="p">)]</span>  <span class="c1"># assume src.data array-like in an appropriate way</span>
+        <span class="n">ys</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">AltairColorViz</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">src</span><span class="p">)]</span>  <span class="c1"># assume src.data array-like in an appropriate way</span>
         <span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">ys</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">ys</span><span class="p">)</span>
         <span class="c1"># tickCount/tickMinStep Axis properties are ignored (perhaps because we specify bins), so hard code</span>
         <span class="n">y_axis</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Y</span><span class="p">(</span>
@@ -1187,13 +1187,17 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
         <span class="k">if</span> <span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span><span class="p">:</span>
             <span class="n">chart</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> \
                 <span class="o">.</span><span class="n">mark_rect</span><span class="p">()</span> \
-                <span class="o">.</span><span class="n">transform_bin</span><span class="p">(</span><span class="n">as_</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;y2&#39;</span><span class="p">],</span> <span class="nb">bin</span><span class="o">=</span><span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="n">Ways</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">src</span><span class="p">))</span> \
+                <span class="o">.</span><span class="n">transform_bin</span><span class="p">(</span>
+                    <span class="n">as_</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;y2&#39;</span><span class="p">],</span>
+                    <span class="nb">bin</span><span class="o">=</span><span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span><span class="p">,</span>
+                    <span class="n">field</span><span class="o">=</span><span class="n">AltairColorViz</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
+                <span class="p">)</span> \
                 <span class="o">.</span><span class="n">transform_calculate</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;5&#39;</span><span class="p">)</span> \
                 <span class="o">.</span><span class="n">encode</span><span class="p">(</span>
                     <span class="n">y</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Y</span><span class="p">(</span><span class="s1">&#39;y:Q&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">y_axis</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">y_scale</span><span class="p">),</span>
                     <span class="n">y2</span><span class="o">=</span><span class="s1">&#39;y2:Q&#39;</span><span class="p">,</span>
                     <span class="n">x</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">X</span><span class="p">(</span><span class="s1">&#39;x:Q&#39;</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="s1">&#39;descending&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">x_axis</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;colours used&quot;</span><span class="p">)</span>
-                <span class="p">)</span>  <span class="c1"># noqa: E123</span>
+                <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># The following (which happens when bin=False) doesn&#39;t make sense; in particular y and y2 are</span>
             <span class="c1"># not defined, so it doesn&#39;t make sense to try and plot them.</span>
@@ -1204,14 +1208,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
                     <span class="n">y</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Y</span><span class="p">(</span><span class="s1">&#39;y:Q&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">y_axis</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">),</span>
                     <span class="n">y2</span><span class="o">=</span><span class="s1">&#39;y2:Q&#39;</span><span class="p">,</span>
                     <span class="n">x</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">X</span><span class="p">(</span><span class="s1">&#39;x:Q&#39;</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="s1">&#39;descending&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">x_axis</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;colours used&quot;</span><span class="p">)</span>
-                <span class="p">)</span>  <span class="c1"># noqa: E123</span>
+                <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">chart</span> \
             <span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="p">)</span> \
             <span class="o">.</span><span class="n">properties</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>  <span class="c1"># noqa: E123</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">altair_meta_hist</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">decorate</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Decorate an Altair chart with colour binning, with metavisualisations showing the binning profile.</span>
 
 <span class="sd">        Args:</span>
@@ -1223,7 +1227,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">is_defined</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Can only apply decorator to chart with color.bin defined.&quot;</span><span class="p">)</span>
 
-        <span class="n">meta_chart</span><span class="p">:</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span> <span class="o">=</span> <span class="p">(</span><span class="n">Ways</span><span class="o">.</span><span class="n">density_chart</span><span class="p">(</span><span class="n">src</span><span class="p">)</span> <span class="o">|</span> <span class="n">Ways</span><span class="o">.</span><span class="n">used_colours</span><span class="p">(</span><span class="n">src</span><span class="p">))</span>
+        <span class="n">meta_chart</span><span class="p">:</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span> <span class="o">=</span> <span class="p">(</span><span class="n">AltairColorViz</span><span class="o">.</span><span class="n">density_chart</span><span class="p">(</span><span class="n">src</span><span class="p">)</span> <span class="o">|</span> <span class="n">AltairColorViz</span><span class="o">.</span><span class="n">used_colours</span><span class="p">(</span><span class="n">src</span><span class="p">))</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">meta_chart</span> <span class="o">|</span> <span class="n">src</span><span class="p">)</span> \
             <span class="o">.</span><span class="n">configure_view</span><span class="p">(</span><span class="n">strokeWidth</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> \
             <span class="o">.</span><span class="n">configure_concat</span><span class="p">(</span><span class="n">spacing</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
@@ -1232,11 +1236,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="n">FuncT</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;FuncT&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span>
 
 
-<span class="k">def</span> <span class="nf">meta_hist</span><span class="p">(</span><span class="n">make_chart</span><span class="p">:</span> <span class="n">FuncT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FuncT</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Post-compose altair_meta_hist with a function which makes a colour-encoded Altair chart.&quot;&quot;&quot;</span>
+<span class="k">def</span> <span class="nf">altair_color_viz</span><span class="p">(</span><span class="n">make_chart</span><span class="p">:</span> <span class="n">FuncT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FuncT</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Adapt function which makes colour-encoded Altair chart to decorate its argument with AltairColorViz.&quot;&quot;&quot;</span>
     <span class="nd">@wraps</span><span class="p">(</span><span class="n">make_chart</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">Ways</span><span class="o">.</span><span class="n">altair_meta_hist</span><span class="p">(</span><span class="n">make_chart</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">AltairColorViz</span><span class="o">.</span><span class="n">decorate</span><span class="p">(</span><span class="n">make_chart</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="n">FuncT</span><span class="p">,</span> <span class="n">wrapper</span><span class="p">)</span>
 
 
@@ -1466,6 +1470,32 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
     <h2 class="section-title" id="header-functions">Functions</h2>
       
   <div class="item">
+    <div class="name def" id="ways_py.ways.altair_color_viz">
+    <p>def <span class="ident">altair_color_viz</span>(</p><p>make_chart: ~FuncT)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Adapt function which makes colour-encoded Altair chart to decorate its argument with AltairColorViz.</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ways_py.ways.altair_color_viz', this);">Show source &equiv;</a></p>
+  <div id="source-ways_py.ways.altair_color_viz" class="source">
+    <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">altair_color_viz</span><span class="p">(</span><span class="n">make_chart</span><span class="p">:</span> <span class="n">FuncT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FuncT</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Adapt function which makes colour-encoded Altair chart to decorate its argument with AltairColorViz.&quot;&quot;&quot;</span>
+    <span class="nd">@wraps</span><span class="p">(</span><span class="n">make_chart</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">AltairColorViz</span><span class="o">.</span><span class="n">decorate</span><span class="p">(</span><span class="n">make_chart</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="n">FuncT</span><span class="p">,</span> <span class="n">wrapper</span><span class="p">)</span>
+</pre></div>
+
+  </div>
+</div>
+
+  </div>
+  
+      
+  <div class="item">
     <div class="name def" id="ways_py.ways.altair_widgets">
     <p>def <span class="ident">altair_widgets</span>(</p><p>custom_widgets: dict[str, typing.Any] = {})</p>
     </div>
@@ -1525,25 +1555,152 @@ custom_widgets: dictionary of string name keys and widget values.</p></div>
 
   </div>
   
+
+    <h2 class="section-title" id="header-classes">Classes</h2>
       
+      <div class="item">
+      <p id="ways_py.ways.AltairColorViz" class="name">class <span class="ident">AltairColorViz</span></p>
+      
+  
+    <div class="desc"><p>Meta-visualisation for alt.Color object.</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ways_py.ways.AltairColorViz', this);">Show source &equiv;</a></p>
+  <div id="source-ways_py.ways.AltairColorViz" class="source">
+    <div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">AltairColorViz</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Meta-visualisation for alt.Color object.&quot;&quot;&quot;</span>
+
+    <span class="c1"># Centralise the assumption that this property stores just a field name.</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">field</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">shorthand</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">density_chart</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span> <span class="ow">and</span> <span class="n">is_defined</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span><span class="o">.</span><span class="n">extent</span><span class="p">):</span>
+            <span class="n">extent</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span><span class="o">.</span><span class="n">extent</span>
+            <span class="nb">bin</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Bin</span><span class="p">(</span><span class="n">maxbins</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="n">extent</span><span class="p">)</span>
+            <span class="n">y_scale</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Scale</span><span class="p">(</span><span class="n">domain</span><span class="o">=</span><span class="n">extent</span><span class="p">,</span> <span class="n">nice</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">bin</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Bin</span><span class="p">(</span><span class="n">maxbins</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+            <span class="n">y_scale</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Scale</span><span class="p">(</span><span class="n">zero</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">nice</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">ys</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">AltairColorViz</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">src</span><span class="p">)]</span>  <span class="c1"># assume src.data array-like in an appropriate way</span>
+        <span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">ys</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">ys</span><span class="p">)</span>
+        <span class="c1"># tickCount/tickMinStep Axis properties are ignored (perhaps because we specify bins), so hard code</span>
+        <span class="n">y_axis</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Y</span><span class="p">(</span>
+            <span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">shorthand</span><span class="p">,</span>
+            <span class="nb">bin</span><span class="o">=</span><span class="nb">bin</span><span class="p">,</span>
+            <span class="n">axis</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Axis</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="nb">sorted</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">])),</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="n">scale</span><span class="o">=</span><span class="n">y_scale</span>
+        <span class="p">)</span>
+        <span class="n">x_axis</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">X</span><span class="p">(</span>
+            <span class="s1">&#39;sum(proportion):Q&#39;</span><span class="p">,</span>
+            <span class="n">sort</span><span class="o">=</span><span class="s1">&#39;descending&#39;</span><span class="p">,</span>
+            <span class="n">axis</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Axis</span><span class="p">(</span><span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;density&quot;</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> \
+            <span class="o">.</span><span class="n">transform_joinaggregate</span><span class="p">(</span><span class="n">total</span><span class="o">=</span><span class="s1">&#39;count(*)&#39;</span><span class="p">)</span> \
+            <span class="o">.</span><span class="n">transform_calculate</span><span class="p">(</span><span class="n">proportion</span><span class="o">=</span><span class="s2">&quot;1 / datum.total&quot;</span><span class="p">)</span> \
+            <span class="o">.</span><span class="n">mark_bar</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span> \
+            <span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">y_axis</span><span class="p">,</span> <span class="n">x_axis</span><span class="p">)</span> \
+            <span class="o">.</span><span class="n">properties</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">used_colours</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">:</span>
+        <span class="n">y_axis</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Axis</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">x_axis</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Axis</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">tickSize</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">titleAngle</span><span class="o">=</span><span class="mi">270</span><span class="p">,</span> <span class="n">titleAlign</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span> <span class="ow">and</span> <span class="n">is_defined</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span><span class="o">.</span><span class="n">extent</span><span class="p">):</span>
+            <span class="n">extent</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span><span class="o">.</span><span class="n">extent</span>
+            <span class="n">y_scale</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Scale</span><span class="p">(</span><span class="n">domain</span><span class="o">=</span><span class="n">extent</span><span class="p">,</span> <span class="n">nice</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">y_scale</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Scale</span><span class="p">(</span><span class="n">zero</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">nice</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span><span class="p">:</span>
+            <span class="n">chart</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> \
+                <span class="o">.</span><span class="n">mark_rect</span><span class="p">()</span> \
+                <span class="o">.</span><span class="n">transform_bin</span><span class="p">(</span>
+                    <span class="n">as_</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;y2&#39;</span><span class="p">],</span>
+                    <span class="nb">bin</span><span class="o">=</span><span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span><span class="p">,</span>
+                    <span class="n">field</span><span class="o">=</span><span class="n">AltairColorViz</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
+                <span class="p">)</span> \
+                <span class="o">.</span><span class="n">transform_calculate</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;5&#39;</span><span class="p">)</span> \
+                <span class="o">.</span><span class="n">encode</span><span class="p">(</span>
+                    <span class="n">y</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Y</span><span class="p">(</span><span class="s1">&#39;y:Q&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">y_axis</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">y_scale</span><span class="p">),</span>
+                    <span class="n">y2</span><span class="o">=</span><span class="s1">&#39;y2:Q&#39;</span><span class="p">,</span>
+                    <span class="n">x</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">X</span><span class="p">(</span><span class="s1">&#39;x:Q&#39;</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="s1">&#39;descending&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">x_axis</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;colours used&quot;</span><span class="p">)</span>
+                <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># The following (which happens when bin=False) doesn&#39;t make sense; in particular y and y2 are</span>
+            <span class="c1"># not defined, so it doesn&#39;t make sense to try and plot them.</span>
+            <span class="n">chart</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> \
+                <span class="o">.</span><span class="n">mark_rect</span><span class="p">()</span> \
+                <span class="o">.</span><span class="n">transform_calculate</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;5&#39;</span><span class="p">)</span> \
+                <span class="o">.</span><span class="n">encode</span><span class="p">(</span>
+                    <span class="n">y</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Y</span><span class="p">(</span><span class="s1">&#39;y:Q&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">y_axis</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">),</span>
+                    <span class="n">y2</span><span class="o">=</span><span class="s1">&#39;y2:Q&#39;</span><span class="p">,</span>
+                    <span class="n">x</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">X</span><span class="p">(</span><span class="s1">&#39;x:Q&#39;</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="s1">&#39;descending&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">x_axis</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;colours used&quot;</span><span class="p">)</span>
+                <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">chart</span> \
+            <span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="p">)</span> \
+            <span class="o">.</span><span class="n">properties</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>  <span class="c1"># noqa: E123</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">decorate</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Decorate an Altair chart with colour binning, with metavisualisations showing the binning profile.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">        src: colour-encoded Altair chart to be decorated.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Altair chart object: modified chart</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_defined</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Can only apply decorator to chart with color.bin defined.&quot;</span><span class="p">)</span>
+
+        <span class="n">meta_chart</span><span class="p">:</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span> <span class="o">=</span> <span class="p">(</span><span class="n">AltairColorViz</span><span class="o">.</span><span class="n">density_chart</span><span class="p">(</span><span class="n">src</span><span class="p">)</span> <span class="o">|</span> <span class="n">AltairColorViz</span><span class="o">.</span><span class="n">used_colours</span><span class="p">(</span><span class="n">src</span><span class="p">))</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">meta_chart</span> <span class="o">|</span> <span class="n">src</span><span class="p">)</span> \
+            <span class="o">.</span><span class="n">configure_view</span><span class="p">(</span><span class="n">strokeWidth</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> \
+            <span class="o">.</span><span class="n">configure_concat</span><span class="p">(</span><span class="n">spacing</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+
+  </div>
+</div>
+
+
+      <div class="class">
+          <h3>Static methods</h3>
+            
   <div class="item">
-    <div class="name def" id="ways_py.ways.meta_hist">
-    <p>def <span class="ident">meta_hist</span>(</p><p>make_chart: ~FuncT)</p>
+    <div class="name def" id="ways_py.ways.AltairColorViz.decorate">
+    <p>def <span class="ident">decorate</span>(</p><p>src: altair.vegalite.v4.api.Chart)</p>
     </div>
     
 
     
   
-    <div class="desc"><p>Post-compose altair_meta_hist with a function which makes a colour-encoded Altair chart.</p></div>
+    <div class="desc"><p>Decorate an Altair chart with colour binning, with metavisualisations showing the binning profile.</p>
+<p>Args:
+src: colour-encoded Altair chart to be decorated.</p>
+<p>Returns:
+    Altair chart object: modified chart</p></div>
   <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ways_py.ways.meta_hist', this);">Show source &equiv;</a></p>
-  <div id="source-ways_py.ways.meta_hist" class="source">
-    <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">meta_hist</span><span class="p">(</span><span class="n">make_chart</span><span class="p">:</span> <span class="n">FuncT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FuncT</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Post-compose altair_meta_hist with a function which makes a colour-encoded Altair chart.&quot;&quot;&quot;</span>
-    <span class="nd">@wraps</span><span class="p">(</span><span class="n">make_chart</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">Ways</span><span class="o">.</span><span class="n">altair_meta_hist</span><span class="p">(</span><span class="n">make_chart</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="n">FuncT</span><span class="p">,</span> <span class="n">wrapper</span><span class="p">)</span>
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ways_py.ways.AltairColorViz.decorate', this);">Show source &equiv;</a></p>
+  <div id="source-ways_py.ways.AltairColorViz.decorate" class="source">
+    <div class="codehilite"><pre><span></span><span class="nd">@staticmethod</span>
+<span class="k">def</span> <span class="nf">decorate</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Decorate an Altair chart with colour binning, with metavisualisations showing the binning profile.</span>
+<span class="sd">    Args:</span>
+<span class="sd">    src: colour-encoded Altair chart to be decorated.</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Altair chart object: modified chart</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_defined</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Can only apply decorator to chart with color.bin defined.&quot;</span><span class="p">)</span>
+    <span class="n">meta_chart</span><span class="p">:</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span> <span class="o">=</span> <span class="p">(</span><span class="n">AltairColorViz</span><span class="o">.</span><span class="n">density_chart</span><span class="p">(</span><span class="n">src</span><span class="p">)</span> <span class="o">|</span> <span class="n">AltairColorViz</span><span class="o">.</span><span class="n">used_colours</span><span class="p">(</span><span class="n">src</span><span class="p">))</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">meta_chart</span> <span class="o">|</span> <span class="n">src</span><span class="p">)</span> \
+        <span class="o">.</span><span class="n">configure_view</span><span class="p">(</span><span class="n">strokeWidth</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> \
+        <span class="o">.</span><span class="n">configure_concat</span><span class="p">(</span><span class="n">spacing</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 </pre></div>
 
   </div>
@@ -1551,8 +1708,136 @@ custom_widgets: dictionary of string name keys and widget values.</p></div>
 
   </div>
   
+            
+  <div class="item">
+    <div class="name def" id="ways_py.ways.AltairColorViz.density_chart">
+    <p>def <span class="ident">density_chart</span>(</p><p>src: altair.vegalite.v4.api.Chart)</p>
+    </div>
+    
 
-    <h2 class="section-title" id="header-classes">Classes</h2>
+    
+  
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ways_py.ways.AltairColorViz.density_chart', this);">Show source &equiv;</a></p>
+  <div id="source-ways_py.ways.AltairColorViz.density_chart" class="source">
+    <div class="codehilite"><pre><span></span><span class="nd">@staticmethod</span>
+<span class="k">def</span> <span class="nf">density_chart</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span> <span class="ow">and</span> <span class="n">is_defined</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span><span class="o">.</span><span class="n">extent</span><span class="p">):</span>
+        <span class="n">extent</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span><span class="o">.</span><span class="n">extent</span>
+        <span class="nb">bin</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Bin</span><span class="p">(</span><span class="n">maxbins</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="n">extent</span><span class="p">)</span>
+        <span class="n">y_scale</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Scale</span><span class="p">(</span><span class="n">domain</span><span class="o">=</span><span class="n">extent</span><span class="p">,</span> <span class="n">nice</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">bin</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Bin</span><span class="p">(</span><span class="n">maxbins</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+        <span class="n">y_scale</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Scale</span><span class="p">(</span><span class="n">zero</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">nice</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">ys</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">AltairColorViz</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">src</span><span class="p">)]</span>  <span class="c1"># assume src.data array-like in an appropriate way</span>
+    <span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">ys</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">ys</span><span class="p">)</span>
+    <span class="c1"># tickCount/tickMinStep Axis properties are ignored (perhaps because we specify bins), so hard code</span>
+    <span class="n">y_axis</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Y</span><span class="p">(</span>
+        <span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">shorthand</span><span class="p">,</span>
+        <span class="nb">bin</span><span class="o">=</span><span class="nb">bin</span><span class="p">,</span>
+        <span class="n">axis</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Axis</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="nb">sorted</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">])),</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">scale</span><span class="o">=</span><span class="n">y_scale</span>
+    <span class="p">)</span>
+    <span class="n">x_axis</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">X</span><span class="p">(</span>
+        <span class="s1">&#39;sum(proportion):Q&#39;</span><span class="p">,</span>
+        <span class="n">sort</span><span class="o">=</span><span class="s1">&#39;descending&#39;</span><span class="p">,</span>
+        <span class="n">axis</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Axis</span><span class="p">(</span><span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;density&quot;</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> \
+        <span class="o">.</span><span class="n">transform_joinaggregate</span><span class="p">(</span><span class="n">total</span><span class="o">=</span><span class="s1">&#39;count(*)&#39;</span><span class="p">)</span> \
+        <span class="o">.</span><span class="n">transform_calculate</span><span class="p">(</span><span class="n">proportion</span><span class="o">=</span><span class="s2">&quot;1 / datum.total&quot;</span><span class="p">)</span> \
+        <span class="o">.</span><span class="n">mark_bar</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span> \
+        <span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">y_axis</span><span class="p">,</span> <span class="n">x_axis</span><span class="p">)</span> \
+        <span class="o">.</span><span class="n">properties</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+</pre></div>
+
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ways_py.ways.AltairColorViz.field">
+    <p>def <span class="ident">field</span>(</p><p>src: altair.vegalite.v4.api.Chart)</p>
+    </div>
+    
+
+    
+  
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ways_py.ways.AltairColorViz.field', this);">Show source &equiv;</a></p>
+  <div id="source-ways_py.ways.AltairColorViz.field" class="source">
+    <div class="codehilite"><pre><span></span><span class="nd">@staticmethod</span>
+<span class="k">def</span> <span class="nf">field</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">shorthand</span><span class="p">)</span>
+</pre></div>
+
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ways_py.ways.AltairColorViz.used_colours">
+    <p>def <span class="ident">used_colours</span>(</p><p>src: altair.vegalite.v4.api.Chart)</p>
+    </div>
+    
+
+    
+  
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ways_py.ways.AltairColorViz.used_colours', this);">Show source &equiv;</a></p>
+  <div id="source-ways_py.ways.AltairColorViz.used_colours" class="source">
+    <div class="codehilite"><pre><span></span><span class="nd">@staticmethod</span>
+<span class="k">def</span> <span class="nf">used_colours</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">:</span>
+    <span class="n">y_axis</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Axis</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">x_axis</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Axis</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">tickSize</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">titleAngle</span><span class="o">=</span><span class="mi">270</span><span class="p">,</span> <span class="n">titleAlign</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span> <span class="ow">and</span> <span class="n">is_defined</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span><span class="o">.</span><span class="n">extent</span><span class="p">):</span>
+        <span class="n">extent</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span><span class="o">.</span><span class="n">extent</span>
+        <span class="n">y_scale</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Scale</span><span class="p">(</span><span class="n">domain</span><span class="o">=</span><span class="n">extent</span><span class="p">,</span> <span class="n">nice</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">y_scale</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Scale</span><span class="p">(</span><span class="n">zero</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">nice</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span><span class="p">:</span>
+        <span class="n">chart</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> \
+            <span class="o">.</span><span class="n">mark_rect</span><span class="p">()</span> \
+            <span class="o">.</span><span class="n">transform_bin</span><span class="p">(</span>
+                <span class="n">as_</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;y2&#39;</span><span class="p">],</span>
+                <span class="nb">bin</span><span class="o">=</span><span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span><span class="p">,</span>
+                <span class="n">field</span><span class="o">=</span><span class="n">AltairColorViz</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
+            <span class="p">)</span> \
+            <span class="o">.</span><span class="n">transform_calculate</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;5&#39;</span><span class="p">)</span> \
+            <span class="o">.</span><span class="n">encode</span><span class="p">(</span>
+                <span class="n">y</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Y</span><span class="p">(</span><span class="s1">&#39;y:Q&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">y_axis</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">y_scale</span><span class="p">),</span>
+                <span class="n">y2</span><span class="o">=</span><span class="s1">&#39;y2:Q&#39;</span><span class="p">,</span>
+                <span class="n">x</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">X</span><span class="p">(</span><span class="s1">&#39;x:Q&#39;</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="s1">&#39;descending&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">x_axis</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;colours used&quot;</span><span class="p">)</span>
+            <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># The following (which happens when bin=False) doesn&#39;t make sense; in particular y and y2 are</span>
+        <span class="c1"># not defined, so it doesn&#39;t make sense to try and plot them.</span>
+        <span class="n">chart</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> \
+            <span class="o">.</span><span class="n">mark_rect</span><span class="p">()</span> \
+            <span class="o">.</span><span class="n">transform_calculate</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;5&#39;</span><span class="p">)</span> \
+            <span class="o">.</span><span class="n">encode</span><span class="p">(</span>
+                <span class="n">y</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Y</span><span class="p">(</span><span class="s1">&#39;y:Q&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">y_axis</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">),</span>
+                <span class="n">y2</span><span class="o">=</span><span class="s1">&#39;y2:Q&#39;</span><span class="p">,</span>
+                <span class="n">x</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">X</span><span class="p">(</span><span class="s1">&#39;x:Q&#39;</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="s1">&#39;descending&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">x_axis</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;colours used&quot;</span><span class="p">)</span>
+            <span class="p">)</span>
+    <span class="k">return</span> <span class="n">chart</span> \
+        <span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="p">)</span> \
+        <span class="o">.</span><span class="n">properties</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>  <span class="c1"># noqa: E123</span>
+</pre></div>
+
+  </div>
+</div>
+
+  </div>
+  
+      </div>
+      </div>
       
       <div class="item">
       <p id="ways_py.ways.WAlt" class="name">class <span class="ident">WAlt</span></p>
@@ -1887,279 +2172,6 @@ column: column of source chart's data which contains the colour-encoded data.
         <span class="c1"># when self.bin.value is &#39;Binned&#39;.</span>
         <span class="n">scale</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Scale</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="n">colorrange</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">alt</span><span class="o">.</span><span class="n">Color</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">bin</span><span class="o">=</span><span class="nb">bin</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">)</span>
-</pre></div>
-
-  </div>
-</div>
-
-  </div>
-  
-      </div>
-      </div>
-      
-      <div class="item">
-      <p id="ways_py.ways.Ways" class="name">class <span class="ident">Ways</span></p>
-      
-  
-    <div class="desc"><p>WAYS library.</p></div>
-  <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ways_py.ways.Ways', this);">Show source &equiv;</a></p>
-  <div id="source-ways_py.ways.Ways" class="source">
-    <div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">Ways</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;WAYS library.&quot;&quot;&quot;</span>
-
-    <span class="c1"># Centralise the assumption that this property stores just a field name.</span>
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">field</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">shorthand</span><span class="p">)</span>
-
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">density_chart</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span> <span class="ow">and</span> <span class="n">is_defined</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span><span class="o">.</span><span class="n">extent</span><span class="p">):</span>
-            <span class="n">extent</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span><span class="o">.</span><span class="n">extent</span>
-            <span class="nb">bin</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Bin</span><span class="p">(</span><span class="n">maxbins</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="n">extent</span><span class="p">)</span>
-            <span class="n">y_scale</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Scale</span><span class="p">(</span><span class="n">domain</span><span class="o">=</span><span class="n">extent</span><span class="p">,</span> <span class="n">nice</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="nb">bin</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Bin</span><span class="p">(</span><span class="n">maxbins</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
-            <span class="n">y_scale</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Scale</span><span class="p">(</span><span class="n">zero</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">nice</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">ys</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">Ways</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">src</span><span class="p">)]</span>  <span class="c1"># assume src.data array-like in an appropriate way</span>
-        <span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">ys</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">ys</span><span class="p">)</span>
-        <span class="c1"># tickCount/tickMinStep Axis properties are ignored (perhaps because we specify bins), so hard code</span>
-        <span class="n">y_axis</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Y</span><span class="p">(</span>
-            <span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">shorthand</span><span class="p">,</span>
-            <span class="nb">bin</span><span class="o">=</span><span class="nb">bin</span><span class="p">,</span>
-            <span class="n">axis</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Axis</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="nb">sorted</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">])),</span>
-            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
-            <span class="n">scale</span><span class="o">=</span><span class="n">y_scale</span>
-        <span class="p">)</span>
-        <span class="n">x_axis</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">X</span><span class="p">(</span>
-            <span class="s1">&#39;sum(proportion):Q&#39;</span><span class="p">,</span>
-            <span class="n">sort</span><span class="o">=</span><span class="s1">&#39;descending&#39;</span><span class="p">,</span>
-            <span class="n">axis</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Axis</span><span class="p">(</span><span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
-            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;density&quot;</span>
-        <span class="p">)</span>
-        <span class="k">return</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> \
-            <span class="o">.</span><span class="n">transform_joinaggregate</span><span class="p">(</span><span class="n">total</span><span class="o">=</span><span class="s1">&#39;count(*)&#39;</span><span class="p">)</span> \
-            <span class="o">.</span><span class="n">transform_calculate</span><span class="p">(</span><span class="n">proportion</span><span class="o">=</span><span class="s2">&quot;1 / datum.total&quot;</span><span class="p">)</span> \
-            <span class="o">.</span><span class="n">mark_bar</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span> \
-            <span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">y_axis</span><span class="p">,</span> <span class="n">x_axis</span><span class="p">)</span> \
-            <span class="o">.</span><span class="n">properties</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
-
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">used_colours</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">:</span>
-        <span class="n">y_axis</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Axis</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="n">x_axis</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Axis</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">tickSize</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">titleAngle</span><span class="o">=</span><span class="mi">270</span><span class="p">,</span> <span class="n">titleAlign</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span> <span class="ow">and</span> <span class="n">is_defined</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span><span class="o">.</span><span class="n">extent</span><span class="p">):</span>
-            <span class="n">extent</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span><span class="o">.</span><span class="n">extent</span>
-            <span class="n">y_scale</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Scale</span><span class="p">(</span><span class="n">domain</span><span class="o">=</span><span class="n">extent</span><span class="p">,</span> <span class="n">nice</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">y_scale</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Scale</span><span class="p">(</span><span class="n">zero</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">nice</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span><span class="p">:</span>
-            <span class="n">chart</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> \
-                <span class="o">.</span><span class="n">mark_rect</span><span class="p">()</span> \
-                <span class="o">.</span><span class="n">transform_bin</span><span class="p">(</span><span class="n">as_</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;y2&#39;</span><span class="p">],</span> <span class="nb">bin</span><span class="o">=</span><span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="n">Ways</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">src</span><span class="p">))</span> \
-                <span class="o">.</span><span class="n">transform_calculate</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;5&#39;</span><span class="p">)</span> \
-                <span class="o">.</span><span class="n">encode</span><span class="p">(</span>
-                    <span class="n">y</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Y</span><span class="p">(</span><span class="s1">&#39;y:Q&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">y_axis</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">y_scale</span><span class="p">),</span>
-                    <span class="n">y2</span><span class="o">=</span><span class="s1">&#39;y2:Q&#39;</span><span class="p">,</span>
-                    <span class="n">x</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">X</span><span class="p">(</span><span class="s1">&#39;x:Q&#39;</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="s1">&#39;descending&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">x_axis</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;colours used&quot;</span><span class="p">)</span>
-                <span class="p">)</span>  <span class="c1"># noqa: E123</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># The following (which happens when bin=False) doesn&#39;t make sense; in particular y and y2 are</span>
-            <span class="c1"># not defined, so it doesn&#39;t make sense to try and plot them.</span>
-            <span class="n">chart</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> \
-                <span class="o">.</span><span class="n">mark_rect</span><span class="p">()</span> \
-                <span class="o">.</span><span class="n">transform_calculate</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;5&#39;</span><span class="p">)</span> \
-                <span class="o">.</span><span class="n">encode</span><span class="p">(</span>
-                    <span class="n">y</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Y</span><span class="p">(</span><span class="s1">&#39;y:Q&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">y_axis</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">),</span>
-                    <span class="n">y2</span><span class="o">=</span><span class="s1">&#39;y2:Q&#39;</span><span class="p">,</span>
-                    <span class="n">x</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">X</span><span class="p">(</span><span class="s1">&#39;x:Q&#39;</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="s1">&#39;descending&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">x_axis</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;colours used&quot;</span><span class="p">)</span>
-                <span class="p">)</span>  <span class="c1"># noqa: E123</span>
-
-        <span class="k">return</span> <span class="n">chart</span> \
-            <span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="p">)</span> \
-            <span class="o">.</span><span class="n">properties</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>  <span class="c1"># noqa: E123</span>
-
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">altair_meta_hist</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Decorate an Altair chart with colour binning, with metavisualisations showing the binning profile.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">        src: colour-encoded Altair chart to be decorated.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            Altair chart object: modified chart</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_defined</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Can only apply decorator to chart with color.bin defined.&quot;</span><span class="p">)</span>
-
-        <span class="n">meta_chart</span><span class="p">:</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span> <span class="o">=</span> <span class="p">(</span><span class="n">Ways</span><span class="o">.</span><span class="n">density_chart</span><span class="p">(</span><span class="n">src</span><span class="p">)</span> <span class="o">|</span> <span class="n">Ways</span><span class="o">.</span><span class="n">used_colours</span><span class="p">(</span><span class="n">src</span><span class="p">))</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">meta_chart</span> <span class="o">|</span> <span class="n">src</span><span class="p">)</span> \
-            <span class="o">.</span><span class="n">configure_view</span><span class="p">(</span><span class="n">strokeWidth</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> \
-            <span class="o">.</span><span class="n">configure_concat</span><span class="p">(</span><span class="n">spacing</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-</pre></div>
-
-  </div>
-</div>
-
-
-      <div class="class">
-          <h3>Static methods</h3>
-            
-  <div class="item">
-    <div class="name def" id="ways_py.ways.Ways.altair_meta_hist">
-    <p>def <span class="ident">altair_meta_hist</span>(</p><p>src: altair.vegalite.v4.api.Chart)</p>
-    </div>
-    
-
-    
-  
-    <div class="desc"><p>Decorate an Altair chart with colour binning, with metavisualisations showing the binning profile.</p>
-<p>Args:
-src: colour-encoded Altair chart to be decorated.</p>
-<p>Returns:
-    Altair chart object: modified chart</p></div>
-  <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ways_py.ways.Ways.altair_meta_hist', this);">Show source &equiv;</a></p>
-  <div id="source-ways_py.ways.Ways.altair_meta_hist" class="source">
-    <div class="codehilite"><pre><span></span><span class="nd">@staticmethod</span>
-<span class="k">def</span> <span class="nf">altair_meta_hist</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Decorate an Altair chart with colour binning, with metavisualisations showing the binning profile.</span>
-<span class="sd">    Args:</span>
-<span class="sd">    src: colour-encoded Altair chart to be decorated.</span>
-<span class="sd">    Returns:</span>
-<span class="sd">        Altair chart object: modified chart</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_defined</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Can only apply decorator to chart with color.bin defined.&quot;</span><span class="p">)</span>
-    <span class="n">meta_chart</span><span class="p">:</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span> <span class="o">=</span> <span class="p">(</span><span class="n">Ways</span><span class="o">.</span><span class="n">density_chart</span><span class="p">(</span><span class="n">src</span><span class="p">)</span> <span class="o">|</span> <span class="n">Ways</span><span class="o">.</span><span class="n">used_colours</span><span class="p">(</span><span class="n">src</span><span class="p">))</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">meta_chart</span> <span class="o">|</span> <span class="n">src</span><span class="p">)</span> \
-        <span class="o">.</span><span class="n">configure_view</span><span class="p">(</span><span class="n">strokeWidth</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> \
-        <span class="o">.</span><span class="n">configure_concat</span><span class="p">(</span><span class="n">spacing</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-</pre></div>
-
-  </div>
-</div>
-
-  </div>
-  
-            
-  <div class="item">
-    <div class="name def" id="ways_py.ways.Ways.density_chart">
-    <p>def <span class="ident">density_chart</span>(</p><p>src: altair.vegalite.v4.api.Chart)</p>
-    </div>
-    
-
-    
-  
-  <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ways_py.ways.Ways.density_chart', this);">Show source &equiv;</a></p>
-  <div id="source-ways_py.ways.Ways.density_chart" class="source">
-    <div class="codehilite"><pre><span></span><span class="nd">@staticmethod</span>
-<span class="k">def</span> <span class="nf">density_chart</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">:</span>
-    <span class="k">if</span> <span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span> <span class="ow">and</span> <span class="n">is_defined</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span><span class="o">.</span><span class="n">extent</span><span class="p">):</span>
-        <span class="n">extent</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span><span class="o">.</span><span class="n">extent</span>
-        <span class="nb">bin</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Bin</span><span class="p">(</span><span class="n">maxbins</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="n">extent</span><span class="p">)</span>
-        <span class="n">y_scale</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Scale</span><span class="p">(</span><span class="n">domain</span><span class="o">=</span><span class="n">extent</span><span class="p">,</span> <span class="n">nice</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="nb">bin</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Bin</span><span class="p">(</span><span class="n">maxbins</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
-        <span class="n">y_scale</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Scale</span><span class="p">(</span><span class="n">zero</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">nice</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">ys</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">Ways</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">src</span><span class="p">)]</span>  <span class="c1"># assume src.data array-like in an appropriate way</span>
-    <span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">ys</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">ys</span><span class="p">)</span>
-    <span class="c1"># tickCount/tickMinStep Axis properties are ignored (perhaps because we specify bins), so hard code</span>
-    <span class="n">y_axis</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Y</span><span class="p">(</span>
-        <span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">shorthand</span><span class="p">,</span>
-        <span class="nb">bin</span><span class="o">=</span><span class="nb">bin</span><span class="p">,</span>
-        <span class="n">axis</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Axis</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="nb">sorted</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">])),</span>
-        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="n">scale</span><span class="o">=</span><span class="n">y_scale</span>
-    <span class="p">)</span>
-    <span class="n">x_axis</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">X</span><span class="p">(</span>
-        <span class="s1">&#39;sum(proportion):Q&#39;</span><span class="p">,</span>
-        <span class="n">sort</span><span class="o">=</span><span class="s1">&#39;descending&#39;</span><span class="p">,</span>
-        <span class="n">axis</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Axis</span><span class="p">(</span><span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
-        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;density&quot;</span>
-    <span class="p">)</span>
-    <span class="k">return</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> \
-        <span class="o">.</span><span class="n">transform_joinaggregate</span><span class="p">(</span><span class="n">total</span><span class="o">=</span><span class="s1">&#39;count(*)&#39;</span><span class="p">)</span> \
-        <span class="o">.</span><span class="n">transform_calculate</span><span class="p">(</span><span class="n">proportion</span><span class="o">=</span><span class="s2">&quot;1 / datum.total&quot;</span><span class="p">)</span> \
-        <span class="o">.</span><span class="n">mark_bar</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span> \
-        <span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">y_axis</span><span class="p">,</span> <span class="n">x_axis</span><span class="p">)</span> \
-        <span class="o">.</span><span class="n">properties</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
-</pre></div>
-
-  </div>
-</div>
-
-  </div>
-  
-            
-  <div class="item">
-    <div class="name def" id="ways_py.ways.Ways.field">
-    <p>def <span class="ident">field</span>(</p><p>src: altair.vegalite.v4.api.Chart)</p>
-    </div>
-    
-
-    
-  
-  <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ways_py.ways.Ways.field', this);">Show source &equiv;</a></p>
-  <div id="source-ways_py.ways.Ways.field" class="source">
-    <div class="codehilite"><pre><span></span><span class="nd">@staticmethod</span>
-<span class="k">def</span> <span class="nf">field</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">shorthand</span><span class="p">)</span>
-</pre></div>
-
-  </div>
-</div>
-
-  </div>
-  
-            
-  <div class="item">
-    <div class="name def" id="ways_py.ways.Ways.used_colours">
-    <p>def <span class="ident">used_colours</span>(</p><p>src: altair.vegalite.v4.api.Chart)</p>
-    </div>
-    
-
-    
-  
-  <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ways_py.ways.Ways.used_colours', this);">Show source &equiv;</a></p>
-  <div id="source-ways_py.ways.Ways.used_colours" class="source">
-    <div class="codehilite"><pre><span></span><span class="nd">@staticmethod</span>
-<span class="k">def</span> <span class="nf">used_colours</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">:</span>
-    <span class="n">y_axis</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Axis</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="n">x_axis</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Axis</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">tickSize</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">titleAngle</span><span class="o">=</span><span class="mi">270</span><span class="p">,</span> <span class="n">titleAlign</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span> <span class="ow">and</span> <span class="n">is_defined</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span><span class="o">.</span><span class="n">extent</span><span class="p">):</span>
-        <span class="n">extent</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span><span class="o">.</span><span class="n">extent</span>
-        <span class="n">y_scale</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Scale</span><span class="p">(</span><span class="n">domain</span><span class="o">=</span><span class="n">extent</span><span class="p">,</span> <span class="n">nice</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">y_scale</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Scale</span><span class="p">(</span><span class="n">zero</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">nice</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span><span class="p">:</span>
-        <span class="n">chart</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> \
-            <span class="o">.</span><span class="n">mark_rect</span><span class="p">()</span> \
-            <span class="o">.</span><span class="n">transform_bin</span><span class="p">(</span><span class="n">as_</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;y2&#39;</span><span class="p">],</span> <span class="nb">bin</span><span class="o">=</span><span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="n">Ways</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">src</span><span class="p">))</span> \
-            <span class="o">.</span><span class="n">transform_calculate</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;5&#39;</span><span class="p">)</span> \
-            <span class="o">.</span><span class="n">encode</span><span class="p">(</span>
-                <span class="n">y</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Y</span><span class="p">(</span><span class="s1">&#39;y:Q&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">y_axis</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">y_scale</span><span class="p">),</span>
-                <span class="n">y2</span><span class="o">=</span><span class="s1">&#39;y2:Q&#39;</span><span class="p">,</span>
-                <span class="n">x</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">X</span><span class="p">(</span><span class="s1">&#39;x:Q&#39;</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="s1">&#39;descending&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">x_axis</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;colours used&quot;</span><span class="p">)</span>
-            <span class="p">)</span>  <span class="c1"># noqa: E123</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="c1"># The following (which happens when bin=False) doesn&#39;t make sense; in particular y and y2 are</span>
-        <span class="c1"># not defined, so it doesn&#39;t make sense to try and plot them.</span>
-        <span class="n">chart</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> \
-            <span class="o">.</span><span class="n">mark_rect</span><span class="p">()</span> \
-            <span class="o">.</span><span class="n">transform_calculate</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;5&#39;</span><span class="p">)</span> \
-            <span class="o">.</span><span class="n">encode</span><span class="p">(</span>
-                <span class="n">y</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Y</span><span class="p">(</span><span class="s1">&#39;y:Q&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">y_axis</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">),</span>
-                <span class="n">y2</span><span class="o">=</span><span class="s1">&#39;y2:Q&#39;</span><span class="p">,</span>
-                <span class="n">x</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">X</span><span class="p">(</span><span class="s1">&#39;x:Q&#39;</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="s1">&#39;descending&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">x_axis</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;colours used&quot;</span><span class="p">)</span>
-            <span class="p">)</span>  <span class="c1"># noqa: E123</span>
-    <span class="k">return</span> <span class="n">chart</span> \
-        <span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="p">)</span> \
-        <span class="o">.</span><span class="n">properties</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>  <span class="c1"># noqa: E123</span>
 </pre></div>
 
   </div>
