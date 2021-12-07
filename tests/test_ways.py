@@ -74,7 +74,7 @@ def expect_fig(fig: alt.Chart, filename: str, headless: bool) -> None:
             file_new_vl = open(filename_new_vl, 'w')
             file_new_vl.write(have_vl)
         else:
-            print(f"{filename}: Vega Lite identical.")
+            print(f"{filename}: Vega-Lite identical.")
 
         # require (Vega Lite -> image) to be a function
         assert expected_image == have_image, f"{filename}: image changed."
