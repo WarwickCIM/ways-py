@@ -59,9 +59,12 @@ class Ways:
     def used_colours(src: alt.Chart) -> alt.Chart:
         y_axis = alt.Axis(orient='right', grid=False)
         x_axis = alt.Axis(labels=False, tickSize=0, grid=False, titleAngle=270, titleAlign='right')
-        if src.encoding.color.bin and is_defined(src.encoding.color.bin.extent):
-            extent = src.encoding.color.bin.extent
-            y_scale = alt.Scale(domain=extent, nice=True)
+        if src.encoding.color.bin:
+            if is_defined(src.encoding.color.bin.extent):
+                extent = src.encoding.color.bin.extent
+                y_scale = alt.Scale(domain=extent, nice=True)
+            else:
+                y_scale = alt.Scale(zero=False, nice=True)
         else:
             y_scale = alt.Scale(nice=False)
         if src.encoding.color.bin:
