@@ -1238,7 +1238,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
 
 <span class="k">def</span> <span class="nf">altair_color_viz</span><span class="p">(</span><span class="n">make_chart</span><span class="p">:</span> <span class="n">FuncT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FuncT</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Adapt function which makes colour-encoded Altair chart to decorate its argument with AltairColorViz.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Decorator which attaches an AltairColorViz meta-visualisation to a colour-encoded Altair chart.</span>
+
+<span class="sd">    Given a function which creates an Altair chart using an alt.Color object for colour encoding, adapt</span>
+<span class="sd">    that function so that it returns the original chart decorated with an AltairColorViz meta-visualisation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="nd">@wraps</span><span class="p">(</span><span class="n">make_chart</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">AltairColorViz</span><span class="o">.</span><span class="n">decorate</span><span class="p">(</span><span class="n">make_chart</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
@@ -1479,12 +1483,18 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
     
   
-    <div class="desc"><p>Adapt function which makes colour-encoded Altair chart to decorate its argument with AltairColorViz.</p></div>
+    <div class="desc"><p>Decorator which attaches an AltairColorViz meta-visualisation to a colour-encoded Altair chart.</p>
+<p>Given a function which creates an Altair chart using an alt.Color object for colour encoding, adapt
+that function so that it returns the original chart decorated with an AltairColorViz meta-visualisation.</p></div>
   <div class="source_cont">
   <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ways_py.ways.altair_color_viz', this);">Show source &equiv;</a></p>
   <div id="source-ways_py.ways.altair_color_viz" class="source">
     <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">altair_color_viz</span><span class="p">(</span><span class="n">make_chart</span><span class="p">:</span> <span class="n">FuncT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FuncT</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Adapt function which makes colour-encoded Altair chart to decorate its argument with AltairColorViz.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Decorator which attaches an AltairColorViz meta-visualisation to a colour-encoded Altair chart.</span>
+
+<span class="sd">    Given a function which creates an Altair chart using an alt.Color object for colour encoding, adapt</span>
+<span class="sd">    that function so that it returns the original chart decorated with an AltairColorViz meta-visualisation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="nd">@wraps</span><span class="p">(</span><span class="n">make_chart</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">AltairColorViz</span><span class="o">.</span><span class="n">decorate</span><span class="p">(</span><span class="n">make_chart</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
