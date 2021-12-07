@@ -8,6 +8,10 @@ import pandas as pd  # type: ignore
 import traitlets  # type: ignore
 
 
+__pdoc__ = {}
+__pdoc__['FuncT'] = False
+
+
 def is_defined(v: Any) -> bool:
     """Altair's notion of an undefined schema property."""
     return type(v).__name__ != 'UndefinedType'
