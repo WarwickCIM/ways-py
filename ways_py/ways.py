@@ -116,7 +116,11 @@ FuncT = TypeVar("FuncT", bound=Callable[..., Any])
 
 
 def altair_color_viz(make_chart: FuncT) -> FuncT:
-    """Adapt function which makes colour-encoded Altair chart to decorate its argument with AltairColorViz."""
+    """Decorator which attaches an AltairColorViz meta-visualisation to a colour-encoded Altair chart.
+
+    Given a function which creates an Altair chart using an alt.Color object for colour encoding, adapt
+    that function so that it returns the original chart decorated with an AltairColorViz meta-visualisation.
+    """
     @wraps(make_chart)
     def wrapper(*args: Any, **kwargs: Any) -> Any:
         return AltairColorViz.decorate(make_chart(*args, **kwargs))
