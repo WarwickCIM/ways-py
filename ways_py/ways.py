@@ -112,6 +112,7 @@ class AltairColorViz:
 
 
 FuncT = TypeVar("FuncT", bound=Callable[..., Any])
+"""Type variable for internal module use."""
 
 
 def altair_color_viz(make_chart: FuncT) -> FuncT:
