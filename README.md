@@ -8,9 +8,9 @@
 
 Python package for the [WAYS](https://www.turing.ac.uk/research/research-projects/ways-what-arent-you-seeing) project. See [API documentation](https://warwickcim.github.io/ways-py/).
 <!-- badges: start -->
-[![publish](https://github.com/WarwickCIM/ways-py/actions/workflows/publish.yml/badge.svg?branch=develop)](https://github.com/WarwickCIM/ways-py/actions/workflows/publish.yml)
 [![Build](https://github.com/WarwickCIM/ways-py/actions/workflows/build.yml/badge.svg?branch=develop)](https://github.com/WarwickCIM/ways-py/actions/workflows/build.yml)
 [![Docs](https://github.com/WarwickCIM/ways-py/actions/workflows/docs.yml/badge.svg?branch=develop)](https://github.com/WarwickCIM/ways-py/actions/workflows/docs.yml)
+[![publish](https://github.com/WarwickCIM/ways-py/actions/workflows/publish.yml/badge.svg?branch=develop)](https://github.com/WarwickCIM/ways-py/actions/workflows/publish.yml)
 <!-- badges: end -->
 
 “As you can see in figure 1…” may well be the most frequently made claim in science. But unlike claims concerning data, statistics, models and algorithms, those relating to visualisations are rarely evaluated or verified. So how can data scientists understand visualisations’ effectiveness and expressiveness? What is the visualisation equivalent of q-q plots, R^2 and K-folds tests?
