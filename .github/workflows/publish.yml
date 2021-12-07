@@ -13,6 +13,9 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - uses: actions/checkout@v2
+        with:
+          # workflow_run event fires in default branch (develop); check out originating branch instead
+          ref: ${{ github.event.workflow_run.head_branch }}
       - name: Set up Python
         uses: actions/setup-python@v1
         with:
