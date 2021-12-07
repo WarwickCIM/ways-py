@@ -17,7 +17,7 @@ jobs:
       - name: Install poetry
         run: pip install poetry
       - name: Install dependencies
-        run: poetry install
+        run: poetry instal
       - name: Check style with flake8
         run: poetry run flake8 ways_py/ tests/
       - name: Check type hinting with mypy
