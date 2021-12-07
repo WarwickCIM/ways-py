@@ -1135,7 +1135,12 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
 
 <span class="k">class</span> <span class="nc">AltairColorViz</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Meta-visualisation for alt.Color object.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Meta-visualisation for alt.Color object.</span>
+
+<span class="sd">    Has two components: a plot of the underlying distribution of the chart, as a vertical histogram,</span>
+<span class="sd">    computed by `density_chart`, and a plot of the colours used, which serves as the y-axis &quot;labels&quot;,</span>
+<span class="sd">    computed by `used_colours`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_field</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -1144,6 +1149,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">density_chart</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;The underlying distribution of the chart as a histogram; placed alongside &#39;colours used&#39;.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span> <span class="ow">and</span> <span class="n">is_defined</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span><span class="o">.</span><span class="n">extent</span><span class="p">):</span>
             <span class="n">extent</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span><span class="o">.</span><span class="n">extent</span>
             <span class="nb">bin</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Bin</span><span class="p">(</span><span class="n">maxbins</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="n">extent</span><span class="p">)</span>
@@ -1176,6 +1182,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">used_colours</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;The colours used by the chart, plotted as another (vertical) chart.&quot;&quot;&quot;</span>
         <span class="n">y_axis</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Axis</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="n">x_axis</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Axis</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">tickSize</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">titleAngle</span><span class="o">=</span><span class="mi">270</span><span class="p">,</span> <span class="n">titleAlign</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span> <span class="ow">and</span> <span class="n">is_defined</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span><span class="o">.</span><span class="n">extent</span><span class="p">):</span>
@@ -1573,12 +1580,20 @@ custom_widgets: dictionary of string name keys and widget values.</p></div>
       <p id="ways_py.ways.AltairColorViz" class="name">class <span class="ident">AltairColorViz</span></p>
       
   
-    <div class="desc"><p>Meta-visualisation for alt.Color object.</p></div>
+    <div class="desc"><p>Meta-visualisation for alt.Color object.</p>
+<p>Has two components: a plot of the underlying distribution of the chart, as a vertical histogram,
+computed by <code>density_chart</code>, and a plot of the colours used, which serves as the y-axis "labels",
+computed by <code>used_colours</code>.</p></div>
   <div class="source_cont">
   <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ways_py.ways.AltairColorViz', this);">Show source &equiv;</a></p>
   <div id="source-ways_py.ways.AltairColorViz" class="source">
     <div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">AltairColorViz</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Meta-visualisation for alt.Color object.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Meta-visualisation for alt.Color object.</span>
+
+<span class="sd">    Has two components: a plot of the underlying distribution of the chart, as a vertical histogram,</span>
+<span class="sd">    computed by `density_chart`, and a plot of the colours used, which serves as the y-axis &quot;labels&quot;,</span>
+<span class="sd">    computed by `used_colours`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_field</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -1587,6 +1602,7 @@ custom_widgets: dictionary of string name keys and widget values.</p></div>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">density_chart</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;The underlying distribution of the chart as a histogram; placed alongside &#39;colours used&#39;.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span> <span class="ow">and</span> <span class="n">is_defined</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span><span class="o">.</span><span class="n">extent</span><span class="p">):</span>
             <span class="n">extent</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span><span class="o">.</span><span class="n">extent</span>
             <span class="nb">bin</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Bin</span><span class="p">(</span><span class="n">maxbins</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="n">extent</span><span class="p">)</span>
@@ -1619,6 +1635,7 @@ custom_widgets: dictionary of string name keys and widget values.</p></div>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">used_colours</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;The colours used by the chart, plotted as another (vertical) chart.&quot;&quot;&quot;</span>
         <span class="n">y_axis</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Axis</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="n">x_axis</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Axis</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">tickSize</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">titleAngle</span><span class="o">=</span><span class="mi">270</span><span class="p">,</span> <span class="n">titleAlign</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span> <span class="ow">and</span> <span class="n">is_defined</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span><span class="o">.</span><span class="n">extent</span><span class="p">):</span>
@@ -1728,11 +1745,13 @@ src: colour-encoded Altair chart to be decorated.</p>
 
     
   
+    <div class="desc"><p>The underlying distribution of the chart as a histogram; placed alongside 'colours used'.</p></div>
   <div class="source_cont">
   <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ways_py.ways.AltairColorViz.density_chart', this);">Show source &equiv;</a></p>
   <div id="source-ways_py.ways.AltairColorViz.density_chart" class="source">
     <div class="codehilite"><pre><span></span><span class="nd">@staticmethod</span>
 <span class="k">def</span> <span class="nf">density_chart</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;The underlying distribution of the chart as a histogram; placed alongside &#39;colours used&#39;.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span> <span class="ow">and</span> <span class="n">is_defined</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span><span class="o">.</span><span class="n">extent</span><span class="p">):</span>
         <span class="n">extent</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span><span class="o">.</span><span class="n">extent</span>
         <span class="nb">bin</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Bin</span><span class="p">(</span><span class="n">maxbins</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="n">extent</span><span class="p">)</span>
@@ -1778,11 +1797,13 @@ src: colour-encoded Altair chart to be decorated.</p>
 
     
   
+    <div class="desc"><p>The colours used by the chart, plotted as another (vertical) chart.</p></div>
   <div class="source_cont">
   <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ways_py.ways.AltairColorViz.used_colours', this);">Show source &equiv;</a></p>
   <div id="source-ways_py.ways.AltairColorViz.used_colours" class="source">
     <div class="codehilite"><pre><span></span><span class="nd">@staticmethod</span>
 <span class="k">def</span> <span class="nf">used_colours</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;The colours used by the chart, plotted as another (vertical) chart.&quot;&quot;&quot;</span>
     <span class="n">y_axis</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Axis</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">x_axis</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Axis</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">tickSize</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">titleAngle</span><span class="o">=</span><span class="mi">270</span><span class="p">,</span> <span class="n">titleAlign</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span> <span class="ow">and</span> <span class="n">is_defined</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">bin</span><span class="o">.</span><span class="n">extent</span><span class="p">):</span>
