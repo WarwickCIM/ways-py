@@ -105,6 +105,7 @@ class Ways:
             .configure_view(strokeWidth=0) \
             .configure_concat(spacing=5)
 
+
 FuncT = TypeVar("FuncT", bound=Callable[..., Any])
 
 
