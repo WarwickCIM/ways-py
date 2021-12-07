@@ -33,7 +33,7 @@ class AltairColorViz:
                 y_scale = alt.Scale(zero=False, nice=True)
         else:
             bin = alt.Bin(maxbins=100)
-            y_scale = alt.Scale(zero=False, nice=True)
+            y_scale = alt.Scale(nice=False)
         ys = src.data[AltairColorViz.field(src)]  # assume src.data array-like in an appropriate way
         y_min, y_max = min(ys), max(ys)
         # tickCount/tickMinStep Axis properties are ignored (perhaps because we specify bins), so hard code
