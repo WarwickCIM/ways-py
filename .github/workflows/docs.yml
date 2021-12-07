@@ -3,7 +3,7 @@ name: docs
 on:
   # Use the workflow_run event so docs can be its own workflow and thus have its own status badge.
   workflow_run:
-    workflows: ["build-publish"]
+    workflows: ['build']
     branches: [develop]
     types:
       - completed
