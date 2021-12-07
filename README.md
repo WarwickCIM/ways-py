@@ -25,11 +25,12 @@ Install from [PyPI](https://pypi.org/project/ways-py/) using `pip install ways-p
 
 ## Development
 
-To create the development environment, do the following:
+To create the development environment:
 
 1. Install python poetry by following the [install instructions](https://python-poetry.org/docs/)
-2. From the top level dir: `poetry shell`
- - Note: your machine will need python 3.9 available - [install from here](https://www.python.org/downloads/release/python-397/) if you don't have it
+2. From the top level dir, run `poetry shell`
+
+Your machine will need [Python 3.9](https://www.python.org/downloads/release/python-397/) ) available.
 
 # Emojis on commit messages
 
