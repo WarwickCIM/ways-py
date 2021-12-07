@@ -94,7 +94,7 @@ class AltairColorViz:
 
     @staticmethod
     def decorate(src: alt.Chart) -> alt.Chart:
-        """Decorate an Altair chart with colour binning, with metavisualisations showing the binning profile.
+        """Decorate a colour-ended Altair chart with meta-visualisations showing how the colours are used.
 
         Args:
         src: colour-encoded Altair chart to be decorated.
@@ -119,7 +119,7 @@ def altair_color_viz(make_chart: FuncT) -> FuncT:
     """Decorator which attaches an AltairColorViz meta-visualisation to a colour-encoded Altair chart.
 
     Given a function which creates an Altair chart using an alt.Color object for colour encoding, adapt
-    that function so that it returns the original chart decorated with an AltairColorViz meta-visualisation.
+    that function to return the original chart decorated with an AltairColorViz meta-visualisation.
     """
     @wraps(make_chart)
     def wrapper(*args: Any, **kwargs: Any) -> Any:
@@ -224,7 +224,7 @@ class WAlt:
     def get_altair_color_obj(self, data: pd.DataFrame, column: str) -> alt.Color:
         """Build color object for altair plot from widget selections.
 
-            Args:
+        Args:
             data: pandas dataframe with the alatir chart data.
             column: column of source chart's data which contains the colour-encoded data.
 
