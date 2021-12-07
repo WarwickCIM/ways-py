@@ -14,7 +14,12 @@ def is_defined(v: Any) -> bool:
 
 
 class AltairColorViz:
-    """Meta-visualisation for alt.Color object."""
+    """Meta-visualisation for alt.Color object.
+
+    Has two components: a plot of the underlying distribution of the chart, as a vertical histogram,
+    computed by `density_chart`, and a plot of the colours used, which serves as the y-axis "labels",
+    computed by `used_colours`.
+    """
 
     @staticmethod
     def _field(src: alt.Chart) -> str:
@@ -23,6 +28,7 @@ class AltairColorViz:
 
     @staticmethod
     def density_chart(src: alt.Chart) -> alt.Chart:
+        """The underlying distribution of the chart as a histogram; placed alongside 'colours used'."""
         if src.encoding.color.bin and is_defined(src.encoding.color.bin.extent):
             extent = src.encoding.color.bin.extent
             bin = alt.Bin(maxbins=100, extent=extent)
@@ -55,6 +61,7 @@ class AltairColorViz:
 
     @staticmethod
     def used_colours(src: alt.Chart) -> alt.Chart:
+        """The colours used by the chart, plotted as another (vertical) chart."""
         y_axis = alt.Axis(orient='right', grid=False)
         x_axis = alt.Axis(labels=False, tickSize=0, grid=False, titleAngle=270, titleAlign='right')
         if src.encoding.color.bin and is_defined(src.encoding.color.bin.extent):
