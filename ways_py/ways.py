@@ -69,9 +69,6 @@ class AltairColorViz:
                 y_scale = alt.Scale(domain=extent, nice=True)
             else:
                 y_scale = alt.Scale(zero=False, nice=True)
-        else:
-            y_scale = alt.Scale(nice=False)
-        if src.encoding.color.bin:
             chart = alt.Chart(src.data) \
                 .mark_rect() \
                 .transform_bin(
@@ -86,6 +83,7 @@ class AltairColorViz:
                     x=alt.X('x:Q', sort='descending', axis=x_axis, title="")
                 )  # noqa: E123
         else:
+            y_scale = alt.Scale(nice=False)
             # Get a dataframe to plot where there is only one row for each unique value
             # of the column of the source chart data being plotted
             df = src.data.drop_duplicates(subset=[src.encoding.color.shorthand])
