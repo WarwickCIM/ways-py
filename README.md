@@ -33,4 +33,4 @@ To create the development environment, do the following:
 
 # Emojis on commit messages
 
-We use a number of [`git` aliases](/.gitconfig.aliases) to track different kinds of commit; to use these yourself, add an [`[include]` section](https://git-scm.com/docs/git-config) to your `.gitconfig`.
+We use a number of `git` [aliases](/.gitconfig.aliases) to track different kinds of commit; to use these yourself, add an `[include]` section to your [`.gitconfig`](https://git-scm.com/docs/git-config).
