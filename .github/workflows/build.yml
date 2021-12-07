@@ -1,0 +1,28 @@
+name: build
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: macos-10.15
+    steps:
+      - uses: actions/checkout@v2
+      - uses: nanasess/setup-chromedriver@master
+      - name: Set up Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.9.9
+      - name: Install poetry
+        run: pip install poetry
+      - name: Install dependencies
+        run: poetry install
+      - name: Check style with flake8
+        run: poetry run flake8 ways_py/ tests/
+      - name: Check type hinting with mypy
+        run: poetry run mypy --strict --config-file=mypy.ini ways_py/ tests/
+      - name: Test notebooks
+        run: poetry run pytest --nbmake "./notebooks"
+      - name: Unit & coverage test with pytest
+        run: poetry run pytest --headless=True -rP

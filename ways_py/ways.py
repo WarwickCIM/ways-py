@@ -13,8 +13,8 @@ def is_defined(v: Any) -> bool:
     return type(v).__name__ != 'UndefinedType'
 
 
-class Ways:
-    """WAYS library."""
+class AltairColorViz:
+    """Meta-visualisation for alt.Color object."""
 
     # Centralise the assumption that this property stores just a field name.
     @staticmethod
@@ -33,8 +33,8 @@ class Ways:
                 y_scale = alt.Scale(zero=False, nice=True)
         else:
             bin = alt.Bin(maxbins=100)
-            y_scale = alt.Scale(nice=False)
-        ys = src.data[Ways.field(src)]  # assume src.data array-like in an appropriate way
+            y_scale = alt.Scale(zero=False, nice=True)
+        ys = src.data[AltairColorViz.field(src)]  # assume src.data array-like in an appropriate way
         y_min, y_max = min(ys), max(ys)
         # tickCount/tickMinStep Axis properties are ignored (perhaps because we specify bins), so hard code
         y_axis = alt.Y(
@@ -74,7 +74,11 @@ class Ways:
         if src.encoding.color.bin:
             chart = alt.Chart(src.data) \
                 .mark_rect() \
-                .transform_bin(as_=['y', 'y2'], bin=src.encoding.color.bin, field=Ways.field(src)) \
+                .transform_bin(
+                    as_=['y', 'y2'],
+                    bin=src.encoding.color.bin,
+                    field=AltairColorViz.field(src)
+                ) \
                 .transform_calculate(x='5') \
                 .encode(
                     y=alt.Y('y:Q', axis=y_axis, title="", scale=y_scale),
@@ -95,7 +99,7 @@ class Ways:
                     .properties(width=20, height=300)
 
     @staticmethod
-    def altair_meta_hist(src: alt.Chart) -> alt.Chart:
+    def decorate(src: alt.Chart) -> alt.Chart:
         """Decorate an Altair chart with colour binning, with metavisualisations showing the binning profile.
 
         Args:
@@ -107,7 +111,7 @@ class Ways:
         if not is_defined(src.encoding.color.bin):
             raise Exception("Can only apply decorator to chart with color.bin defined.")
 
-        meta_chart: alt.Chart = (Ways.density_chart(src) | Ways.used_colours(src))
+        meta_chart: alt.Chart = (AltairColorViz.density_chart(src) | AltairColorViz.used_colours(src))
         return (meta_chart | src) \
             .configure_view(strokeWidth=0) \
             .configure_concat(spacing=5)
@@ -116,11 +120,11 @@ class Ways:
 FuncT = TypeVar("FuncT", bound=Callable[..., Any])
 
 
-def meta_hist(make_chart: FuncT) -> FuncT:
-    """Post-compose altair_meta_hist with a function which makes a colour-encoded Altair chart."""
+def altair_color_viz(make_chart: FuncT) -> FuncT:
+    """Adapt function which makes colour-encoded Altair chart to decorate its argument with AltairColorViz."""
     @wraps(make_chart)
     def wrapper(*args: Any, **kwargs: Any) -> Any:
-        return Ways.altair_meta_hist(make_chart(*args, **kwargs))
+        return AltairColorViz.decorate(make_chart(*args, **kwargs))
     return cast(FuncT, wrapper)
 
 

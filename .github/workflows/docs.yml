@@ -1,0 +1,31 @@
+name: docs
+
+on:
+  # Use the workflow_run event so docs can be its own workflow and thus have its own status badge.
+  workflow_run:
+    workflows: ['build']
+    branches: [develop, docs]
+    types:
+      - completed
+
+jobs:
+  docs:
+    runs-on: macos-10.15
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          # workflow_run event fires in default branch (develop); check out originating branch instead
+          ref: ${{ github.event.workflow_run.head_branch }}
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.9.9
+      - name: Install poetry
+        run: pip install poetry
+      - name: Install dependencies
+        run: poetry install
+      - run: poetry run pdocs as_html ways_py -o docs
+      - uses: JamesIves/github-pages-deploy-action@4.1.7
+        with:
+          branch: gh-pages
+          folder: docs/ways_py

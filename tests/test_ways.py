@@ -11,7 +11,7 @@ import geopandas as gpd  # type: ignore
 import pandas as pd  # type: ignore
 import pytest
 
-from ways_py.ways import meta_hist
+from ways_py.ways import altair_color_viz
 
 
 @pytest.fixture()
@@ -74,7 +74,7 @@ def expect_fig(fig: alt.Chart, filename: str, headless: bool) -> None:
             file_new_vl = open(filename_new_vl, 'w')
             file_new_vl.write(have_vl)
         else:
-            print(f"{filename}: Vega Lite identical.")
+            print(f"{filename}: Vega-Lite identical.")
 
         # require (Vega Lite -> image) to be a function
         assert expected_image == have_image, f"{filename}: image changed."
@@ -100,7 +100,7 @@ def choropleth_data() -> Any:
     return geo_states_trump[geo_states_trump.modeldate == '11/03/2020']
 
 
-@meta_hist
+@altair_color_viz
 def example_choropleth(candidate_states: pd.DataFrame, title: str, extent: Optional[List[int]]) -> alt.Chart:
     """Choropleth of the US states with the candidate vote percentage mapped to color."""
     color = alt.Color(shorthand='pct_estimate', bin=alt.Bin(maxbins=20), scale=alt.Scale(type='band'))
@@ -124,7 +124,7 @@ def scatterplot_data() -> Any:
     return pd.read_json(data.movies.url)
 
 
-@meta_hist
+@altair_color_viz
 def example_scatterplot(data: pd.DataFrame, color: alt.Color, title: str) -> alt.Chart:
     """Scatterplot of IMdB ratings vs. Rotten Tomatoes by budget."""
     chart = alt.Chart(data, title=title) \
@@ -134,7 +134,7 @@ def example_scatterplot(data: pd.DataFrame, color: alt.Color, title: str) -> alt
 
 
 class TestMetaHist:
-    """Test the @meta_hist decorator."""
+    """Test the @altair_color_viz decorator."""
 
     @staticmethod
     def test_choropleth(headless: bool) -> None:

@@ -1,16 +1,17 @@
 <!-- badges: start -->
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/WarwickCIM/ways-py/develop)
-[![Release build](https://github.com/WarwickCIM/ways-py/actions/workflows/build-publish.yml/badge.svg?branch=release)](https://github.com/WarwickCIM/ways-py/actions/workflows/build-publish.yml)
-[![Develop build](https://github.com/WarwickCIM/ways-py/actions/workflows/build-publish.yml/badge.svg?branch=develop)](https://github.com/WarwickCIM/ways-py/actions/workflows/build-publish.yml)
 [![Project Status: Concept – Minimal or no implementation has been done yet, or the repository is only intended to be a limited example, demo, or proof-of-concept.](https://www.repostatus.org/badges/latest/concept.svg)](https://www.repostatus.org/#concept)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 <!-- badges: end -->
 
 # _WAYS: What Aren't You Seeing_
 
-Python package for the [WAYS](https://www.turing.ac.uk/research/research-projects/ways-what-arent-you-seeing) project.
-
-[Turing Research Engineering Group Hut23 issue](https://github.com/alan-turing-institute/Hut23/issues/407)
+Python package for the [WAYS](https://www.turing.ac.uk/research/research-projects/ways-what-arent-you-seeing) project. See [API documentation](https://warwickcim.github.io/ways-py/).
+<!-- badges: start -->
+[![Build](https://github.com/WarwickCIM/ways-py/actions/workflows/build.yml/badge.svg?branch=develop)](https://github.com/WarwickCIM/ways-py/actions/workflows/build.yml)
+[![Docs](https://github.com/WarwickCIM/ways-py/actions/workflows/docs.yml/badge.svg?branch=develop)](https://github.com/WarwickCIM/ways-py/actions/workflows/docs.yml)
+[![publish](https://github.com/WarwickCIM/ways-py/actions/workflows/publish.yml/badge.svg?branch=develop)](https://github.com/WarwickCIM/ways-py/actions/workflows/publish.yml)
+<!-- badges: end -->
 
 “As you can see in figure 1…” may well be the most frequently made claim in science. But unlike claims concerning data, statistics, models and algorithms, those relating to visualisations are rarely evaluated or verified. So how can data scientists understand visualisations’ effectiveness and expressiveness? What is the visualisation equivalent of q-q plots, R^2 and K-folds tests?
 
@@ -24,22 +25,13 @@ Install from [PyPI](https://pypi.org/project/ways-py/) using `pip install ways-p
 
 ## Development
 
-To create the development environment, do the following:
+To create the development environment:
 
 1. Install python poetry by following the [install instructions](https://python-poetry.org/docs/)
-2. From the top level dir: `poetry shell`
- - Note: your machine will need python 3.9 available - [install from here](https://www.python.org/downloads/release/python-397/) if you don't have it
+2. From the top level dir, run `poetry shell`
+
+Your machine will need [Python 3.9](https://www.python.org/downloads/release/python-397/) ) available.
 
 # Emojis on commit messages
 
-We use the following `git` aliases (add to `[alias]` section of your `.gitconfig` to have these):
-
-```
-approve  = "!f() { scripts/add-new-outputs.sh; }; f"
-doc      = "!f() { git commit -m \"📚 : $1\"; }; f"
-fix      = "!f() { git commit -m \"🐛 : $1\"; }; f"
-lint     = "!f() { git commit -m \"✨ : $1\"; }; f"
-modify   = "!f() { git commit -m \"❗ : $1\"; }; f"
-new      = "!f() { git commit -m \"🧩 : $1\"; }; f"
-refactor = "!f() { git commit -m \"♻️ : $1\"; }; f"
-```
+We use a number of `git` [aliases](/.gitconfig.aliases) to track different kinds of commit; to use these yourself, add an `[include]` section to your [`.gitconfig`](https://git-scm.com/docs/git-config).
