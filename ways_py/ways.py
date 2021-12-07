@@ -75,7 +75,7 @@ class AltairColorViz:
                     y=alt.Y('y:Q', axis=y_axis, title="", scale=y_scale),
                     y2='y2:Q',
                     x=alt.X('x:Q', sort='descending', axis=x_axis, title="colours used")
-                )  # noqa: E123
+                )
         else:
             # The following (which happens when bin=False) doesn't make sense; in particular y and y2 are
             # not defined, so it doesn't make sense to try and plot them.
@@ -86,7 +86,7 @@ class AltairColorViz:
                     y=alt.Y('y:Q', axis=y_axis, title=""),
                     y2='y2:Q',
                     x=alt.X('x:Q', sort='descending', axis=x_axis, title="colours used")
-                )  # noqa: E123
+                )
 
         return chart \
             .encode(src.encoding.color) \
