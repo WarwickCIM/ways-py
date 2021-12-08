@@ -57663,7 +57663,11 @@
             "maxbins": 100
           },
           "field": "Production_Budget",
-          "title": "",
+          "scale": {
+            "nice": true,
+            "zero": false
+          },
+          "title": "Production_Budget",
           "type": "quantitative"
         }
       },
@@ -57672,6 +57676,7 @@
         "color": "gray",
         "type": "bar"
       },
+      "title": "Colours used",
       "transform": [
         {
           "joinaggregate": [
@@ -57711,7 +57716,7 @@
           },
           "field": "x",
           "sort": "descending",
-          "title": "colours used",
+          "title": "",
           "type": "quantitative"
         },
         "y": {

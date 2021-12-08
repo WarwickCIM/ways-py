@@ -34,7 +34,7 @@ def expect_fig(fig: alt.Chart, filename: str, headless: bool) -> None:
        To promote to a baseline, move the .new.svg and .new.json files over the corresponding .svg and .json.
 
     2. Otherwise, the approval test passes. If the Vega Lite has changed, the change is interpreted as a
-       refactoring (since it has not visual consequences). This will generate a revised .json file without
+       refactoring (since it has no visual consequences). This will generate a revised .json file without
        the .new prefix, which can simply be committed as usual.
 
     When a new approval test is run for the first time, the situation is similar to (1) except that there are
