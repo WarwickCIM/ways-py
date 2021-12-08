@@ -1072,7 +1072,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
       
   <ul>
     <li class="mono"><a href="#ways_py.ways.altair_color_viz">altair_color_viz</a></li>
-    <li class="mono"><a href="#ways_py.ways.altair_widgets">altair_widgets</a></li>
+    <li class="mono"><a href="#ways_py.ways.altair_color_widgets">altair_color_widgets</a></li>
     <li class="mono"><a href="#ways_py.ways.is_defined">is_defined</a></li>
   </ul>
 
@@ -1092,12 +1092,12 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
         </li>
         <li class="mono">
-        <span class="class_name"><a href="#ways_py.ways.WAlt">WAlt</a></span>
+        <span class="class_name"><a href="#ways_py.ways.AltairColorWidgets">AltairColorWidgets</a></span>
         
           
   <ul>
-    <li class="mono"><a href="#ways_py.ways.WAlt.display">display</a></li>
-    <li class="mono"><a href="#ways_py.ways.WAlt.get_altair_color_obj">get_altair_color_obj</a></li>
+    <li class="mono"><a href="#ways_py.ways.AltairColorWidgets.display">display</a></li>
+    <li class="mono"><a href="#ways_py.ways.AltairColorWidgets.get_altair_color_obj">get_altair_color_obj</a></li>
   </ul>
 
         </li>
@@ -1259,11 +1259,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
     <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="n">FuncT</span><span class="p">,</span> <span class="n">wrapper</span><span class="p">)</span>
 
 
-<span class="k">class</span> <span class="nc">WAlt</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;WAYS widgets class for Altair.&quot;&quot;&quot;</span>
+<span class="k">class</span> <span class="nc">AltairColorWidgets</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;WAYS widgets class for Altair color object.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Create jupyter widgets that can be used as input to altair objects in a jupyter notebook.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Create Jupyter widgets that can be used as input to Altair objects in a Jupyter notebook.&quot;&quot;&quot;</span>
         <span class="c1"># Checkbox widget that determines whether binning is enabled</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bin</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">RadioButtons</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s1">&#39;Binned&#39;</span><span class="p">,</span>
                                         <span class="n">options</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Binned&#39;</span><span class="p">,</span> <span class="s1">&#39;Continuous&#39;</span><span class="p">],</span>
@@ -1449,7 +1449,9 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
         <span class="bp">self</span><span class="o">.</span><span class="n">bin</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;Binned&#39;</span>
 
 
-<span class="k">def</span> <span class="nf">altair_widgets</span><span class="p">(</span><span class="n">custom_widgets</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{})</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">FuncT</span><span class="p">],</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">]]:</span>
+<span class="k">def</span> <span class="nf">altair_color_widgets</span><span class="p">(</span>
+    <span class="n">custom_widgets</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">FuncT</span><span class="p">],</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">]]:</span>
     <span class="sd">&quot;&quot;&quot;Widgets decorator for altair color binning with option to add custom widgets.</span>
 
 <span class="sd">    Args:</span>
@@ -1458,11 +1460,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
     <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">FuncT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">]:</span>
         <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">custom_widgets</span><span class="p">:</span>
-                <span class="c1"># Add each custom widget to the WAlt class</span>
+                <span class="c1"># Add each custom widget to the colour widgets class</span>
                 <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">widget</span> <span class="ow">in</span> <span class="n">custom_widgets</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                    <span class="nb">setattr</span><span class="p">(</span><span class="n">WAlt</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">widget</span><span class="p">)</span>
-            <span class="n">walt</span> <span class="o">=</span> <span class="n">WAlt</span><span class="p">()</span>
-            <span class="n">walt</span><span class="o">.</span><span class="n">display</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">custom_widgets</span><span class="o">=</span><span class="n">custom_widgets</span><span class="p">)</span>
+                    <span class="nb">setattr</span><span class="p">(</span><span class="n">AltairColorWidgets</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">widget</span><span class="p">)</span>
+            <span class="n">widgets</span> <span class="o">=</span> <span class="n">AltairColorWidgets</span><span class="p">()</span>
+            <span class="n">widgets</span><span class="o">.</span><span class="n">display</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">custom_widgets</span><span class="o">=</span><span class="n">custom_widgets</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">wrapper</span>
     <span class="k">return</span> <span class="n">decorator</span>
 </pre></div>
@@ -1518,8 +1520,8 @@ that function to return the original chart decorated with an AltairColorViz meta
   
       
   <div class="item">
-    <div class="name def" id="ways_py.ways.altair_widgets">
-    <p>def <span class="ident">altair_widgets</span>(</p><p>custom_widgets: dict[str, typing.Any] = {})</p>
+    <div class="name def" id="ways_py.ways.altair_color_widgets">
+    <p>def <span class="ident">altair_color_widgets</span>(</p><p>custom_widgets: dict[str, typing.Any] = {})</p>
     </div>
     
 
@@ -1529,9 +1531,11 @@ that function to return the original chart decorated with an AltairColorViz meta
 <p>Args:
 custom_widgets: dictionary of string name keys and widget values.</p></div>
   <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ways_py.ways.altair_widgets', this);">Show source &equiv;</a></p>
-  <div id="source-ways_py.ways.altair_widgets" class="source">
-    <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">altair_widgets</span><span class="p">(</span><span class="n">custom_widgets</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{})</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">FuncT</span><span class="p">],</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">]]:</span>
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ways_py.ways.altair_color_widgets', this);">Show source &equiv;</a></p>
+  <div id="source-ways_py.ways.altair_color_widgets" class="source">
+    <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">altair_color_widgets</span><span class="p">(</span>
+    <span class="n">custom_widgets</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">FuncT</span><span class="p">],</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">]]:</span>
     <span class="sd">&quot;&quot;&quot;Widgets decorator for altair color binning with option to add custom widgets.</span>
 
 <span class="sd">    Args:</span>
@@ -1540,11 +1544,11 @@ custom_widgets: dictionary of string name keys and widget values.</p></div>
     <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">FuncT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">]:</span>
         <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">custom_widgets</span><span class="p">:</span>
-                <span class="c1"># Add each custom widget to the WAlt class</span>
+                <span class="c1"># Add each custom widget to the colour widgets class</span>
                 <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">widget</span> <span class="ow">in</span> <span class="n">custom_widgets</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                    <span class="nb">setattr</span><span class="p">(</span><span class="n">WAlt</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">widget</span><span class="p">)</span>
-            <span class="n">walt</span> <span class="o">=</span> <span class="n">WAlt</span><span class="p">()</span>
-            <span class="n">walt</span><span class="o">.</span><span class="n">display</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">custom_widgets</span><span class="o">=</span><span class="n">custom_widgets</span><span class="p">)</span>
+                    <span class="nb">setattr</span><span class="p">(</span><span class="n">AltairColorWidgets</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">widget</span><span class="p">)</span>
+            <span class="n">widgets</span> <span class="o">=</span> <span class="n">AltairColorWidgets</span><span class="p">()</span>
+            <span class="n">widgets</span><span class="o">.</span><span class="n">display</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">custom_widgets</span><span class="o">=</span><span class="n">custom_widgets</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">wrapper</span>
     <span class="k">return</span> <span class="n">decorator</span>
 </pre></div>
@@ -1863,18 +1867,18 @@ src: colour-encoded Altair chart to be decorated.</p>
       </div>
       
       <div class="item">
-      <p id="ways_py.ways.WAlt" class="name">class <span class="ident">WAlt</span></p>
+      <p id="ways_py.ways.AltairColorWidgets" class="name">class <span class="ident">AltairColorWidgets</span></p>
       
   
-    <div class="desc"><p>WAYS widgets class for Altair.</p></div>
+    <div class="desc"><p>WAYS widgets class for Altair color object.</p></div>
   <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ways_py.ways.WAlt', this);">Show source &equiv;</a></p>
-  <div id="source-ways_py.ways.WAlt" class="source">
-    <div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">WAlt</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;WAYS widgets class for Altair.&quot;&quot;&quot;</span>
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ways_py.ways.AltairColorWidgets', this);">Show source &equiv;</a></p>
+  <div id="source-ways_py.ways.AltairColorWidgets" class="source">
+    <div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">AltairColorWidgets</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;WAYS widgets class for Altair color object.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Create jupyter widgets that can be used as input to altair objects in a jupyter notebook.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Create Jupyter widgets that can be used as input to Altair objects in a Jupyter notebook.&quot;&quot;&quot;</span>
         <span class="c1"># Checkbox widget that determines whether binning is enabled</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bin</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">RadioButtons</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s1">&#39;Binned&#39;</span><span class="p">,</span>
                                         <span class="n">options</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Binned&#39;</span><span class="p">,</span> <span class="s1">&#39;Continuous&#39;</span><span class="p">],</span>
@@ -2068,7 +2072,7 @@ src: colour-encoded Altair chart to be decorated.</p>
           <h3>Methods</h3>
             
   <div class="item">
-    <div class="name def" id="ways_py.ways.WAlt.display">
+    <div class="name def" id="ways_py.ways.AltairColorWidgets.display">
     <p>def <span class="ident">display</span>(</p><p>self, data: pandas.core.frame.DataFrame, column: str, func: ~FuncT, custom_widgets: dict[str, typing.Any] = {})</p>
     </div>
     
@@ -2082,8 +2086,8 @@ column: column of data to be used for color binning.
 func: chart plotting function.
 custom_widgets: dictionary of string name keys and widget values.</p></div>
   <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ways_py.ways.WAlt.display', this);">Show source &equiv;</a></p>
-  <div id="source-ways_py.ways.WAlt.display" class="source">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ways_py.ways.AltairColorWidgets.display', this);">Show source &equiv;</a></p>
+  <div id="source-ways_py.ways.AltairColorWidgets.display" class="source">
     <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">display</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">func</span><span class="p">:</span> <span class="n">FuncT</span><span class="p">,</span>
             <span class="n">custom_widgets</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{})</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Generate interactive plot from widgets and interactive plot function.</span>
@@ -2141,7 +2145,7 @@ custom_widgets: dictionary of string name keys and widget values.</p></div>
   
             
   <div class="item">
-    <div class="name def" id="ways_py.ways.WAlt.get_altair_color_obj">
+    <div class="name def" id="ways_py.ways.AltairColorWidgets.get_altair_color_obj">
     <p>def <span class="ident">get_altair_color_obj</span>(</p><p>self, data: pandas.core.frame.DataFrame, column: str)</p>
     </div>
     
@@ -2155,8 +2159,8 @@ custom_widgets: dictionary of string name keys and widget values.</p></div>
 <p>Returns:
     alt.Color object to be used by alt.Chart</p></div>
   <div class="source_cont">
-  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ways_py.ways.WAlt.get_altair_color_obj', this);">Show source &equiv;</a></p>
-  <div id="source-ways_py.ways.WAlt.get_altair_color_obj" class="source">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ways_py.ways.AltairColorWidgets.get_altair_color_obj', this);">Show source &equiv;</a></p>
+  <div id="source-ways_py.ways.AltairColorWidgets.get_altair_color_obj" class="source">
     <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">get_altair_color_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">alt</span><span class="o">.</span><span class="n">Color</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Build color object for altair plot from widget selections.</span>
 <span class="sd">    Args:</span>
