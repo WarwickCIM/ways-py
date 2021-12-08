@@ -14,15 +14,21 @@ def is_defined(v: Any) -> bool:
 
 
 class AltairColorViz:
-    """Meta-visualisation for alt.Color object."""
+    """Meta-visualisation for alt.Color object.
 
-    # Centralise the assumption that this property stores just a field name.
+    Has two components: a plot of the underlying distribution of the chart, as a vertical histogram,
+    computed by `density_chart`, and a plot of the colours used, which serves as the y-axis "labels",
+    computed by `used_colours`.
+    """
+
     @staticmethod
-    def field(src: alt.Chart) -> str:
+    def _field(src: alt.Chart) -> str:
+        """Centralise the assumption that this property stores just a field name."""
         return cast(str, src.encoding.color.shorthand)
 
     @staticmethod
     def density_chart(src: alt.Chart) -> alt.Chart:
+        """The underlying distribution of the chart as a histogram; placed alongside 'colours used'."""
         if src.encoding.color.bin:
             if is_defined(src.encoding.color.bin.extent):
                 extent = src.encoding.color.bin.extent
@@ -34,7 +40,7 @@ class AltairColorViz:
         else:
             bin = alt.Bin(maxbins=100)
             y_scale = alt.Scale(nice=False)
-        ys = src.data[AltairColorViz.field(src)]  # assume src.data array-like in an appropriate way
+        ys = src.data[AltairColorViz._field(src)]  # assume src.data array-like in an appropriate way
         y_min, y_max = min(ys), max(ys)
         # tickCount/tickMinStep Axis properties are ignored (perhaps because we specify bins), so hard code
         y_axis = alt.Y(
@@ -61,6 +67,7 @@ class AltairColorViz:
 
     @staticmethod
     def used_colours(src: alt.Chart) -> alt.Chart:
+        """The colours used by the chart, plotted as another (vertical) chart."""
         y_axis = alt.Axis(orient='right', grid=False)
         x_axis = alt.Axis(labels=False, tickSize=0, grid=False, titleAngle=270, titleAlign='right')
         if src.encoding.color.bin:
@@ -74,14 +81,14 @@ class AltairColorViz:
                 .transform_bin(
                     as_=['y', 'y2'],
                     bin=src.encoding.color.bin,
-                    field=AltairColorViz.field(src)
+                    field=AltairColorViz._field(src)
                 ) \
                 .transform_calculate(x='5') \
                 .encode(
                     y=alt.Y('y:Q', axis=y_axis, title="", scale=y_scale),
                     y2='y2:Q',
                     x=alt.X('x:Q', sort='descending', axis=x_axis, title="")
-                )  # noqa: E123
+                )
         else:
             y_scale = alt.Scale(nice=False)
             # Get a dataframe to plot where there is only one row for each unique value
@@ -92,13 +99,13 @@ class AltairColorViz:
                 .encode(
                     y=alt.Y(src.encoding.color.shorthand, axis=y_axis, title="", scale=y_scale),
                     x=alt.X('count()', sort='descending', axis=x_axis, title="")
-                )  # noqa: E123
+                )
         return chart.encode(src.encoding.color) \
                     .properties(width=20, height=300)
 
     @staticmethod
     def decorate(src: alt.Chart) -> alt.Chart:
-        """Decorate an Altair chart with colour binning, with metavisualisations showing the binning profile.
+        """Decorate a colour-ended Altair chart with meta-visualisations showing how the colours are used.
 
         Args:
         src: colour-encoded Altair chart to be decorated.
@@ -116,10 +123,15 @@ class AltairColorViz:
 
 
 FuncT = TypeVar("FuncT", bound=Callable[..., Any])
+"""Type variable for internal module use."""
 
 
 def altair_color_viz(make_chart: FuncT) -> FuncT:
-    """Adapt function which makes colour-encoded Altair chart to decorate its argument with AltairColorViz."""
+    """Decorator which attaches an AltairColorViz meta-visualisation to a colour-encoded Altair chart.
+
+    Given a function which creates an Altair chart using an alt.Color object for colour encoding, adapt
+    that function to return the original chart decorated with an AltairColorViz meta-visualisation.
+    """
     @wraps(make_chart)
     def wrapper(*args: Any, **kwargs: Any) -> Any:
         return AltairColorViz.decorate(make_chart(*args, **kwargs))
@@ -223,7 +235,7 @@ class WAlt:
     def get_altair_color_obj(self, data: pd.DataFrame, column: str) -> alt.Color:
         """Build color object for altair plot from widget selections.
 
-            Args:
+        Args:
             data: pandas dataframe with the alatir chart data.
             column: column of source chart's data which contains the colour-encoded data.
 
