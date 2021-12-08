@@ -121,6 +121,7 @@ class AltairColorViz:
             .configure_view(strokeWidth=0) \
             .configure_concat(spacing=5)
 
+
 FuncT = TypeVar("FuncT", bound=Callable[..., Any])
 """Type variable for internal module use."""
 
@@ -327,7 +328,9 @@ class AltairColorWidgets:
         self.bin.value = 'Binned'
 
 
-def altair_color_widgets(custom_widgets: dict[str, Any] = {}) -> Callable[[FuncT], Callable[[Any, str], None]]:
+def altair_color_widgets(
+    custom_widgets: dict[str, Any] = {}
+) -> Callable[[FuncT], Callable[[Any, str], None]]:
     """Widgets decorator for altair color binning with option to add custom widgets.
 
     Args:
