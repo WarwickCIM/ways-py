@@ -121,7 +121,6 @@ class AltairColorViz:
             .configure_view(strokeWidth=0) \
             .configure_concat(spacing=5)
 
-
 FuncT = TypeVar("FuncT", bound=Callable[..., Any])
 """Type variable for internal module use."""
 
@@ -138,11 +137,11 @@ def altair_color_viz(make_chart: FuncT) -> FuncT:
     return cast(FuncT, wrapper)
 
 
-class WAlt:
-    """WAYS widgets class for Altair."""
+class AltairColorWidgets:
+    """WAYS widgets class for Altair color object."""
 
     def __init__(self) -> None:
-        """Create jupyter widgets that can be used as input to altair objects in a jupyter notebook."""
+        """Create Jupyter widgets that can be used as input to Altair objects in a Jupyter notebook."""
         # Checkbox widget that determines whether binning is enabled
         self.bin = widgets.RadioButtons(value='Binned',
                                         options=['Binned', 'Continuous'],
@@ -328,7 +327,7 @@ class WAlt:
         self.bin.value = 'Binned'
 
 
-def altair_widgets(custom_widgets: dict[str, Any] = {}) -> Callable[[FuncT], Callable[[Any, str], None]]:
+def altair_color_widgets(custom_widgets: dict[str, Any] = {}) -> Callable[[FuncT], Callable[[Any, str], None]]:
     """Widgets decorator for altair color binning with option to add custom widgets.
 
     Args:
@@ -337,10 +336,10 @@ def altair_widgets(custom_widgets: dict[str, Any] = {}) -> Callable[[FuncT], Cal
     def decorator(func: FuncT) -> Callable[[Any, str], None]:
         def wrapper(data: pd.DataFrame, column: str) -> None:
             if custom_widgets:
-                # Add each custom widget to the WAlt class
+                # Add each custom widget to the colour widgets class
                 for name, widget in custom_widgets.items():
-                    setattr(WAlt, name, widget)
-            walt = WAlt()
-            walt.display(data, column, func, custom_widgets=custom_widgets)
+                    setattr(AltairColorWidgets, name, widget)
+            widgets = AltairColorWidgets()
+            widgets.display(data, column, func, custom_widgets=custom_widgets)
         return wrapper
     return decorator
