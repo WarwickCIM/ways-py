@@ -34,7 +34,7 @@ def expect_fig(fig: alt.Chart, filename: str, headless: bool) -> None:
        To promote to a baseline, move the .new.svg and .new.json files over the corresponding .svg and .json.
 
     2. Otherwise, the approval test passes. If the Vega Lite has changed, the change is interpreted as a
-       refactoring (since it has not visual consequences). This will generate a revised .json file without
+       refactoring (since it has no visual consequences). This will generate a revised .json file without
        the .new prefix, which can simply be committed as usual.
 
     When a new approval test is run for the first time, the situation is similar to (1) except that there are
@@ -133,20 +133,20 @@ def example_scatterplot(data: pd.DataFrame, color: alt.Color, title: str) -> alt
     return chart
 
 
-class TestMetaHist:
+class TestAltairColorViz:
     """Test the @altair_color_viz decorator."""
 
     @staticmethod
     def test_choropleth(headless: bool) -> None:
         chart: alt.Chart = example_choropleth(choropleth_data(), inspect.stack()[0][3], None)
         assert [math.ceil(y) for y in chart.hconcat[0].encoding.y.axis.values] == [0, 6, 50, 62]
-        expect_fig(chart, "tests/expected_meta_hist_choropleth", headless)
+        expect_fig(chart, "tests/expected/AltairColorViz/choropleth", headless)
 
     @staticmethod
     def test_choropleth_extent(headless: bool) -> None:
         chart: alt.Chart = example_choropleth(choropleth_data(), inspect.stack()[0][3], [0, 100])
         assert [math.ceil(y) for y in chart.hconcat[0].encoding.y.axis.values] == [0, 6, 50, 62]
-        expect_fig(chart, "tests/expected_meta_hist_choropleth_extent", headless)
+        expect_fig(chart, "tests/expected/AltairColorViz/choropleth_extent", headless)
 
     @staticmethod
     def test_scatterplot_bin_undefined(headless: bool) -> None:
@@ -159,11 +159,11 @@ class TestMetaHist:
     def test_scatterplot_bin_False(headless: bool) -> None:
         color = alt.Color(shorthand='Production_Budget', bin=False)
         chart: alt.Chart = example_scatterplot(scatterplot_data(), color, inspect.stack()[0][3])
-        expect_fig(chart, "tests/expected_meta_hist_scatterplot_bin_False", headless)
+        expect_fig(chart, "tests/expected/AltairColorViz/scatterplot_bin_False", headless)
 
     @staticmethod
     def test_scatterplot(headless: bool) -> None:
         scale = alt.Scale(type='band')
         color = alt.Color(shorthand='Production_Budget', bin=alt.Bin(maxbins=20), scale=scale)
         chart: alt.Chart = example_scatterplot(scatterplot_data(), color, inspect.stack()[0][3])
-        expect_fig(chart, "tests/expected_meta_hist_scatterplot", headless)
+        expect_fig(chart, "tests/expected/AltairColorViz/scatterplot", headless)
