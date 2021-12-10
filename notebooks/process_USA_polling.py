@@ -2,7 +2,7 @@
 import geopandas as gpd 
 import pandas as pd
 
-def get_choropleth_data()
+def get_choropleth_data():
     # Here we load two data files, the first is a geometry dataset for the USA by states
     # and the second is polling for candidates in the 2020 presendential election, also by states.
     geo_states = gpd.read_file('gz_2010_us_040_00_500k.json')
