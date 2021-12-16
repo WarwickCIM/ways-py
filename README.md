@@ -8,9 +8,9 @@
 
 Python package for the [WAYS](https://www.turing.ac.uk/research/research-projects/ways-what-arent-you-seeing) project. See [API documentation](https://warwickcim.github.io/ways-py/).
 <!-- badges: start -->
-[![Publish](https://github.com/WarwickCIM/ways-py/actions/workflows/publish.yml/badge.svg?branch=release)](https://github.com/WarwickCIM/ways-py/actions/workflows/publish.yml)
 [![Build](https://github.com/WarwickCIM/ways-py/actions/workflows/build.yml/badge.svg?branch=develop)](https://github.com/WarwickCIM/ways-py/actions/workflows/build.yml)
 [![Docs](https://github.com/WarwickCIM/ways-py/actions/workflows/docs.yml/badge.svg?branch=develop)](https://github.com/WarwickCIM/ways-py/actions/workflows/docs.yml)
+[![publish](https://github.com/WarwickCIM/ways-py/actions/workflows/publish.yml/badge.svg?branch=develop)](https://github.com/WarwickCIM/ways-py/actions/workflows/publish.yml)
 <!-- badges: end -->
 
 “As you can see in figure 1…” may well be the most frequently made claim in science. But unlike claims concerning data, statistics, models and algorithms, those relating to visualisations are rarely evaluated or verified. So how can data scientists understand visualisations’ effectiveness and expressiveness? What is the visualisation equivalent of q-q plots, R^2 and K-folds tests?
@@ -25,11 +25,12 @@ Install from [PyPI](https://pypi.org/project/ways-py/) using `pip install ways-p
 
 ## Development
 
-To create the development environment, do the following:
+To create the development environment:
 
 1. Install python poetry by following the [install instructions](https://python-poetry.org/docs/)
-2. From the top level dir: `poetry shell`
- - Note: your machine will need python 3.9 available - [install from here](https://www.python.org/downloads/release/python-397/) if you don't have it
+2. From the top level dir, run `poetry shell`
+
+Your machine will need [Python 3.9](https://www.python.org/downloads/release/python-397/) ) available.
 
 # Emojis on commit messages
 

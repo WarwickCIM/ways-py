@@ -1,4 +1,4 @@
-"""ways_py namespace."""
+"""ways_py library."""
 
 from importlib.metadata import PackageNotFoundError, version
 

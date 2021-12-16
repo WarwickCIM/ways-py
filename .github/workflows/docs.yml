@@ -4,7 +4,7 @@ on:
   # Use the workflow_run event so docs can be its own workflow and thus have its own status badge.
   workflow_run:
     workflows: ['build']
-    branches: [develop]
+    branches: [develop, docs]
     types:
       - completed
 

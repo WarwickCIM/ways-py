@@ -13,31 +13,41 @@ def is_defined(v: Any) -> bool:
     return type(v).__name__ != 'UndefinedType'
 
 
-class Ways:
-    """WAYS library."""
+class AltairColorViz:
+    """Meta-visualisation for alt.Color object.
 
-    # Centralise the assumption that this property stores just a field name.
+    Has two components: a plot of the underlying distribution of the chart, as a vertical histogram,
+    computed by `density_chart`, and a plot of the colours used, which serves as the y-axis "labels",
+    computed by `used_colours`.
+    """
+
     @staticmethod
-    def field(src: alt.Chart) -> str:
+    def _field(src: alt.Chart) -> str:
+        """Centralise the assumption that this property stores just a field name."""
         return cast(str, src.encoding.color.shorthand)
 
     @staticmethod
     def density_chart(src: alt.Chart) -> alt.Chart:
-        if src.encoding.color.bin and is_defined(src.encoding.color.bin.extent):
-            extent = src.encoding.color.bin.extent
-            bin = alt.Bin(maxbins=100, extent=extent)
-            y_scale = alt.Scale(domain=extent, nice=True)
+        """The underlying distribution of the chart as a histogram; placed alongside 'colours used'."""
+        if src.encoding.color.bin:
+            if is_defined(src.encoding.color.bin.extent):
+                extent = src.encoding.color.bin.extent
+                bin = alt.Bin(maxbins=100, extent=extent)
+                y_scale = alt.Scale(domain=extent, nice=True)
+            else:
+                bin = alt.Bin(maxbins=100)
+                y_scale = alt.Scale(zero=False, nice=True)
         else:
             bin = alt.Bin(maxbins=100)
-            y_scale = alt.Scale(zero=False, nice=True)
-        ys = src.data[Ways.field(src)]  # assume src.data array-like in an appropriate way
+            y_scale = alt.Scale(nice=False)
+        ys = src.data[AltairColorViz._field(src)]  # assume src.data array-like in an appropriate way
         y_min, y_max = min(ys), max(ys)
         # tickCount/tickMinStep Axis properties are ignored (perhaps because we specify bins), so hard code
         y_axis = alt.Y(
             src.encoding.color.shorthand,
             bin=bin,
             axis=alt.Axis(orient='left', grid=False, values=sorted([0, 50] + [y_min, y_max])),
-            title="",
+            title=src.encoding.color.shorthand,
             scale=y_scale
         )
         x_axis = alt.X(
@@ -46,7 +56,9 @@ class Ways:
             axis=alt.Axis(grid=False),
             title="density"
         )
-        return alt.Chart(src.data) \
+        # Title for both the density_chart and used_colours plots
+        title = "Colours used"
+        return alt.Chart(src.data, title=title) \
             .transform_joinaggregate(total='count(*)') \
             .transform_calculate(proportion="1 / datum.total") \
             .mark_bar(color='gray') \
@@ -55,42 +67,45 @@ class Ways:
 
     @staticmethod
     def used_colours(src: alt.Chart) -> alt.Chart:
+        """The colours used by the chart, plotted as another (vertical) chart."""
         y_axis = alt.Axis(orient='right', grid=False)
         x_axis = alt.Axis(labels=False, tickSize=0, grid=False, titleAngle=270, titleAlign='right')
-        if src.encoding.color.bin and is_defined(src.encoding.color.bin.extent):
-            extent = src.encoding.color.bin.extent
-            y_scale = alt.Scale(domain=extent, nice=True)
-        else:
-            y_scale = alt.Scale(zero=False, nice=True)
         if src.encoding.color.bin:
+            if is_defined(src.encoding.color.bin.extent):
+                extent = src.encoding.color.bin.extent
+                y_scale = alt.Scale(domain=extent, nice=True)
+            else:
+                y_scale = alt.Scale(zero=False, nice=True)
             chart = alt.Chart(src.data) \
                 .mark_rect() \
-                .transform_bin(as_=['y', 'y2'], bin=src.encoding.color.bin, field=Ways.field(src)) \
+                .transform_bin(
+                    as_=['y', 'y2'],
+                    bin=src.encoding.color.bin,
+                    field=AltairColorViz._field(src)
+                ) \
                 .transform_calculate(x='5') \
                 .encode(
                     y=alt.Y('y:Q', axis=y_axis, title="", scale=y_scale),
                     y2='y2:Q',
-                    x=alt.X('x:Q', sort='descending', axis=x_axis, title="colours used")
-                )  # noqa: E123
+                    x=alt.X('x:Q', sort='descending', axis=x_axis, title="")
+                )
         else:
-            # The following (which happens when bin=False) doesn't make sense; in particular y and y2 are
-            # not defined, so it doesn't make sense to try and plot them.
-            chart = alt.Chart(src.data) \
-                .mark_rect() \
-                .transform_calculate(x='5') \
+            y_scale = alt.Scale(nice=False)
+            # Get a dataframe to plot where there is only one row for each unique value
+            # of the column of the source chart data being plotted
+            df = src.data.drop_duplicates(subset=[src.encoding.color.shorthand])
+            chart = alt.Chart(df) \
+                .mark_bar() \
                 .encode(
-                    y=alt.Y('y:Q', axis=y_axis, title=""),
-                    y2='y2:Q',
-                    x=alt.X('x:Q', sort='descending', axis=x_axis, title="colours used")
-                )  # noqa: E123
-
-        return chart \
-            .encode(src.encoding.color) \
-            .properties(width=20, height=300)  # noqa: E123
+                    y=alt.Y(src.encoding.color.shorthand, axis=y_axis, title="", scale=y_scale),
+                    x=alt.X('count()', sort='descending', axis=x_axis, title="")
+                )
+        return chart.encode(src.encoding.color) \
+                    .properties(width=20, height=300)
 
     @staticmethod
-    def altair_meta_hist(src: alt.Chart) -> alt.Chart:
-        """Decorate an Altair chart with colour binning, with metavisualisations showing the binning profile.
+    def decorate(src: alt.Chart) -> alt.Chart:
+        """Decorate a colour-ended Altair chart with meta-visualisations showing how the colours are used.
 
         Args:
         src: colour-encoded Altair chart to be decorated.
@@ -101,28 +116,33 @@ class Ways:
         if not is_defined(src.encoding.color.bin):
             raise Exception("Can only apply decorator to chart with color.bin defined.")
 
-        meta_chart: alt.Chart = (Ways.density_chart(src) | Ways.used_colours(src))
+        meta_chart: alt.Chart = (AltairColorViz.density_chart(src) | AltairColorViz.used_colours(src))
         return (meta_chart | src) \
             .configure_view(strokeWidth=0) \
             .configure_concat(spacing=5)
 
 
 FuncT = TypeVar("FuncT", bound=Callable[..., Any])
+"""Type variable for internal module use."""
 
 
-def meta_hist(make_chart: FuncT) -> FuncT:
-    """Post-compose altair_meta_hist with a function which makes a colour-encoded Altair chart."""
+def altair_color_viz(make_chart: FuncT) -> FuncT:
+    """Decorator which attaches an AltairColorViz meta-visualisation to a colour-encoded Altair chart.
+
+    Given a function which creates an Altair chart using an alt.Color object for colour encoding, adapt
+    that function to return the original chart decorated with an AltairColorViz meta-visualisation.
+    """
     @wraps(make_chart)
     def wrapper(*args: Any, **kwargs: Any) -> Any:
-        return Ways.altair_meta_hist(make_chart(*args, **kwargs))
+        return AltairColorViz.decorate(make_chart(*args, **kwargs))
     return cast(FuncT, wrapper)
 
 
-class WAlt:
-    """WAYS widgets class for Altair."""
+class AltairColorWidgets:
+    """WAYS widgets class for Altair color object."""
 
     def __init__(self) -> None:
-        """Create jupyter widgets that can be used as input to altair objects in a jupyter notebook."""
+        """Create Jupyter widgets that can be used as input to Altair color object in a Jupyter notebook."""
         # Checkbox widget that determines whether binning is enabled
         self.bin = widgets.RadioButtons(value='Binned',
                                         options=['Binned', 'Continuous'],
@@ -213,10 +233,10 @@ class WAlt:
         self.bin.observe(bin_options, names='value')
 
     def get_altair_color_obj(self, data: pd.DataFrame, column: str) -> alt.Color:
-        """Build color object for altair plot from widget selections.
+        """Build color object for Altair plot from widget selections.
 
-            Args:
-            data: pandas dataframe with the alatir chart data.
+        Args:
+            data: Pandas dataframe with the Altair chart data.
             column: column of source chart's data which contains the colour-encoded data.
 
         Returns:
@@ -257,7 +277,7 @@ class WAlt:
         """Generate interactive plot from widgets and interactive plot function.
 
         Args:
-        data: pandas df.
+        data: Pandas dataframe.
         column: column of data to be used for color binning.
         func: chart plotting function.
         custom_widgets: dictionary of string name keys and widget values.
@@ -308,19 +328,21 @@ class WAlt:
         self.bin.value = 'Binned'
 
 
-def altair_widgets(custom_widgets: dict[str, Any] = {}) -> Callable[[FuncT], Callable[[Any, str], None]]:
-    """Widgets decorator for altair color binning with option to add custom widgets.
+def altair_color_widgets(
+    custom_widgets: dict[str, Any] = {}
+) -> Callable[[FuncT], Callable[[Any, str], None]]:
+    """Widgets decorator for Altair colour binning, with option to add custom widgets.
 
     Args:
-    custom_widgets: dictionary of string name keys and widget values.
+    custom_widgets: dictionary mapping names to widget values.
     """
     def decorator(func: FuncT) -> Callable[[Any, str], None]:
         def wrapper(data: pd.DataFrame, column: str) -> None:
             if custom_widgets:
-                # Add each custom widget to the WAlt class
+                # Add each custom widget to the colour widgets class
                 for name, widget in custom_widgets.items():
-                    setattr(WAlt, name, widget)
-            walt = WAlt()
-            walt.display(data, column, func, custom_widgets=custom_widgets)
+                    setattr(AltairColorWidgets, name, widget)
+            widgets = AltairColorWidgets()
+            widgets.display(data, column, func, custom_widgets=custom_widgets)
         return wrapper
     return decorator
