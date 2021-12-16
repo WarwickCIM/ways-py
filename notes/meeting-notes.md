@@ -11,14 +11,14 @@
 
 ## Functionality and examples
 
-- @altair_color_viz decorator which works with any Altair chart with colour-encoded data
-- attaches a "metavisualisation" which shows distribution of data over colour bins
-- no "unused colours" functionality -- turns out to be tricky to implement generically
-- @altair_color_widgets decorator
-
 ###
+- @altair_color_viz decorator which works with any Altair chart with colour-encoded data
 - `usa-presidential-poll.ipynb` notebook illustrating @altair_color_viz with choropleth
 - some expository text/walkthrough explaining WAYS motivation
+- attaches a "metavisualisation" which shows distribution of data over colour bins
+- no "unused colours" functionality -- turns out to be tricky to implement generically
+- @altair_color_widgets decorator adds widgets for exploring colour settings
+- notebook also shows how to integrate custom widgets (e.g. to control data ranges) with colour widgets
 
 # 15 October 2021
 
