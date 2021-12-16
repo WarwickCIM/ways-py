@@ -142,7 +142,7 @@ class AltairColorWidgets:
     """WAYS widgets class for Altair color object."""
 
     def __init__(self) -> None:
-        """Create Jupyter widgets that can be used as input to Altair objects in a Jupyter notebook."""
+        """Create Jupyter widgets that can be used as input to Altair color object in a Jupyter notebook."""
         # Checkbox widget that determines whether binning is enabled
         self.bin = widgets.RadioButtons(value='Binned',
                                         options=['Binned', 'Continuous'],
@@ -233,10 +233,10 @@ class AltairColorWidgets:
         self.bin.observe(bin_options, names='value')
 
     def get_altair_color_obj(self, data: pd.DataFrame, column: str) -> alt.Color:
-        """Build color object for altair plot from widget selections.
+        """Build color object for Altair plot from widget selections.
 
         Args:
-            data: pandas dataframe with the alatir chart data.
+            data: Pandas dataframe with the Altair chart data.
             column: column of source chart's data which contains the colour-encoded data.
 
         Returns:
@@ -277,7 +277,7 @@ class AltairColorWidgets:
         """Generate interactive plot from widgets and interactive plot function.
 
         Args:
-        data: pandas df.
+        data: Pandas dataframe.
         column: column of data to be used for color binning.
         func: chart plotting function.
         custom_widgets: dictionary of string name keys and widget values.
@@ -331,10 +331,10 @@ class AltairColorWidgets:
 def altair_color_widgets(
     custom_widgets: dict[str, Any] = {}
 ) -> Callable[[FuncT], Callable[[Any, str], None]]:
-    """Widgets decorator for altair color binning with option to add custom widgets.
+    """Widgets decorator for Altair colour binning, with option to add custom widgets.
 
     Args:
-    custom_widgets: dictionary of string name keys and widget values.
+    custom_widgets: dictionary mapping names to widget values.
     """
     def decorator(func: FuncT) -> Callable[[Any, str], None]:
         def wrapper(data: pd.DataFrame, column: str) -> None:
