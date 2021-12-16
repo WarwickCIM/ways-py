@@ -1263,7 +1263,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
     <span class="sd">&quot;&quot;&quot;WAYS widgets class for Altair color object.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Create Jupyter widgets that can be used as input to Altair objects in a Jupyter notebook.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Create Jupyter widgets that can be used as input to Altair color object in a Jupyter notebook.&quot;&quot;&quot;</span>
         <span class="c1"># Checkbox widget that determines whether binning is enabled</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bin</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">RadioButtons</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s1">&#39;Binned&#39;</span><span class="p">,</span>
                                         <span class="n">options</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Binned&#39;</span><span class="p">,</span> <span class="s1">&#39;Continuous&#39;</span><span class="p">],</span>
@@ -1354,10 +1354,10 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
         <span class="bp">self</span><span class="o">.</span><span class="n">bin</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="n">bin_options</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="s1">&#39;value&#39;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">get_altair_color_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">alt</span><span class="o">.</span><span class="n">Color</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Build color object for altair plot from widget selections.</span>
+        <span class="sd">&quot;&quot;&quot;Build color object for Altair plot from widget selections.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            data: pandas dataframe with the alatir chart data.</span>
+<span class="sd">            data: Pandas dataframe with the Altair chart data.</span>
 <span class="sd">            column: column of source chart&#39;s data which contains the colour-encoded data.</span>
 
 <span class="sd">        Returns:</span>
@@ -1398,7 +1398,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
         <span class="sd">&quot;&quot;&quot;Generate interactive plot from widgets and interactive plot function.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">        data: pandas df.</span>
+<span class="sd">        data: Pandas dataframe.</span>
 <span class="sd">        column: column of data to be used for color binning.</span>
 <span class="sd">        func: chart plotting function.</span>
 <span class="sd">        custom_widgets: dictionary of string name keys and widget values.</span>
@@ -1452,10 +1452,10 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="k">def</span> <span class="nf">altair_color_widgets</span><span class="p">(</span>
     <span class="n">custom_widgets</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">FuncT</span><span class="p">],</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">]]:</span>
-    <span class="sd">&quot;&quot;&quot;Widgets decorator for altair color binning with option to add custom widgets.</span>
+    <span class="sd">&quot;&quot;&quot;Widgets decorator for Altair colour binning, with option to add custom widgets.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">    custom_widgets: dictionary of string name keys and widget values.</span>
+<span class="sd">    custom_widgets: dictionary mapping names to widget values.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">FuncT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">]:</span>
         <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -1527,19 +1527,19 @@ that function to return the original chart decorated with an AltairColorViz meta
 
     
   
-    <div class="desc"><p>Widgets decorator for altair color binning with option to add custom widgets.</p>
+    <div class="desc"><p>Widgets decorator for Altair colour binning, with option to add custom widgets.</p>
 <p>Args:
-custom_widgets: dictionary of string name keys and widget values.</p></div>
+custom_widgets: dictionary mapping names to widget values.</p></div>
   <div class="source_cont">
   <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ways_py.ways.altair_color_widgets', this);">Show source &equiv;</a></p>
   <div id="source-ways_py.ways.altair_color_widgets" class="source">
     <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">altair_color_widgets</span><span class="p">(</span>
     <span class="n">custom_widgets</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">FuncT</span><span class="p">],</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">]]:</span>
-    <span class="sd">&quot;&quot;&quot;Widgets decorator for altair color binning with option to add custom widgets.</span>
+    <span class="sd">&quot;&quot;&quot;Widgets decorator for Altair colour binning, with option to add custom widgets.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">    custom_widgets: dictionary of string name keys and widget values.</span>
+<span class="sd">    custom_widgets: dictionary mapping names to widget values.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">FuncT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">]:</span>
         <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -1878,7 +1878,7 @@ src: colour-encoded Altair chart to be decorated.</p>
     <span class="sd">&quot;&quot;&quot;WAYS widgets class for Altair color object.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Create Jupyter widgets that can be used as input to Altair objects in a Jupyter notebook.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Create Jupyter widgets that can be used as input to Altair color object in a Jupyter notebook.&quot;&quot;&quot;</span>
         <span class="c1"># Checkbox widget that determines whether binning is enabled</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bin</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">RadioButtons</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s1">&#39;Binned&#39;</span><span class="p">,</span>
                                         <span class="n">options</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Binned&#39;</span><span class="p">,</span> <span class="s1">&#39;Continuous&#39;</span><span class="p">],</span>
@@ -1969,10 +1969,10 @@ src: colour-encoded Altair chart to be decorated.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">bin</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="n">bin_options</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="s1">&#39;value&#39;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">get_altair_color_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">alt</span><span class="o">.</span><span class="n">Color</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Build color object for altair plot from widget selections.</span>
+        <span class="sd">&quot;&quot;&quot;Build color object for Altair plot from widget selections.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            data: pandas dataframe with the alatir chart data.</span>
+<span class="sd">            data: Pandas dataframe with the Altair chart data.</span>
 <span class="sd">            column: column of source chart&#39;s data which contains the colour-encoded data.</span>
 
 <span class="sd">        Returns:</span>
@@ -2013,7 +2013,7 @@ src: colour-encoded Altair chart to be decorated.</p>
         <span class="sd">&quot;&quot;&quot;Generate interactive plot from widgets and interactive plot function.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">        data: pandas df.</span>
+<span class="sd">        data: Pandas dataframe.</span>
 <span class="sd">        column: column of data to be used for color binning.</span>
 <span class="sd">        func: chart plotting function.</span>
 <span class="sd">        custom_widgets: dictionary of string name keys and widget values.</span>
@@ -2081,7 +2081,7 @@ src: colour-encoded Altair chart to be decorated.</p>
   
     <div class="desc"><p>Generate interactive plot from widgets and interactive plot function.</p>
 <p>Args:
-data: pandas df.
+data: Pandas dataframe.
 column: column of data to be used for color binning.
 func: chart plotting function.
 custom_widgets: dictionary of string name keys and widget values.</p></div>
@@ -2092,7 +2092,7 @@ custom_widgets: dictionary of string name keys and widget values.</p></div>
             <span class="n">custom_widgets</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{})</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Generate interactive plot from widgets and interactive plot function.</span>
 <span class="sd">    Args:</span>
-<span class="sd">    data: pandas df.</span>
+<span class="sd">    data: Pandas dataframe.</span>
 <span class="sd">    column: column of data to be used for color binning.</span>
 <span class="sd">    func: chart plotting function.</span>
 <span class="sd">    custom_widgets: dictionary of string name keys and widget values.</span>
@@ -2152,9 +2152,9 @@ custom_widgets: dictionary of string name keys and widget values.</p></div>
 
     
   
-    <div class="desc"><p>Build color object for altair plot from widget selections.</p>
+    <div class="desc"><p>Build color object for Altair plot from widget selections.</p>
 <p>Args:
-    data: pandas dataframe with the alatir chart data.
+    data: Pandas dataframe with the Altair chart data.
     column: column of source chart's data which contains the colour-encoded data.</p>
 <p>Returns:
     alt.Color object to be used by alt.Chart</p></div>
@@ -2162,9 +2162,9 @@ custom_widgets: dictionary of string name keys and widget values.</p></div>
   <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ways_py.ways.AltairColorWidgets.get_altair_color_obj', this);">Show source &equiv;</a></p>
   <div id="source-ways_py.ways.AltairColorWidgets.get_altair_color_obj" class="source">
     <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">get_altair_color_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">alt</span><span class="o">.</span><span class="n">Color</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Build color object for altair plot from widget selections.</span>
+    <span class="sd">&quot;&quot;&quot;Build color object for Altair plot from widget selections.</span>
 <span class="sd">    Args:</span>
-<span class="sd">        data: pandas dataframe with the alatir chart data.</span>
+<span class="sd">        data: Pandas dataframe with the Altair chart data.</span>
 <span class="sd">        column: column of source chart&#39;s data which contains the colour-encoded data.</span>
 <span class="sd">    Returns:</span>
 <span class="sd">        alt.Color object to be used by alt.Chart</span>
