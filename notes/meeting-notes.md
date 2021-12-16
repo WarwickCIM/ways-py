@@ -1,5 +1,25 @@
 # Meeting notes
 
+# 16 December 2021
+
+## Packaging/deployment
+
+- latest version (0.1.1) uploaded to PyPI -- linked to from GitHub repo
+- API documentation (linked from PyPI page and README.md)
+- will do a final wrap-release with some final documentation tweaks
+- notebooks in Binder (unfortunately Binder takes forever, so not necessarily useful)
+
+## Functionality and examples
+
+- @altair_color_viz decorator which works with any Altair chart with colour-encoded data
+- attaches a "metavisualisation" which shows distribution of data over colour bins
+- no "unused colours" functionality -- turns out to be tricky to implement generically
+- @altair_color_widgets decorator
+
+###
+- `usa-presidential-poll.ipynb` notebook illustrating @altair_color_viz with choropleth
+- some expository text/walkthrough explaining WAYS motivation
+
 # 15 October 2021
 
 ## Progress on choropleth example
