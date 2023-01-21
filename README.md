@@ -32,6 +32,23 @@ To create the development environment:
 
 Your machine will need [Python 3.9](https://www.python.org/downloads/release/python-397/) ) available.
 
+## Notebooks
+
+After creating the above development environment, clone this repo and navigate into it:
+
+```bash
+git clone https://github.com/WarwickCIM/ways-py.git
+cd ways-py
+```
+
+Then run Jupyter like so:
+
+```bash
+poetry run jupyter notebook
+```
+
+Navigate to the main demo notebook at `notebooks/usa-presidential-poll.ipynb`.
+
 # Emojis on commit messages
 
 We use a number of `git` [aliases](/.gitconfig.aliases) to track different kinds of commit; to use these yourself, add an `[include]` section to your [`.gitconfig`](https://git-scm.com/docs/git-config).
